@@ -22,11 +22,7 @@ for (package in list_packages){
 }
 
 # Load the dataset
-# Define the file path
-file_path <- paste0(getwd(),"/delitos_2024_v2.xlsx")
-
-# Load the specific sheet from the Excel file
-delitos_data <- read_excel(file_path, sheet = "2024")
+delitos_data <- load("~/Documents/GitHub/Advanced-data-analytics-course/Advance analytics course/data/delitos_data.RData")
 
 dim(delitos_data)
 summary(delitos_data)
