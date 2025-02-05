@@ -1,8 +1,8 @@
 # Preface {.unnumbered}
 
-Welcome to the **Advanced Analytics Course**! This course is designed to provide you with hands-on experience using real-world data to guide decision-making processes. You will work with an **Octagonal Prediction Platform ($8p^2$)**, which integrates data analysis techniques into anticipative decision-making workflows.
+Welcome to the **Advanced Analytics Course**! This course is designed to provide you with hands-on experience using real-world data to guide decision-making processes. You will work with an **Octagonal Analytics Platform (Plátano)**, which integrates data analysis techniques into anticipative decision-making workflows.
 
-Recommended readings for ($8p^2$), see: 
+Recommended readings for Plátano, see: 
 
   - Collective intelligence: short-term anticipation of coexistence issues [@Perez2016] 
   - Human Development Oriented Policing [@PerezCoronado2016] 
