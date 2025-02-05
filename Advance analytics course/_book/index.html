@@ -90,35 +90,6 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -272,8 +243,8 @@ window.Quarto = {
 
 <section id="preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1>
-<p>Welcome to the <strong>Advanced Analytics Course</strong>! This course is designed to provide you with hands-on experience using real-world data to guide decision-making processes. You will work with an <strong>Octagonal Prediction Platform (<span class="math inline">\(8p^2\)</span>)</strong>, which integrates data analysis techniques into anticipative decision-making workflows.</p>
-<p>Recommended readings for (<span class="math inline">\(8p^2\)</span>), see:</p>
+<p>Welcome to the <strong>Advanced Analytics Course</strong>! This course is designed to provide you with hands-on experience using real-world data to guide decision-making processes. You will work with an <strong>Octagonal Analytics Platform (Plátano)</strong>, which integrates data analysis techniques into anticipative decision-making workflows.</p>
+<p>Recommended readings for Plátano, see:</p>
 <ul>
 <li>Collective intelligence: short-term anticipation of coexistence issues <span class="citation" data-cites="Perez2016">(<a href="references.html#ref-Perez2016" role="doc-biblioref">Perez-Coronado 2016a</a>)</span></li>
 <li>Human Development Oriented Policing <span class="citation" data-cites="PerezCoronado2016">(<a href="references.html#ref-PerezCoronado2016" role="doc-biblioref">Perez-Coronado 2016b</a>)</span></li>
