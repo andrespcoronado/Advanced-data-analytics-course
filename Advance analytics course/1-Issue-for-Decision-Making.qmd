@@ -329,7 +329,7 @@ plot(model)
 
 ## Global Variability Metric
 
-The effective variance and effective standard deviation are measures of the overall variability in the dataset. They are derived from the determinant of the covariance matrix, which captures the generalized variance of the data. For log-transformed data, these metrics are computed similarly but on the log-transformed covariance matrix. 
+The effective variance and effective standard deviation are measures of the overall variability in the dataset. They are derived from the determinant of the covariance matrix, which captures the generalized variance of the data. For log-transformed data, these metrics are computed similarly but on the log-transformed covariance matrix.
 
 The effective variance is defined as:
 
@@ -383,7 +383,7 @@ det(cov_matrix)^(1/(ncol(cov_matrix) * 2))
 det(log(cov_matrix + 1))^(1/(ncol(cov_matrix) * 2))
 ```
 
-## Precision Matrix
+## Linear Dependency and Precision Matrix
 
 ```{r}
 #| echo: true
@@ -395,7 +395,7 @@ S_inv <- solve(cov_matrix)
 
 # Display precision matrix (should match example values)
 cat("Precision Matrix (S⁻¹):\n")
-print(S_inv, digits = 4)
+print(S_inv, digits = 2)
 
 # Extract first row components
 first_row <- S_inv[1,]
@@ -403,7 +403,15 @@ diag_element <- S_inv[1,1]
 
 # Calculate regression coefficients
 beta_coefficients <- -first_row[-1]/diag_element
-print(beta_coefficients, digits = 4)
+print(beta_coefficients, digits = 2)
+
+# Calculate residual variance and standar error
+residual_variance <- 1/diag_element
+round(residual_variance, 2)
+sqrt(round(residual_variance, 2))
+
+# R^2
+1 - (1/(cov_matrix[1,1] * S_inv[1,1]))
 
 # Regression coefficients
 delitos <- delitos_data %>%
@@ -412,11 +420,6 @@ delitos <- delitos_data %>%
 
 model <- lm(SEXUALES ~ ., data = data.frame(delitos))
 summary(model)
-(summary(model)$sigma)**2
-
-# Calculate residual variance
-residual_variance <- 1/diag_element
-round(residual_variance, 2)
 ```
 
 # Graphical analysis {.unnumbered}

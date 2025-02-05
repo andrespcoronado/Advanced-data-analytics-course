@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -70,6 +90,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -177,12 +226,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#evaluation-activities" id="toc-evaluation-activities" class="nav-link" data-scroll-target="#evaluation-activities">Evaluation activities</a>
   <ul class="collapse">
-  <li><a href="#course-schedule" id="toc-course-schedule" class="nav-link" data-scroll-target="#course-schedule">Course schedule</a></li>
-  <li><a href="#evaluation-activities" id="toc-evaluation-activities" class="nav-link" data-scroll-target="#evaluation-activities">Evaluation activities</a></li>
-  <li><a href="#rubric" id="toc-rubric" class="nav-link" data-scroll-target="#rubric">Rubric</a></li>
+  <li><a href="#class-participation-assessment-40-of-the-total-course-score" id="toc-class-participation-assessment-40-of-the-total-course-score" class="nav-link" data-scroll-target="#class-participation-assessment-40-of-the-total-course-score">Class Participation Assessment (40% of the total course score)</a></li>
+  <li><a href="#final-project-data-driven-decisions-60-of-the-total-course-score" id="toc-final-project-data-driven-decisions-60-of-the-total-course-score" class="nav-link" data-scroll-target="#final-project-data-driven-decisions-60-of-the-total-course-score">Final Project: Data-Driven Decisions (60% of the total course score)</a></li>
   </ul></li>
+  <li><a href="#professor-profile" id="toc-professor-profile" class="nav-link" data-scroll-target="#professor-profile">Professor profile</a></li>
   </ul>
 </nav>
     </div>
@@ -222,17 +272,208 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="preface" class="level1 unnumbered">
 <h1 class="unnumbered">Preface</h1>
-<section id="course-schedule" class="level2">
-<h2 class="anchored" data-anchor-id="course-schedule">Course schedule</h2>
+<p>Welcome to the <strong>Advanced Analytics Course</strong>! This course is designed to provide you with hands-on experience using real-world data to guide decision-making processes. You will work with an <strong>Octagonal Prediction Platform (<span class="math inline">\(8p^2\)</span>)</strong>, which integrates data analysis techniques into anticipative decision-making workflows.</p>
+<p>Recommended readings for (<span class="math inline">\(8p^2\)</span>), see:</p>
+<ul>
+<li>Collective intelligence: short-term anticipation of coexistence issues <span class="citation" data-cites="Perez2016">(<a href="references.html#ref-Perez2016" role="doc-biblioref">Perez-Coronado 2016a</a>)</span></li>
+<li>Human Development Oriented Policing <span class="citation" data-cites="PerezCoronado2016">(<a href="references.html#ref-PerezCoronado2016" role="doc-biblioref">Perez-Coronado 2016b</a>)</span></li>
+<li><a href="https://www.academia.edu/109755271/Comités_decisionales_anticipativos_para_la_seguridad_humana"><code>Anticipative decision-making committees for human security</code></a></li>
+<li>Data analytics for citizen security <span class="citation" data-cites="analiticaseg2024">(<a href="references.html#ref-analiticaseg2024" role="doc-biblioref">Servicio de Policía 2024</a>)</span></li>
+<li><a href="https://www.lasillavacia.com/author/cap-andres-perez-coronado/"><code>La Silla Vacía</code></a></li>
+</ul>
+<section id="key-features-of-the-course" class="level3">
+<h3 class="anchored" data-anchor-id="key-features-of-the-course">Key Features of the Course</h3>
+<ol type="1">
+<li>Real-World Data:
+<ul>
+<li>You will analyze real datasets, such as crime statistics from the Colombian National Police, available at:<br>
+<a href="https://www.policia.gov.co/estadistica-delictiva?page=1"><code>Estadística delictiva</code></a>.</li>
+</ul></li>
+<li>Collaborative Workflow:
+<ul>
+<li>All activities will be submitted via pull requests in the course’s GitHub repository:<br>
+<a href="https://github.com/andrego50/Advanced-data-analytics-course.git"><code>Advance Analytics Course Repository</code></a>.<br>
+</li>
+<li>This ensures a collaborative and version-controlled environment.</li>
+</ul></li>
+<li>Use of Generative AI:
+<ul>
+<li>You are encouraged to use generative AI tools (e.g., ChatGPT, DeepSeek) to assist with your work.<br>
+</li>
+<li>Important: When submitting activities, include the prompts you used to generate any AI-assisted content.</li>
+</ul></li>
+<li>Languages:
+<ul>
+<li>All activities submitted to the course repository must be in English.<br>
+</li>
+<li>Other communications (e.g., emails, discussions) can be in Spanish.</li>
+</ul></li>
+<li>Hands-On Learning:
+<ul>
+<li>The course emphasizes practical applications, enabling you to develop skills that are directly applicable to real-world decision-making scenarios.</li>
+</ul></li>
+</ol>
 </section>
-<section id="evaluation-activities" class="level2">
-<h2 class="anchored" data-anchor-id="evaluation-activities">Evaluation activities</h2>
 </section>
-<section id="rubric" class="level2">
-<h2 class="anchored" data-anchor-id="rubric">Rubric</h2>
+<section id="evaluation-activities" class="level1 unnumbered">
+<h1 class="unnumbered">Evaluation activities</h1>
+<section id="class-participation-assessment-40-of-the-total-course-score" class="level2">
+<h2 class="anchored" data-anchor-id="class-participation-assessment-40-of-the-total-course-score">Class Participation Assessment (40% of the total course score)</h2>
+<p>Class participation will be assessed based on the depth and quality of analysis conducted on the course content and data results presented throughout the sessions. Students are expected to actively engage with the materials, providing meaningful insights and interpretations in the GitHub repository.</p>
+<p>As part of their evaluation, they must submit a well-structured generative AI prompt that demonstrates their understanding and ability to apply the concepts learned. This prompt should effectively guide AI models to generate relevant analyses or insights related to the course topics. The participation component, including the submission of the AI prompt and your own analysis, will contribute 40% to the total course score.</p>
+</section>
+<section id="final-project-data-driven-decisions-60-of-the-total-course-score" class="level2">
+<h2 class="anchored" data-anchor-id="final-project-data-driven-decisions-60-of-the-total-course-score">Final Project: Data-Driven Decisions (60% of the total course score)</h2>
+<p>Simulate a <strong>consulting team</strong> presenting to the management and board of directors of an organization. Tailor your message to their profiles, preferences, and organizational vision to make it as personalized as possible.</p>
+<p>Recommended reading see: <span class="citation" data-cites="hutchinson2017primer">(<a href="references.html#ref-hutchinson2017primer" role="doc-biblioref">Hutchinson 2017</a>)</span></p>
+<section id="instructions" class="level3">
+<h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
+<ul>
+<li>Work in groups of 2 people.</li>
+<li>Present the results of applying advance analytics to a real-world scenario.</li>
+<li>There will be a final submission.</li>
+<li>Each group will present their proposed solution in a maximum of 10 minutes the last class.</li>
+<li>Groups are free to be creative in how they convey the information.</li>
+</ul>
+</section>
+<section id="guidelines-for-the-presentation" class="level3">
+<h3 class="anchored" data-anchor-id="guidelines-for-the-presentation">Guidelines for the Presentation</h3>
+<ol type="1">
+<li>Organize Content in Layers:
+<ul>
+<li>Always include 2 to 3 key messages you want to convey, focusing on what decisions you want the audience to make.</li>
+<li>Move from general to specific details.</li>
+<li>Study your audience to determine the level of detail they require.</li>
+<li>Use appropriate formats for each level of detail: images, infographics, presentations, executive summaries, or final reports.</li>
+</ul></li>
+<li>Reorganize Key Messages:
+<ul>
+<li>Decision-makers are always thinking: “What should I do?” or “What should I approve?”</li>
+<li>Start with recommendations and conclusions to address these questions upfront. This reduces impatience and keeps the audience engaged.</li>
+<li>Explain findings and methodology last.</li>
+</ul></li>
+<li>Example of a Strong Opening:
+<ul>
+<li>“We are here to present the main changes in the new government’s discourse that could impact the country’s editorial agenda. We will answer the question: What are the 3 main citizen security focus areas for the government in 2025? We will start with our key conclusions and recommendations related to main intervention areas and regional security strategies, and then explain the data analytics techniques and datasets that validate our findings.”</li>
+</ul></li>
+<li>Create “Sticky” Messages:
+<ul>
+<li>A “sticky” message is one that stakeholders can understand, remember, and act upon.</li>
+<li>According to the book Made to Stick <span class="citation" data-cites="heath2007made">(<a href="references.html#ref-heath2007made" role="doc-biblioref">Heath and Heath 2007</a>)</span>, sticky messages have 6 key characteristics:
+<ol type="1">
+<li>Simplicity: Create a concise phrase for your key message (e.g., “Headache? Take Aspirin”).</li>
+<li>Unexpectedness: Generate curiosity by presenting something unexpected.</li>
+<li>Concreteness: Use examples to explain complex ideas.</li>
+<li>Credibility: Use real-life details, stories, or images to establish credibility.</li>
+<li>Emotionality: Connect with the audience’s values or emotions.</li>
+<li>Stories: Use storytelling to move from macro-level results to personal, everyday experiences.</li>
+</ol></li>
+</ul></li>
+<li>Avoid Common Mistakes:
+<ul>
+<li>Too much narrative or “blah blah blah” – this bores the audience.</li>
+<li>Ignoring report design – reference successful reports for inspiration.</li>
+<li>If you must present long reports, use layered content and techniques to make them engaging.</li>
+</ul></li>
+</ol>
+</section>
+<section id="evaluation-criteria" class="level3">
+<h3 class="anchored" data-anchor-id="evaluation-criteria">Evaluation Criteria</h3>
+<ol type="1">
+<li>Presentation and Organization (20 points):
+<ul>
+<li>Clarity and Coherence (5 points): The presentation is clear and follows a logical structure.</li>
+<li>Creativity in Presentation (5 points): Innovative and effective use of visual and narrative resources.</li>
+<li>Time Management and Group Participation (5 points): Respect the time limit and ensure equal participation from all group members.</li>
+<li>Personalization and Audience Study (5 points): Tailor the message to the audience’s profile and preferences.</li>
+</ul></li>
+<li>Content and Depth (30 points):
+<ul>
+<li>Application of Organizational Theories (10 points): Clearly demonstrate the application of theories discussed in class.</li>
+<li>Layered Content and Detail (10 points): Structure content from general to specific, with an appropriate level of detail.</li>
+<li>Use of Key Messages and Organization (10 points): Clearly define and reorganize key messages effectively.</li>
+</ul></li>
+<li>Recommendations and Conclusions (25 points):
+<ul>
+<li>Relevance and Coherence (10 points): Recommendations and conclusions are relevant and aligned with the analysis.</li>
+<li>Starting with Conclusions (5 points): Effectively begin the presentation with conclusions and recommendations.</li>
+<li>Explanation of Findings and Methodology (10 points): Clearly explain findings and the methodology used.</li>
+</ul></li>
+<li>Presentation of Messages (15 points):
+<ul>
+<li>Simplicity and Concreteness (5 points): Key messages are simple and concrete.</li>
+<li>Credibility and Emotional Connection (5 points): Establish credibility and connect emotionally with the audience.</li>
+<li>Use of Stories (5 points): Effectively use storytelling to connect results with personal, everyday situations.</li>
+</ul></li>
+<li>Avoiding Common Mistakes (10 points):
+<ul>
+<li>Reducing Excessive Narrative (5 points): Avoid unnecessary or boring narrative.</li>
+<li>Quality of Design and Format (5 points): Ensure the report design and presentation are high-quality and effective.</li>
+</ul></li>
+</ol>
+</section>
+<section id="grading-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="grading-rubric">Grading Rubric</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Criteria</strong></th>
+<th><strong>Points</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Presentation and Organization</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>Content and Depth</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>Recommendations and Conclusions</td>
+<td>25</td>
+</tr>
+<tr class="even">
+<td>Presentation of Messages</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>Avoiding Common Mistakes</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td><strong>100</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="professor-profile" class="level1 unnumbered">
+<h1 class="unnumbered">Professor profile</h1>
+<p>Andrés Pérez Coronado <a href="https://www.linkedin.com/in/andrés-pérez-coronado-63792618/"><code>LinkedIn</code></a></p>
+<p><embed src="Andres_Perez_resume_EN-4.pdf#zoom=90&amp;&amp;navpanes=0&amp;statusbar=0&amp;messages=0&amp;pagemode=none" style="width:100.0%" height="475">)</p>
 
 
-</section>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-heath2007made" class="csl-entry" role="listitem">
+Heath, Chip, and Dan Heath. 2007. <em>Made to Stick: Why Some Ideas Survive and Others Die</em>. New York: Random House.
+</div>
+<div id="ref-hutchinson2017primer" class="csl-entry" role="listitem">
+Hutchinson, Kylie. 2017. <em>A Short Primer on Innovative Evaluation Reporting</em>. First. Kylie Hutchinson.
+</div>
+<div id="ref-Perez2016" class="csl-entry" role="listitem">
+Perez-Coronado, Andres. 2016a. <span>“Inteligencia Colectiva: Anticipación a Corto Plazo de Las Problemáticas de Convivencia.”</span> <em>Revista Criminalidad</em> 58: 223–40. https://doi.org/<a href="https://doi.org/10.47741/17943108.120">https://doi.org/10.47741/17943108.120</a>.
+</div>
+<div id="ref-PerezCoronado2016" class="csl-entry" role="listitem">
+———. 2016b. <em>Policía Para El Desarrollo Humano (PDH)</em>. Primera. Editorial Ibanez.
+</div>
+<div id="ref-analiticaseg2024" class="csl-entry" role="listitem">
+Servicio de Policía, Jefatura Nacional del. 2024. <em>Analítica de Datos Para La Seguridad Ciudadana</em>. Edited by Jenny Andrea Lozano Medina. Editorial de la Dirección de Educación Policial de la Policía Nacional de Colombia. <a href="https://doi.org/10.22335/2qjz0m48">https://doi.org/10.22335/2qjz0m48</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

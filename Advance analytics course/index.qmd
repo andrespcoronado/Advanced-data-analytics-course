@@ -1,8 +1,128 @@
 # Preface {.unnumbered}
 
-## Course schedule
+Welcome to the **Advanced Analytics Course**! This course is designed to provide you with hands-on experience using real-world data to guide decision-making processes. You will work with an **Octagonal Prediction Platform ($8p^2$)**, which integrates data analysis techniques into anticipative decision-making workflows.
 
-## Evaluation activities
+Recommended readings for ($8p^2$), see: 
 
-## Rubric
+  - Collective intelligence: short-term anticipation of coexistence issues [@Perez2016] 
+  - Human Development Oriented Policing [@PerezCoronado2016] 
+  - [`Anticipative decision-making committees for human security`](https://www.academia.edu/109755271/Comités_decisionales_anticipativos_para_la_seguridad_humana)
+  - Data analytics for citizen security [@analiticaseg2024] 
+  - [`La Silla Vacía`](https://www.lasillavacia.com/author/cap-andres-perez-coronado/)
+  
+### Key Features of the Course
 
+1. Real-World Data:  
+   - You will analyze real datasets, such as crime statistics from the Colombian National Police, available at:  
+     [`Estadística delictiva`](https://www.policia.gov.co/estadistica-delictiva?page=1).
+
+2. Collaborative Workflow:  
+   - All activities will be submitted via pull requests in the course's GitHub repository:  
+     [`Advance Analytics Course Repository`](https://github.com/andrego50/Advanced-data-analytics-course.git).  
+   - This ensures a collaborative and version-controlled environment.
+
+3. Use of Generative AI:  
+   - You are encouraged to use generative AI tools (e.g., ChatGPT, DeepSeek) to assist with your work.  
+   - Important: When submitting activities, include the prompts you used to generate any AI-assisted content.
+
+4. Languages:  
+   - All activities submitted to the course repository must be in English.  
+   - Other communications (e.g., emails, discussions) can be in Spanish.
+   
+5. Hands-On Learning:  
+   - The course emphasizes practical applications, enabling you to develop skills that are directly applicable to real-world decision-making scenarios.
+
+# Evaluation activities {.unnumbered}
+
+## Class Participation Assessment (40% of the total course score)
+
+Class participation will be assessed based on the depth and quality of analysis conducted on the course content and data results presented throughout the sessions. Students are expected to actively engage with the materials, providing meaningful insights and interpretations in the GitHub repository.
+
+As part of their evaluation, they must submit a well-structured generative AI prompt that demonstrates their understanding and ability to apply the concepts learned. This prompt should effectively guide AI models to generate relevant analyses or insights related to the course topics. The participation component, including the submission of the AI prompt and your own analysis, will contribute 40% to the total course score.
+
+## Final Project: Data-Driven Decisions (60% of the total course score)
+
+Simulate a **consulting team** presenting to the management and board of directors of an organization. Tailor your message to their profiles, preferences, and organizational vision to make it as personalized as possible.
+
+Recommended reading see: [@hutchinson2017primer]
+
+### Instructions
+- Work in groups of 2 people.
+- Present the results of applying advance analytics to a real-world scenario.
+- There will be a final submission.
+- Each group will present their proposed solution in a maximum of 10 minutes the last class.
+- Groups are free to be creative in how they convey the information.
+
+### Guidelines for the Presentation
+1. Organize Content in Layers:
+   - Always include 2 to 3 key messages you want to convey, focusing on what decisions you want the audience to make.
+   - Move from general to specific details.
+   - Study your audience to determine the level of detail they require.
+   - Use appropriate formats for each level of detail: images, infographics, presentations, executive summaries, or final reports.
+
+2. Reorganize Key Messages:
+   - Decision-makers are always thinking: "What should I do?" or "What should I approve?"
+   - Start with recommendations and conclusions to address these questions upfront. This reduces impatience and keeps the audience engaged.
+   - Explain findings and methodology last.
+
+3. Example of a Strong Opening:
+   - "We are here to present the main changes in the new government’s discourse that could impact the country’s editorial agenda. We will answer the question: What are the 3 main citizen security focus areas for the government in 2025? We will start with our key conclusions and recommendations related to main intervention areas and regional security strategies, and then explain the data analytics techniques and datasets that validate our findings."
+
+4. Create "Sticky" Messages:
+   - A "sticky" message is one that stakeholders can understand, remember, and act upon.
+   - According to the book Made to Stick [@heath2007made], sticky messages have 6 key characteristics:
+     1. Simplicity: Create a concise phrase for your key message (e.g., "Headache? Take Aspirin").
+     2. Unexpectedness: Generate curiosity by presenting something unexpected.
+     3. Concreteness: Use examples to explain complex ideas.
+     4. Credibility: Use real-life details, stories, or images to establish credibility.
+     5. Emotionality: Connect with the audience’s values or emotions.
+     6. Stories: Use storytelling to move from macro-level results to personal, everyday experiences.
+
+5. Avoid Common Mistakes:
+   - Too much narrative or "blah blah blah" – this bores the audience.
+   - Ignoring report design – reference successful reports for inspiration.
+   - If you must present long reports, use layered content and techniques to make them engaging.
+
+### Evaluation Criteria
+1. Presentation and Organization (20 points):
+   - Clarity and Coherence (5 points): The presentation is clear and follows a logical structure.
+   - Creativity in Presentation (5 points): Innovative and effective use of visual and narrative resources.
+   - Time Management and Group Participation (5 points): Respect the time limit and ensure equal participation from all group members.
+   - Personalization and Audience Study (5 points): Tailor the message to the audience’s profile and preferences.
+
+2. Content and Depth (30 points):
+   - Application of Organizational Theories (10 points): Clearly demonstrate the application of theories discussed in class.
+   - Layered Content and Detail (10 points): Structure content from general to specific, with an appropriate level of detail.
+   - Use of Key Messages and Organization (10 points): Clearly define and reorganize key messages effectively.
+
+3. Recommendations and Conclusions (25 points):
+   - Relevance and Coherence (10 points): Recommendations and conclusions are relevant and aligned with the analysis.
+   - Starting with Conclusions (5 points): Effectively begin the presentation with conclusions and recommendations.
+   - Explanation of Findings and Methodology (10 points): Clearly explain findings and the methodology used.
+
+4. Presentation of Messages (15 points):
+   - Simplicity and Concreteness (5 points): Key messages are simple and concrete.
+   - Credibility and Emotional Connection (5 points): Establish credibility and connect emotionally with the audience.
+   - Use of Stories (5 points): Effectively use storytelling to connect results with personal, everyday situations.
+
+5. Avoiding Common Mistakes (10 points):
+   - Reducing Excessive Narrative (5 points): Avoid unnecessary or boring narrative.
+   - Quality of Design and Format (5 points): Ensure the report design and presentation are high-quality and effective.
+
+### Grading Rubric
+| **Criteria**                        | **Points** |
+|-------------------------------------|------------|
+| Presentation and Organization       | 20         |
+| Content and Depth                   | 30         |
+| Recommendations and Conclusions     | 25         |
+| Presentation of Messages            | 15         |
+| Avoiding Common Mistakes            | 10         |
+| **Total**                           | **100**    |
+
+
+# Professor profile {.unnumbered}
+
+Andrés Pérez Coronado [`LinkedIn`](https://www.linkedin.com/in/andrés-pérez-coronado-63792618/)
+
+
+![](Andres_Perez_resume_EN-4.pdf#zoom=90&&navpanes=0&statusbar=0&messages=0&pagemode=none){width=100% height=475px})
