@@ -2,8 +2,8 @@ Welcome to the **Advanced Analytics Course**! This course is designed to provide
 
 Recommended readings for ($8p^2$), see: 
 
-  - Collective intelligence: short-term anticipation of coexistence issues [@Perez2016] 
-  - Human Development Oriented Policing [@PerezCoronado2016] 
+  - Collective intelligence: short-term anticipation of coexistence issues
+  - Human Development Oriented Policing
   - [`Anticipative decision-making committees for human security`](https://www.academia.edu/109755271/Comités_decisionales_anticipativos_para_la_seguridad_humana)
   - Data analytics for citizen security [@analiticaseg2024] 
   - [`La Silla Vacía`](https://www.lasillavacia.com/author/cap-andres-perez-coronado/)
