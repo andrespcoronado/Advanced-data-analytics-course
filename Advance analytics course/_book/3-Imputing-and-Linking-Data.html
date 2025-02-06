@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Andrés Pérez-Coronado">
-<meta name="dcterms.date" content="2025-02-08">
 
-<title>Advanced Data Analytics Course</title>
+<title>3&nbsp; Imputing and Linking Data – Advanced Data Analytics Course</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,27 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -52,7 +64,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./1-Issue-for-Decision-Making.html" rel="next">
+<link href="./4-Spotting-Weak-Predictive-Signals.html" rel="next">
+<link href="./2-Key-Players-and-Topics.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -102,7 +115,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./3-Imputing-and-Linking-Data.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputing and Linking Data</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -129,7 +142,7 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
@@ -147,8 +160,8 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3-Imputing-and-Linking-Data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Collecting and Connecting Data</span></span></a>
+  <a href="./3-Imputing-and-Linking-Data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputing and Linking Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -198,46 +211,22 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul class="collapse">
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
-  <li><a href="#evaluation-activities" id="toc-evaluation-activities" class="nav-link" data-scroll-target="#evaluation-activities">Evaluation activities</a>
-  <ul class="collapse">
-  <li><a href="#final-project-data-driven-decisions-60-of-the-total-course-score" id="toc-final-project-data-driven-decisions-60-of-the-total-course-score" class="nav-link" data-scroll-target="#final-project-data-driven-decisions-60-of-the-total-course-score">Final Project: Data-Driven Decisions (60% of the total course score)</a></li>
-  <li><a href="#class-participation-assessment-40-of-the-total-course-score" id="toc-class-participation-assessment-40-of-the-total-course-score" class="nav-link" data-scroll-target="#class-participation-assessment-40-of-the-total-course-score">Class Participation Assessment (40% of the total course score)</a></li>
-  </ul></li>
-  <li><a href="#professor-profile" id="toc-professor-profile" class="nav-link" data-scroll-target="#professor-profile">Professor profile</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Advanced Data Analytics Course</h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Imputing and Linking Data</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Andrés Pérez-Coronado </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">February 8, 2025</p>
-    </div>
-  </div>
   
     
   </div>
@@ -247,209 +236,15 @@ div.csl-indent {
 </header>
 
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<p>Welcome to the <strong>Advanced Analytics Course</strong>! This course is designed to provide you with hands-on experience using real-world data to guide decision-making processes. You will work with an <strong>Octagonal Analytics Platform (Plátano)</strong>, which integrates data analysis techniques into anticipative decision-making workflows.</p>
-<p>Recommended readings for Plátano, see:</p>
-<ul>
-<li>Collective intelligence: short-term anticipation of coexistence issues <span class="citation" data-cites="Perez2016">(<a href="references.html#ref-Perez2016" role="doc-biblioref">Perez-Coronado 2016a</a>)</span></li>
-<li>Human Development Oriented Policing <span class="citation" data-cites="PerezCoronado2016">(<a href="references.html#ref-PerezCoronado2016" role="doc-biblioref">Perez-Coronado 2016b</a>)</span></li>
-<li><a href="https://www.academia.edu/109755271/Comités_decisionales_anticipativos_para_la_seguridad_humana"><code>Anticipative decision-making committees for human security</code></a></li>
-<li>Data analytics for citizen security <span class="citation" data-cites="analiticaseg2024">(<a href="references.html#ref-analiticaseg2024" role="doc-biblioref">Servicio de Policía 2024</a>)</span></li>
-<li><a href="https://www.lasillavacia.com/author/cap-andres-perez-coronado/"><code>La Silla Vacía</code></a></li>
-</ul>
-<section id="key-features-of-the-course" class="level3">
-<h3 class="anchored" data-anchor-id="key-features-of-the-course">Key Features of the Course</h3>
-<ol type="1">
-<li>Real-World Data:
-<ul>
-<li>You will analyze real datasets, such as crime statistics from the Colombian National Police, available at:<br>
-<a href="https://www.policia.gov.co/estadistica-delictiva?page=1"><code>Estadística delictiva</code></a>.</li>
-</ul></li>
-<li>Collaborative Workflow:
-<ul>
-<li>All activities will be submitted via pull requests in the course’s GitHub repository:<br>
-<a href="https://github.com/andrego50/Advanced-data-analytics-course.git"><code>Advance Analytics Course Repository</code></a>.<br>
-</li>
-<li>This ensures a collaborative and version-controlled environment.</li>
-</ul></li>
-<li>Use of Generative AI:
-<ul>
-<li>You are encouraged to use generative AI tools (e.g., ChatGPT, DeepSeek) to assist with your work.<br>
-</li>
-<li>Important: When submitting activities, include the prompts you used to generate any AI-assisted content.</li>
-</ul></li>
-<li>Languages:
-<ul>
-<li>All activities submitted to the course repository must be in English.<br>
-</li>
-<li>Other communications (e.g., emails, discussions) can be in Spanish.</li>
-</ul></li>
-<li>Hands-On Learning:
-<ul>
-<li>The course emphasizes practical applications, enabling you to develop skills that are directly applicable to real-world decision-making scenarios.</li>
-</ul></li>
-</ol>
-</section>
-</section>
-<section id="evaluation-activities" class="level1 unnumbered">
-<h1 class="unnumbered">Evaluation activities</h1>
-<section id="final-project-data-driven-decisions-60-of-the-total-course-score" class="level2">
-<h2 class="anchored" data-anchor-id="final-project-data-driven-decisions-60-of-the-total-course-score">Final Project: Data-Driven Decisions (60% of the total course score)</h2>
-<p>Simulate a <strong>consulting team</strong> presenting to the management and board of directors of an organization. Tailor your message to their profiles, preferences, and organizational vision to make it as personalized as possible.</p>
-<p>Recommended reading see: <span class="citation" data-cites="hutchinson2017primer">(<a href="references.html#ref-hutchinson2017primer" role="doc-biblioref">Hutchinson 2017</a>)</span></p>
-<section id="instructions" class="level3">
-<h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
-<ul>
-<li>Work in groups of 2 people.</li>
-<li>Present the results of applying advance analytics to a real-world scenario.</li>
-<li>There will be a final submission.</li>
-<li>Each group will present their proposed solution in a maximum of 10 minutes the last class.</li>
-<li>Groups are free to be creative in how they convey the information.</li>
-<li>When submitting activities, include the prompts you used to generate any AI-assisted content.</li>
-</ul>
-</section>
-<section id="guidelines-for-the-presentation" class="level3">
-<h3 class="anchored" data-anchor-id="guidelines-for-the-presentation">Guidelines for the Presentation</h3>
-<ol type="1">
-<li>Organize Content in Layers:
-<ul>
-<li>Always include 2 to 3 key messages you want to convey, focusing on what decisions you want the audience to make.</li>
-<li>Move from general to specific details.</li>
-<li>Study your audience to determine the level of detail they require.</li>
-<li>Use appropriate formats for each level of detail: images, infographics, presentations, executive summaries, or final reports.</li>
-</ul></li>
-<li>Reorganize Key Messages:
-<ul>
-<li>Decision-makers are always thinking: “What should I do?” or “What should I approve?”</li>
-<li>Start with recommendations and conclusions to address these questions upfront. This reduces impatience and keeps the audience engaged.</li>
-<li>Explain findings and methodology last.</li>
-</ul></li>
-<li>Example of a Strong Opening:
-<ul>
-<li>“We are here to present the main changes in the new government’s discourse that could impact the country’s editorial agenda. We will answer the question: What are the 3 main citizen security focus areas for the government in 2025? We will start with our key conclusions and recommendations related to main intervention areas and regional security strategies, and then explain the data analytics techniques and datasets that validate our findings.”</li>
-</ul></li>
-<li>Create “Sticky” Messages:
-<ul>
-<li>A “sticky” message is one that stakeholders can understand, remember, and act upon.</li>
-<li>According to the book Made to Stick <span class="citation" data-cites="heath2007made">(<a href="references.html#ref-heath2007made" role="doc-biblioref">Heath and Heath 2007</a>)</span>, sticky messages have 6 key characteristics:
-<ol type="1">
-<li>Simplicity: Create a concise phrase for your key message (e.g., “Headache? Take Aspirin”).</li>
-<li>Unexpectedness: Generate curiosity by presenting something unexpected.</li>
-<li>Concreteness: Use examples to explain complex ideas.</li>
-<li>Credibility: Use real-life details, stories, or images to establish credibility.</li>
-<li>Emotionality: Connect with the audience’s values or emotions.</li>
-<li>Stories: Use storytelling to move from macro-level results to personal, everyday experiences.</li>
-</ol></li>
-</ul></li>
-<li>Avoid Common Mistakes:
-<ul>
-<li>Too much narrative or “blah blah blah” – this bores the audience.</li>
-<li>Ignoring report design – reference successful reports for inspiration.</li>
-<li>If you must present long reports, use layered content and techniques to make them engaging.</li>
-</ul></li>
-</ol>
-</section>
-<section id="evaluation-criteria" class="level3">
-<h3 class="anchored" data-anchor-id="evaluation-criteria">Evaluation Criteria</h3>
-<ol type="1">
-<li>Presentation and Organization (20 points):
-<ul>
-<li>Clarity and Coherence (5 points): The presentation is clear and follows a logical structure.</li>
-<li>Creativity in Presentation (5 points): Innovative and effective use of visual and narrative resources.</li>
-<li>Time Management and Group Participation (5 points): Respect the time limit and ensure equal participation from all group members.</li>
-<li>Personalization and Audience Study (5 points): Tailor the message to the audience’s profile and preferences.</li>
-</ul></li>
-<li>Content and Depth (30 points):
-<ul>
-<li>Application of Advance Analytics Concepts (10 points): Clearly demonstrate the application of theories discussed in class.</li>
-<li>Layered Content and Detail (10 points): Structure content from general to specific, with an appropriate level of detail.</li>
-<li>Use of Key Messages and Organization (10 points): Clearly define and reorganize key messages effectively.</li>
-</ul></li>
-<li>Recommendations and Conclusions (25 points):
-<ul>
-<li>Relevance and Coherence (10 points): Recommendations and conclusions are relevant and aligned with the analysis.</li>
-<li>Starting with Conclusions (5 points): Effectively begin the presentation with conclusions and recommendations.</li>
-<li>Explanation of Findings and Methodology (10 points): Clearly explain findings and the methodology used.</li>
-</ul></li>
-<li>Presentation of Messages (15 points):
-<ul>
-<li>Simplicity and Concreteness (5 points): Key messages are simple and concrete.</li>
-<li>Credibility and Emotional Connection (5 points): Establish credibility and connect emotionally with the audience.</li>
-<li>Use of Stories (5 points): Effectively use storytelling to connect results with personal, everyday situations.</li>
-</ul></li>
-<li>Avoiding Common Mistakes (10 points):
-<ul>
-<li>Reducing Excessive Narrative (5 points): Avoid unnecessary or boring narrative.</li>
-<li>Quality of Design and Format (5 points): Ensure the report design and presentation are high-quality and effective.</li>
-</ul></li>
-</ol>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th><strong>Criteria</strong></th>
-<th><strong>Points</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Presentation and Organization</td>
-<td>20</td>
-</tr>
-<tr class="even">
-<td>Content and Depth</td>
-<td>30</td>
-</tr>
-<tr class="odd">
-<td>Recommendations and Conclusions</td>
-<td>25</td>
-</tr>
-<tr class="even">
-<td>Presentation of Messages</td>
-<td>15</td>
-</tr>
-<tr class="odd">
-<td>Avoiding Common Mistakes</td>
-<td>10</td>
-</tr>
-<tr class="even">
-<td><strong>Total</strong></td>
-<td><strong>100</strong></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="class-participation-assessment-40-of-the-total-course-score" class="level2">
-<h2 class="anchored" data-anchor-id="class-participation-assessment-40-of-the-total-course-score">Class Participation Assessment (40% of the total course score)</h2>
-<p>Class participation will be assessed based on the depth and quality of analysis conducted on the course content and data results presented throughout the sessions. Students are expected to actively engage with the materials, providing meaningful insights and interpretations in the GitHub repository.</p>
-<p>As part of their evaluation, they must submit a well-structured generative AI prompt that demonstrates their understanding and ability to apply the concepts learned. This prompt should effectively guide AI models to generate relevant analyses or insights related to the course topics. The participation component, including the submission of the AI prompt and your own analysis, will contribute 40% to the total course score.</p>
-</section>
-</section>
-<section id="professor-profile" class="level1 unnumbered">
-<h1 class="unnumbered">Professor profile</h1>
-<p>Andrés Pérez Coronado <a href="https://www.linkedin.com/in/andrés-pérez-coronado-63792618/"><code>LinkedIn</code></a></p>
-<p><embed src="Andres_Perez_resume_EN-4.pdf#zoom=90&amp;&amp;navpanes=0&amp;statusbar=0&amp;messages=0&amp;pagemode=none" style="width:100.0%" height="475">)</p>
+<p>In summary, this book has no content whatsoever.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-heath2007made" class="csl-entry" role="listitem">
-Heath, Chip, and Dan Heath. 2007. <em>Made to Stick: Why Some Ideas Survive and Others Die</em>. New York: Random House.
-</div>
-<div id="ref-hutchinson2017primer" class="csl-entry" role="listitem">
-Hutchinson, Kylie. 2017. <em>A Short Primer on Innovative Evaluation Reporting</em>. First. Kylie Hutchinson.
-</div>
-<div id="ref-Perez2016" class="csl-entry" role="listitem">
-Perez-Coronado, Andres. 2016a. <span>“Inteligencia Colectiva: Anticipación a Corto Plazo de Las Problemáticas de Convivencia.”</span> <em>Revista Criminalidad</em> 58: 223–40. https://doi.org/<a href="https://doi.org/10.47741/17943108.120">https://doi.org/10.47741/17943108.120</a>.
-</div>
-<div id="ref-PerezCoronado2016" class="csl-entry" role="listitem">
-———. 2016b. <em>Policía Para El Desarrollo Humano (PDH)</em>. Primera. Editorial Ibanez.
-</div>
-<div id="ref-analiticaseg2024" class="csl-entry" role="listitem">
-Servicio de Policía, Jefatura Nacional del. 2024. <em>Analítica de Datos Para La Seguridad Ciudadana</em>. Edited by Jenny Andrea Lozano Medina. Editorial de la Dirección de Educación Policial de la Policía Nacional de Colombia. <a href="https://doi.org/10.22335/2qjz0m48">https://doi.org/10.22335/2qjz0m48</a>.
-</div>
-</div>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -874,10 +669,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./2-Key-Players-and-Topics.html" class="pagination-link" aria-label="Key Players and Topics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Key Players and Topics</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./1-Issue-for-Decision-Making.html" class="pagination-link" aria-label="Issue for Decision-Making">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Issue for Decision-Making</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./4-Spotting-Weak-Predictive-Signals.html" class="pagination-link" aria-label="Spotting Weak Predictive Signals">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Spotting Weak Predictive Signals</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
