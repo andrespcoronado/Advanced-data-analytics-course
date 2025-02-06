@@ -1,5 +1,7 @@
 # Issue for Decision-Making {.numbered}
 
+This section is based on *Análisis de datos multivariantes*. See [@peña2002análisis].
+
 # Exploratory Analysis of Multidimensional Data {.unnumbered}
 
 ## Import Dataset, Load Required Packages, and Provide a Summary
@@ -272,29 +274,29 @@ delitos_data %>%
 
 ### Prompts {.unnumbered}
 
-## Redundant Variables  
+## Redundant Variables
 
-Redundant variables provide little additional information due to high correlation with others, leading to multicollinearity in models.  
+Redundant variables provide little additional information due to high correlation with others, leading to multicollinearity in models.
 
-Mathematically, redundancy is detected using the covariance matrix $\Sigma$, whose eigenvalues $\lambda_i$ and eigenvectors $v_i$ capture variance directions. A small eigenvalue $\lambda_{\min} \approx 0$ suggests a near-linear dependency:  
+Mathematically, redundancy is detected using the covariance matrix $\Sigma$, whose eigenvalues $\lambda_i$ and eigenvectors $v_i$ capture variance directions. A small eigenvalue $\lambda_{\min} \approx 0$ suggests a near-linear dependency:
 
 $\Sigma v_{\min} = \lambda_{\min} v_{\min}$
 
-The eigenvector $v_{\\min}$ identifies the redundant variable combination.  
+The eigenvector $v_{\\min}$ identifies the redundant variable combination.
 
-To confirm, we fit a regression model where one variable $y$ is explained by others:  
+To confirm, we fit a regression model where one variable $y$ is explained by others:
 
 $y = \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_p x_p + \epsilon$
 
-To quantify redundancy, we compute Variance Inflation Factors (VIFs) for each predictor $x_j$:  
+To quantify redundancy, we compute Variance Inflation Factors (VIFs) for each predictor $x_j$:
 
 $VIF_j = \frac{1}{1 - R_j^2}$
 
-where $R_j^2$ is the $R^2$ value from regressing $x_j$ on all other predictors.  
+where $R_j^2$ is the $R^2$ value from regressing $x_j$ on all other predictors.
 
-- $VIF_j = 1$ → No multicollinearity.  
-- $VIF_j > 5$ → Moderate multicollinearity.  
-- $VIF_j > 10$ → Severe multicollinearity, indicating redundancy.  
+-   $VIF_j = 1$ → No multicollinearity.\
+-   $VIF_j > 5$ → Moderate multicollinearity.\
+-   $VIF_j > 10$ → Severe multicollinearity, indicating redundancy.
 
 A high VIF suggests that $x_j$ contributes little independent information and may be removed to improve model stability.
 
@@ -419,6 +421,12 @@ det(log(cov_matrix + 1))^(1/(ncol(cov_matrix) * 2))
 
 ## Linear Dependency and Precision Matrix
 
+Linear dependency in data occurs when some variables can be expressed as linear combinations of others, leading to redundancy. This is identified through the covariance matrix $( \Sigma )$ and its eigenvalues, where a near-zero eigenvalue indicates dependency.
+
+The precision matrix $( \Sigma^{-1} )$, the inverse of the covariance matrix, quantifies conditional dependencies. It highlights direct variable relationships, with zero entries indicating independence given other variables. These concepts are crucial for multicollinearity detection and improving model interpretability.
+
+Multicollinearity occurs when predictor variables are highly correlated, making it difficult to isolate their individual effects in a model.
+
 ```{r}
 #| echo: true
 #| message: false
@@ -521,6 +529,10 @@ ggplot(delitos_long_log, aes(x = `Log Value`)) +
   )
 ```
 
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
 # Hands-on Data Analysis {.unnumbered}
 
 ## Tackling a Critical Challenge: The Proliferation of Spatial Criminal Phenomena
@@ -553,7 +565,11 @@ ggplot(delitos_long_log, aes(x = `Log Value`)) +
 
 ## Final Project Activities
 
--   Select stations that align with your analysis interests to illustrate spatial criminal phenomena.
--   Replicate the exploratory analysis performed on the selected stations as demonstrated in the lecture.
--   Define the issue for decision-making that you propose.
--   Upload your work by creating a GitHub pull request with your group's .qmd file.
+-   Group stations based on your analysis interests to illustrate spatial criminal phenomena.
+-   Define the issue for decision-making that you propose supported by the exploratory analysis of multidimensional data.
+-   Upload your work by creating a GitHub pull request with your group's `.qmd` file in the appendix section.
+
+## Class Participation Assessment
+
+-   Replicate the exploratory analysis on the selected stations as demonstrated in the lecture, and compare your results with those of other groups.\
+-   Upload your analysis under the respective subsections titled `Augmented Data Analyst` and `Prompts`.
