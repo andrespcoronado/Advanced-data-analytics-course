@@ -29,13 +29,15 @@ dim(delitos_data)
 summary(delitos_data)
 ```
 
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
 ## Skewness
 
 Skewness measures the asymmetry of a data distribution around its mean. It is defined mathematically as:
 
-$[
-g_1 = \frac{n}{(n-1)(n-2)} \sum \left( \frac{x_i - \bar{x}}{\sigma} \right)^3
-]$
+$g_1 = \frac{n}{(n-1)(n-2)} \sum \left( \frac{x_i - \bar{x}}{\sigma} \right)^3$
 
 where:
 
@@ -63,13 +65,15 @@ delitos_data %>%
   gt()
 ```
 
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
 ## Kurtosis
 
 Kurtosis measures the heaviness of the tails of a data distribution relative to a normal distribution. It is defined mathematically as:
 
-$[
-g_2 = \left[ \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum \left( \frac{x_i - \bar{x}}{\sigma} \right)^4 \right] - \frac{3(n-1)^2}{(n-2)(n-3)}
-]$
+$g_2 = \left[ \frac{n(n+1)}{(n-1)(n-2)(n-3)} \sum \left( \frac{x_i - \bar{x}}{\sigma} \right)^4 \right] - \frac{3(n-1)^2}{(n-2)(n-3)}$
 
 where:
 
@@ -97,13 +101,15 @@ delitos_data %>%
   gt()
 ```
 
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
 ## Coefficient of Variation
 
 The coefficient of variation (CV) measures the relative variability of a dataset, expressed as a percentage. It is defined mathematically as:
 
-$[
-CV = \left( \frac{\sigma}{\bar{x}} \right) \times 100
-]$
+$CV = \left( \frac{\sigma}{\bar{x}} \right) \times 100$
 
 where:
 
@@ -148,13 +154,15 @@ delitos_data %>%
   gt()
 ```
 
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
 ## Median Absolute Deviation MAD and MAD/median
 
 The Median Absolute Deviation (MAD) is a robust measure of variability that quantifies the dispersion of a dataset. It is defined as the median of the absolute deviations from the median of the data:
 
-$[
-\text{MAD} = \text{median} \left( \left| x_i - \text{median}(x) \right| \right)
-]$
+$\text{MAD} = \text{median} \left( \left| x_i - \text{median}(x) \right| \right)$
 
 where:
 
@@ -205,13 +213,15 @@ delitos_data %>%
   summary()
 ```
 
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
 ## Covariance Matrix
 
 The covariance matrix $( \Sigma )$ captures the pairwise covariances between variables in a dataset. For a dataset $( X )$ with $( n )$ observations and $( p )$ variables, the covariance matrix is defined as:
 
-$[
-\Sigma = \frac{1}{n-1} (X - \bar{X})^\top (X - \bar{X})
-]$
+$\Sigma = \frac{1}{n-1} (X - \bar{X})^\top (X - \bar{X})$
 
 where:
 
@@ -230,13 +240,15 @@ delitos_data %>%
   knitr::kable(digits = 2, caption = "Covariance Matrix")
 ```
 
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
 ## Covariance Matrix of Log-Transformed Data
 
 To handle skewed data or reduce the impact of outliers, we apply a log transformation to the data. Let $( Y = \log(X + 1) )$, where $( \log )$ is applied element-wise and $( 1 )$ is a matrix of ones to handle zeros. The log-transformed covariance matrix $( \Sigma_{\text{log}} )$ is:
 
-$[
-\Sigma_{\text{log}} = \frac{1}{n-1} (Y - \bar{Y})^\top (Y - \bar{Y})
-]$
+$\Sigma_{\text{log}} = \frac{1}{n-1} (Y - \bar{Y})^\top (Y - \bar{Y})$
 
 where:
 
@@ -256,7 +268,35 @@ delitos_data %>%
   knitr::kable(digits = 2, caption = "Covariance Matrix (Log-Transformed)")
 ```
 
-## Redundant Variables
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
+
+## Redundant Variables  
+
+Redundant variables provide little additional information due to high correlation with others, leading to multicollinearity in models.  
+
+Mathematically, redundancy is detected using the covariance matrix $\Sigma$, whose eigenvalues $\lambda_i$ and eigenvectors $v_i$ capture variance directions. A small eigenvalue $\lambda_{\min} \approx 0$ suggests a near-linear dependency:  
+
+$\Sigma v_{\min} = \lambda_{\min} v_{\min}$
+
+The eigenvector $v_{\\min}$ identifies the redundant variable combination.  
+
+To confirm, we fit a regression model where one variable $y$ is explained by others:  
+
+$y = \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_p x_p + \epsilon$
+
+To quantify redundancy, we compute Variance Inflation Factors (VIFs) for each predictor $x_j$:  
+
+$VIF_j = \frac{1}{1 - R_j^2}$
+
+where $R_j^2$ is the $R^2$ value from regressing $x_j$ on all other predictors.  
+
+- $VIF_j = 1$ → No multicollinearity.  
+- $VIF_j > 5$ → Moderate multicollinearity.  
+- $VIF_j > 10$ → Severe multicollinearity, indicating redundancy.  
+
+A high VIF suggests that $x_j$ contributes little independent information and may be removed to improve model stability.
 
 ```{r}
 #| echo: true
@@ -319,10 +359,11 @@ summary(model)
 
 # Variance Inflation Factors
 vif(model)
-
-par(mfrow = c(2, 2))
-plot(model)
 ```
+
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
 
 ## Global Variability Metric
 
@@ -330,9 +371,7 @@ The effective variance and effective standard deviation are measures of the over
 
 The effective variance is defined as:
 
-$[
-\text{Effective Variance} = \det(\Sigma)^{\frac{1}{p}}
-]$
+Effective Variance $= \det(\Sigma)^{\frac{1}{p}}$
 
 where:
 
@@ -341,21 +380,15 @@ where:
 
 The effective standard deviation is given by:
 
-$[
-\text{Effective Standard Deviation} = \det(\Sigma)^{\frac{1}{2p}}
-]$
+-   Effective Standard Deviation $= \det(\Sigma)^{\frac{1}{2p}}$
 
 For log-transformed data, the effective variance is computed as:
 
-$[
-\text{Log-Transformed Effective Variance} = \det(\log(\Sigma + 1))^{\frac{1}{p}}
-]$
+-   Log-Transformed Effective Variance $= \det(\log(\Sigma + 1))^{\frac{1}{p}}$
 
 Similarly, the log-transformed effective standard deviation is:
 
-$[
-\text{Log-Transformed Effective Standard Deviation} = \det(\log(\Sigma + 1))^{\frac{1}{2p}}
-]$
+-   Log-Transformed Effective Standard Deviation $= \det(\log(\Sigma + 1))^{\frac{1}{2p}}$
 
 ```{r}
 #| echo: true
@@ -379,6 +412,10 @@ det(cov_matrix)^(1/(ncol(cov_matrix) * 2))
 # Log-Transformed Effective Standard Deviation
 det(log(cov_matrix + 1))^(1/(ncol(cov_matrix) * 2))
 ```
+
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
 
 ## Linear Dependency and Precision Matrix
 
@@ -418,6 +455,10 @@ delitos <- delitos_data %>%
 model <- lm(SEXUALES ~ ., data = data.frame(delitos))
 summary(model)
 ```
+
+### Augmented Data Analyst {.unnumbered}
+
+### Prompts {.unnumbered}
 
 # Graphical analysis {.unnumbered}
 
@@ -480,35 +521,39 @@ ggplot(delitos_long_log, aes(x = `Log Value`)) +
   )
 ```
 
-```{r}
-#| echo: true
-#| message: false
-#| warning: false
-
-# Transform the data to long format and apply log transformation
-delitos_long_log <- delitos_data %>%
-  select(where(is.numeric)) %>%
-  mutate(across(everything(), ~ log(.x), .names = "{col}")) %>%  # Log transform (log(x + 1) to avoid log(0))
-  pivot_longer(cols = everything(), names_to = "Crime Type", values_to = "Log Value")
-
-# Create faceted histograms for log-transformed values
-ggplot(delitos_long_log, aes(x = `Log Value`)) +
-  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
-  facet_wrap(~ `Crime Type`, scales = "free") +  # Facet by crime type
-  theme_minimal() +
-  labs(
-    title = "Log-Transformed Distributions of Crime Data",
-    x = "Log Value",
-    y = "Frequency"
-  ) +
-  theme(
-    axis.text.x = element_text(size = 3)  # Reduce the font size of X-axis text
-  )
-```
-
 # Hands-on Data Analysis {.unnumbered}
 
--   Divide stations by regions of analysis to explain the spatial correlations.
--   Replicate exploratory analysis in the selected regions.
--   Load your work by GitHub pull request.
--   Define the issue for decision-making.
+## Tackling a Critical Challenge: The Proliferation of Spatial Criminal Phenomena
+
+### Mathematical Definitions:
+
+-   Polygons: Represented as $P = \{ p_1, p_2, \dots, p_n \}$ where each polygon $( p_i )$ has geometric and attribute data.
+
+-   Phenomenon: A discrete or continuous variable $( Y )$ observed across $( P )$.
+
+-   Adjacency Matrix: $( A )$ where
+
+    $A_{ij} = \begin{cases} 1, & \text{if } p_i \text{ and } p_j \text{ share a boundary} \\ 0, & \text{otherwise} \end{cases}$
+
+-   Distance Matrix: $( D )$ where $( D_{ij} )$ represents the distance between the centroids of $( p_i )$ and $( p_j )$.
+
+### Phenomenon Classification:
+
+-   Local (Within Polygon): Phenomenon occurs exclusively inside a single polygon $( p_i )$. Thus, $Y_i = f(\text{Internal factors of } p_i)$.
+
+-   Subnational (Cluster of Neighbors): Phenomenon clusters among adjacent polygons. Thus, $Y_i = \beta_0 + \beta_1 \sum_{j \in N(i)} Y_j + \epsilon$ where $( N(i) )$ are the neighbors of $( p_i )$.
+
+-   National/International (Neighbors + Non-Neighbors): Phenomenon spans both adjacent and non-adjacent polygons (e.g., trade networks). Thus, $Y_i = f\left(\sum_j w_{ij} Y_j\right)$ where $( w_{ij} )$ depends on distance or network connectivity.
+
+-   Local-Subnational (Clear Boundaries): Clear separation between local (city) and subnational (state) boundaries among neighbors. Thus, $Y_i = \alpha + \gamma \cdot \text{State}_i + \epsilon$.
+
+-   Local-National/International (Non-Neighbors): Phenomenon connects non-neighboring polygons with clear boundaries (e.g., migration between distant cities). Thus, $Y_i = f(Y_j)$ where $( A_{ij} = 0 )$ (i.e., not adjacent) but $( D_{ij} )$ is significant.
+
+-   Local-Subnational (Fuzzy Boundaries): Ambiguous administrative boundaries (e.g., overlapping jurisdictions). Thus, $\mu_{ik} \in [0,1]$ indicating the degree to which $( p_i )$ belongs to region $( k )$.
+
+## Final Project Activities
+
+-   Select stations that align with your analysis interests to illustrate spatial criminal phenomena.
+-   Replicate the exploratory analysis performed on the selected stations as demonstrated in the lecture.
+-   Define the issue for decision-making that you propose.
+-   Upload your work by creating a GitHub pull request with your group's .qmd file.
