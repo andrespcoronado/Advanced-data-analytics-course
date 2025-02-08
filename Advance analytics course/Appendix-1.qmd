@@ -1,1 +1,5 @@
-## Appendix 1 {.appendix, .unnumbered}
+# Appendix 1 {.appendix, .unnumbered}
+
+## Augmented Data Analyst {.unnumbered}
+
+## Prompts {.unnumbered}

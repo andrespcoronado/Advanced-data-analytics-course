@@ -14,7 +14,7 @@ This section is based on *Análisis de datos multivariantes*. See [@peña2002an�
 #setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 # packages
-list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'sf')
+list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car')
 new.packages = list_packages[!(list_packages %in% installed.packages()[,"Package"])]
 if (length(new.packages)) {
   install.packages(new.packages)
@@ -27,18 +27,9 @@ for (package in list_packages){
 delitos_data <- read_excel("data/delitos_2024_v2.xlsx", 
     sheet = "2024")
 
-sf_delitos_data <- st_read("data/medellin_shp/med_socio_econo_urb_crime.shp")
-  
 dim(delitos_data)
 summary(delitos_data)
-
-dim(sf_delitos_data)
-summary(sf_delitos_data)
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 ## Skewness
 
@@ -70,21 +61,7 @@ delitos_data %>%
   mutate(V1 = round(V1, 2)) %>%
   rename(Skewness = V1) %>%
   gt()
-
-sf_delitos_data %>%
-  select(where(is.numeric)) %>%  # Select only numeric columns
-  summarise(across(everything(), ~ skewness(.x, na.rm = TRUE))) %>%
-  t() %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "Crime Type") %>%
-  mutate(V1 = round(V1, 2)) %>%
-  rename(Skewness = V1) %>%
-  gt()
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 ## Kurtosis
 
@@ -117,10 +94,6 @@ delitos_data %>%
   rename(Kurtosis = V1) %>%
   gt()
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 ## Coefficient of Variation
 
@@ -170,10 +143,6 @@ delitos_data %>%
   rename(Variation = V1) %>%
   gt()
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 ## Median Absolute Deviation MAD and MAD/median
 
@@ -230,10 +199,6 @@ delitos_data %>%
   summary()
 ```
 
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
-
 ## Covariance Matrix
 
 The covariance matrix $( \Sigma )$ captures the pairwise covariances between variables in a dataset. For a dataset $( X )$ with $( n )$ observations and $( p )$ variables, the covariance matrix is defined as:
@@ -256,10 +221,6 @@ delitos_data %>%
   round(2) %>%
   knitr::kable(digits = 2, caption = "Covariance Matrix")
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 ## Covariance Matrix of Log-Transformed Data
 
@@ -284,10 +245,6 @@ delitos_data %>%
   round(2) %>%
   knitr::kable(digits = 2, caption = "Covariance Matrix (Log-Transformed)")
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 ## Redundant Variables
 
@@ -378,10 +335,6 @@ summary(model)
 vif(model)
 ```
 
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
-
 ## Global Variability Metric
 
 The effective variance and effective standard deviation are measures of the overall variability in the dataset. They are derived from the determinant of the covariance matrix, which captures the generalized variance of the data. For log-transformed data, these metrics are computed similarly but on the log-transformed covariance matrix.
@@ -430,10 +383,6 @@ det(cov_matrix)^(1/(ncol(cov_matrix) * 2))
 det(log(cov_matrix + 1))^(1/(ncol(cov_matrix) * 2))
 ```
 
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
-
 ## Linear Dependency and Precision Matrix
 
 Linear dependency in data occurs when some variables can be expressed as linear combinations of others, leading to redundancy. This is identified through the covariance matrix $( \Sigma )$ and its eigenvalues, where a near-zero eigenvalue indicates dependency.
@@ -478,10 +427,6 @@ delitos <- delitos_data %>%
 model <- lm(SEXUALES ~ ., data = data.frame(delitos))
 summary(model)
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 # Graphical analysis {.unnumbered}
 
@@ -543,10 +488,6 @@ ggplot(delitos_long_log, aes(x = `Log Value`)) +
     axis.text.x = element_text(size = 3)  # Reduce the font size of X-axis text
   )
 ```
-
-### Augmented Data Analyst {.unnumbered}
-
-### Prompts {.unnumbered}
 
 # Hands-on Data Analysis {.unnumbered}
 

@@ -324,7 +324,7 @@ window.Quarto = {
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#setwd(dirname(rstudioapi::getSourceEditorContext()$path))</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># packages</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>list_packages <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'readxl'</span>, <span class="st">'dplyr'</span>, <span class="st">'moments'</span>, <span class="st">'tidyr'</span>, <span class="st">'tibble'</span>, <span class="st">'gt'</span>, <span class="st">'ggplot2'</span>, <span class="st">'fmsb'</span>, <span class="st">'car'</span>, <span class="st">'sf'</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>list_packages <span class="ot">=</span> <span class="fu">c</span>(<span class="st">'readxl'</span>, <span class="st">'dplyr'</span>, <span class="st">'moments'</span>, <span class="st">'tidyr'</span>, <span class="st">'tibble'</span>, <span class="st">'gt'</span>, <span class="st">'ggplot2'</span>, <span class="st">'fmsb'</span>, <span class="st">'car'</span>)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">=</span> list_packages[<span class="sc">!</span>(list_packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">"Package"</span>])]</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(new.packages)) {</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(new.packages)</span>
@@ -337,22 +337,11 @@ window.Quarto = {
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/delitos_2024_v2.xlsx"</span>, </span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">sheet =</span> <span class="st">"2024"</span>)</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>sf_delitos_data <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/medellin_shp/med_socio_econo_urb_crime.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `med_socio_econo_urb_crime' from data source 
-  `/Users/andresperezcoronado/Documents/GitHub/Advanced-data-analytics-course/Advance analytics course/data/medellin_shp/med_socio_econo_urb_crime.shp' 
-  using driver `ESRI Shapefile'
-Simple feature collection with 136 features and 149 fields
-Geometry type: POLYGON
-Dimension:     XY
-Bounding box:  xmin: -75.63246 ymin: 6.175703 xmax: -75.52478 ymax: 6.312869
-Geodetic CRS:  WGS 84</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(delitos_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(delitos_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1215   19</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(delitos_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(delitos_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    UNIDAD            ESTACION            SEXUALES        EXTORSION     
  Length:1215        Length:1215        Min.   :  0.00   Min.   :  0.00  
@@ -390,286 +379,7 @@ Geodetic CRS:  WGS 84</code></pre>
  3rd Qu.:0.0000   3rd Qu.: 0.0000   3rd Qu.:  46.5  
  Max.   :7.0000   Max.   :15.0000   Max.   :5142.0  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(sf_delitos_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 136 150</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sf_delitos_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     FID_1           INMI_09          POLY_ID             ID        
- Min.   :  0.00   Min.   :0.1180   Min.   :  1.00   Min.   :  8.00  
- 1st Qu.: 33.75   1st Qu.:0.2400   1st Qu.: 34.75   1st Qu.: 45.75  
- Median : 67.50   Median :0.2785   Median : 68.50   Median : 79.50  
- Mean   : 67.50   Mean   :0.2856   Mean   : 68.50   Mean   :111.01  
- 3rd Qu.:101.25   3rd Qu.:0.3272   3rd Qu.:102.25   3rd Qu.:184.25  
- Max.   :135.00   Max.   :0.4830   Max.   :136.00   Max.   :250.00  
-     REGION          pers_05         pers_09          d_pob_05    
- Min.   :  8.00   Min.   : 1645   Min.   : 291.0   Min.   : 2720  
- 1st Qu.: 45.75   1st Qu.:11078   1st Qu.: 426.8   1st Qu.:19615  
- Median : 79.50   Median :13606   Median : 527.0   Median :28721  
- Mean   :111.01   Mean   :14557   Mean   : 554.9   Mean   :30146  
- 3rd Qu.:184.25   3rd Qu.:17105   3rd Qu.: 609.2   3rd Qu.:39147  
- Max.   :250.00   Max.   :38108   Max.   :1317.0   Max.   :77837  
-     e18_09          e_35_09          e_60_09           e60_09       
- Min.   :0.0680   Min.   :0.2150   Min.   :0.2080   Min.   :0.05100  
- 1st Qu.:0.1878   1st Qu.:0.2737   1st Qu.:0.2863   1st Qu.:0.09625  
- Median :0.2550   Median :0.2925   Median :0.3185   Median :0.12700  
- Mean   :0.2536   Mean   :0.2912   Mean   :0.3154   Mean   :0.13978  
- 3rd Qu.:0.3080   3rd Qu.:0.3083   3rd Qu.:0.3483   3rd Qu.:0.17725  
- Max.   :0.4410   Max.   :0.4060   Max.   :0.4140   Max.   :0.28400  
-    sexo_09          etni_09           viv5_09           ana_09       
- Min.   :0.3740   Min.   :0.00000   Min.   :0.7400   Min.   :0.00000  
- 1st Qu.:0.4417   1st Qu.:0.00700   1st Qu.:0.9130   1st Qu.:0.00800  
- Median :0.4530   Median :0.01800   Median :0.9320   Median :0.01800  
- Mean   :0.4540   Mean   :0.02854   Mean   :0.9276   Mean   :0.02274  
- 3rd Qu.:0.4690   3rd Qu.:0.04125   3rd Qu.:0.9470   3rd Qu.:0.03100  
- Max.   :0.5170   Max.   :0.16600   Max.   :0.9830   Max.   :0.10700  
-    basc_09           sec_09          univ_09            PET_09      
- Min.   :0.0970   Min.   :0.2340   Min.   :0.00300   Min.   :0.6850  
- 1st Qu.:0.2823   1st Qu.:0.3723   1st Qu.:0.05525   1st Qu.:0.8077  
- Median :0.4140   Median :0.4105   Median :0.12800   Median :0.8455  
- Mean   :0.4088   Mean   :0.4061   Mean   :0.18516   Mean   :0.8454  
- 3rd Qu.:0.5330   3rd Qu.:0.4532   3rd Qu.:0.28325   3rd Qu.:0.8945  
- Max.   :0.7540   Max.   :0.5650   Max.   :0.63300   Max.   :0.9650  
-     PEA_09          empl_09          infr_09          dese_09       
- Min.   :0.4330   Min.   :0.3440   Min.   :0.4630   Min.   :0.00800  
- 1st Qu.:0.4790   1st Qu.:0.4110   1st Qu.:0.6643   1st Qu.:0.04600  
- Median :0.5065   Median :0.4320   Median :0.7165   Median :0.06800  
- Mean   :0.5060   Mean   :0.4346   Mean   :0.7116   Mean   :0.07144  
- 3rd Qu.:0.5300   3rd Qu.:0.4542   3rd Qu.:0.7602   3rd Qu.:0.09725  
- Max.   :0.5880   Max.   :0.5490   Max.   :0.9250   Max.   :0.15000  
-    sml1_09          sml2_09           sml3_09           ali1_09      
- Min.   :0.4810   Min.   :0.00000   Min.   :0.00000   Min.   :0.0930  
- 1st Qu.:0.7923   1st Qu.:0.03800   1st Qu.:0.00500   1st Qu.:0.3748  
- Median :0.9125   Median :0.07350   Median :0.01500   Median :0.4930  
- Mean   :0.8628   Mean   :0.08166   Mean   :0.05551   Mean   :0.5339  
- 3rd Qu.:0.9590   3rd Qu.:0.12150   3rd Qu.:0.06750   3rd Qu.:0.7060  
- Max.   :1.0000   Max.   :0.27200   Max.   :0.42100   Max.   :0.9930  
-    ali2_09          ali3_09           slum_09          slu1_09        
- Min.   :0.0070   Min.   :0.00000   Min.   :0.1010   Min.   :0.000000  
- 1st Qu.:0.2682   1st Qu.:0.01975   1st Qu.:0.4000   1st Qu.:0.000000  
- Median :0.4485   Median :0.04600   Median :0.5025   Median :0.000000  
- Mean   :0.3997   Mean   :0.06654   Mean   :0.4889   Mean   :0.003765  
- 3rd Qu.:0.5345   3rd Qu.:0.09450   3rd Qu.:0.5733   3rd Qu.:0.006000  
- Max.   :0.7390   Max.   :0.33700   Max.   :0.8700   Max.   :0.040000  
-    slu2_09            slu3_09           slu4_09            slu5_09      
- Min.   :0.000000   Min.   :0.00000   Min.   :0.000000   Min.   :0.1010  
- 1st Qu.:0.000000   1st Qu.:0.01375   1st Qu.:0.000000   1st Qu.:0.3598  
- Median :0.000000   Median :0.04550   Median :0.000000   Median :0.4190  
- Mean   :0.003904   Mean   :0.07150   Mean   :0.006941   Mean   :0.4027  
- 3rd Qu.:0.000000   3rd Qu.:0.10925   3rd Qu.:0.000000   3rd Qu.:0.4637  
- Max.   :0.102000   Max.   :0.31700   Max.   :0.129000   Max.   :0.6170  
-    aut1_09          aut2_09          aut3_09           inse_09      
- Min.   :0.1330   Min.   :0.0000   Min.   :0.00000   Min.   :0.1310  
- 1st Qu.:0.7592   1st Qu.:0.0280   1st Qu.:0.00000   1st Qu.:0.7422  
- Median :0.9280   Median :0.0645   Median :0.00000   Median :0.8455  
- Mean   :0.8283   Mean   :0.1395   Mean   :0.03218   Mean   :0.7930  
- 3rd Qu.:0.9712   3rd Qu.:0.2080   3rd Qu.:0.01700   3rd Qu.:0.9130  
- Max.   :1.0000   Max.   :0.5690   Max.   :0.38100   Max.   :0.9820  
-    robo_09          bcrim_09          grav_09           drog_09       
- Min.   :0.0000   Min.   :0.00000   Min.   :0.00000   Min.   :0.00000  
- 1st Qu.:0.0440   1st Qu.:0.01875   1st Qu.:0.00000   1st Qu.:0.03575  
- Median :0.0900   Median :0.05600   Median :0.00700   Median :0.08150  
- Mean   :0.1249   Mean   :0.11250   Mean   :0.01465   Mean   :0.08519  
- 3rd Qu.:0.1767   3rd Qu.:0.17275   3rd Qu.:0.01625   3rd Qu.:0.11825  
- Max.   :0.4800   Max.   :0.56400   Max.   :0.19900   Max.   :0.34700  
-    opro_09            mo5_09          mo10_09             X         
- Min.   :0.00000   Min.   :0.4960   Min.   :0.3210   Min.   :828325  
- 1st Qu.:0.01000   1st Qu.:0.6660   1st Qu.:0.5028   1st Qu.:832184  
- Median :0.03500   Median :0.7145   Median :0.5570   Median :834508  
- Mean   :0.06801   Mean   :0.7084   Mean   :0.5536   Mean   :834335  
- 3rd Qu.:0.10375   3rd Qu.:0.7565   3rd Qu.:0.6210   3rd Qu.:836538  
- Max.   :0.40800   Max.   :0.8460   Max.   :0.7290   Max.   :839172  
-       Y             dens_pisc          p_sup_imp         p_veg      
- Min.   :1176213   Min.   : 0.00643   Min.   :19.43   Min.   :11.38  
- 1st Qu.:1181564   1st Qu.: 0.78724   1st Qu.:45.73   1st Qu.:25.00  
- Median :1184044   Median : 2.13436   Median :56.58   Median :33.59  
- Mean   :1184072   Mean   : 5.02579   Mean   :54.73   Mean   :36.01  
- 3rd Qu.:1187062   3rd Qu.: 6.16990   3rd Qu.:65.47   3rd Qu.:44.88  
- Max.   :1189785   Max.   :32.55500   Max.   :79.03   Max.   :72.40  
-    p_suelo          p_t_arc           pu_com           pu_ind      
- Min.   : 2.647   Min.   : 1.098   Min.   : 0.000   Min.   : 0.000  
- 1st Qu.: 6.408   1st Qu.: 5.803   1st Qu.: 2.614   1st Qu.: 0.000  
- Median : 8.106   Median :11.622   Median : 8.114   Median : 0.000  
- Mean   : 8.126   Mean   :13.304   Mean   :12.945   Mean   : 2.835  
- 3rd Qu.: 9.573   3rd Qu.:17.898   3rd Qu.:17.613   3rd Qu.: 0.000  
- Max.   :17.905   Max.   :35.741   Max.   :94.736   Max.   :58.314  
-    pu_inst           pu_res           mean_H       dens_qdas    
- Min.   : 0.000   Min.   :  0.00   Min.   :1457   Min.   :1.612  
- 1st Qu.: 0.000   1st Qu.: 63.12   1st Qu.:1511   1st Qu.:3.074  
- Median : 0.753   Median : 77.02   Median :1566   Median :4.131  
- Mean   : 5.571   Mean   : 72.29   Mean   :1596   Mean   :4.017  
- 3rd Qu.: 7.889   3rd Qu.: 86.19   3rd Qu.:1659   3rd Qu.:4.908  
- Max.   :66.439   Max.   :100.00   Max.   :1975   Max.   :7.225  
-      SHDI            MSIDI            MEAN1            DEVST1     
- Min.   :  0.00   Min.   :  0.00   Min.   : 81.03   Min.   :34.30  
- 1st Qu.: 46.75   1st Qu.: 26.75   1st Qu.: 99.41   1st Qu.:39.72  
- Median : 67.50   Median : 48.00   Median :106.23   Median :41.27  
- Mean   : 67.31   Mean   : 50.20   Mean   :106.47   Mean   :41.61  
- 3rd Qu.: 87.25   3rd Qu.: 69.00   3rd Qu.:112.68   3rd Qu.:43.07  
- Max.   :145.00   Max.   :132.00   Max.   :139.00   Max.   :53.42  
-     MEAN2           DEVST2           MEAN3           DEVST3      
- Min.   :47.90   Min.   : 4.615   Min.   :45.02   Min.   : 3.620  
- 1st Qu.:50.56   1st Qu.: 7.586   1st Qu.:47.87   1st Qu.: 5.282  
- Median :51.74   Median : 9.000   Median :49.07   Median : 6.388  
- Mean   :52.04   Mean   : 9.169   Mean   :48.96   Mean   : 6.391  
- 3rd Qu.:53.51   3rd Qu.:11.095   3rd Qu.:50.08   3rd Qu.: 7.236  
- Max.   :56.74   Max.   :14.792   Max.   :52.35   Max.   :10.292  
-    MEAN_EDG        DEVST_EDG         UNIFOR             ENTROP     
- Min.   : 5.882   Min.   :5.875   Min.   :0.003411   Min.   :2.400  
- 1st Qu.: 7.840   1st Qu.:7.202   1st Qu.:0.004355   1st Qu.:2.581  
- Median : 8.408   Median :7.462   Median :0.004746   Median :2.627  
- Mean   : 8.388   Mean   :7.449   Mean   :0.005226   Mean   :2.613  
- 3rd Qu.: 9.089   3rd Qu.:7.814   3rd Qu.:0.005419   3rd Qu.:2.662  
- Max.   :10.654   Max.   :8.952   Max.   :0.019440   Max.   :2.717  
-    CONTRAS           IDM             COVAR            VARIAN      
- Min.   : 8.13   Min.   :0.3406   Min.   : 66.50   Min.   : 71.87  
- 1st Qu.:13.53   1st Qu.:0.3993   1st Qu.: 89.55   1st Qu.: 95.99  
- Median :15.67   Median :0.4262   Median : 96.05   Median :103.38  
- Mean   :15.30   Mean   :0.4264   Mean   : 97.93   Mean   :105.58  
- 3rd Qu.:17.31   3rd Qu.:0.4450   3rd Qu.:104.36   3rd Qu.:112.43  
- Max.   :20.71   Max.   :0.5130   Max.   :164.73   Max.   :171.37  
-    CORRELAC         SKEWNESS          KURTOSIS          MEAN_W1     
- Min.   :0.8877   Min.   :-1.4292   Min.   :-0.6462   Min.   :31.42  
- 1st Qu.:0.9147   1st Qu.:-0.8766   1st Qu.:-0.2105   1st Qu.:32.04  
- Median :0.9272   Median :-0.7170   Median : 0.1922   Median :32.33  
- Mean   :0.9262   Mean   :-0.7484   Mean   : 0.2990   Mean   :32.33  
- 3rd Qu.:0.9383   3rd Qu.:-0.6092   3rd Qu.: 0.6378   3rd Qu.:32.61  
- Max.   :0.9612   Max.   :-0.2107   Max.   : 2.5599   Max.   :33.37  
-   UNIFOR_W1          ENTROP_W1       CONTRAS_W1        IDM_W1       
- Min.   :0.000833   Min.   :2.979   Min.   :173.3   Min.   :0.09059  
- 1st Qu.:0.001122   1st Qu.:3.115   1st Qu.:201.4   1st Qu.:0.10850  
- Median :0.001322   Median :3.153   Median :212.7   Median :0.11678  
- Mean   :0.001419   Mean   :3.150   Mean   :212.7   Mean   :0.11684  
- 3rd Qu.:0.001478   3rd Qu.:3.194   3rd Qu.:224.7   3rd Qu.:0.12238  
- Max.   :0.009004   Max.   :3.273   Max.   :255.8   Max.   :0.19641  
-    COVAR_W1         VARIAN_W1        CORREL_W1           MEAN_EDG_W   
- Min.   :-3.0065   Min.   : 86.42   Min.   :-0.024069   Min.   :3.328  
- 1st Qu.:-1.3017   1st Qu.: 99.78   1st Qu.:-0.012217   1st Qu.:4.662  
- Median :-0.9290   Median :105.62   Median :-0.009059   Median :5.037  
- Mean   :-0.9121   Mean   :105.46   Mean   :-0.008588   Mean   :4.999  
- 3rd Qu.:-0.5394   3rd Qu.:111.72   3rd Qu.:-0.005346   3rd Qu.:5.428  
- Max.   : 0.2356   Max.   :124.91   Max.   : 0.002194   Max.   :6.638  
-   DEVST_EDG_         RVF              RSF             FDO        
- Min.   :2.665   Min.   : 7.638   Min.   :1.740   Min.   : 64.71  
- 1st Qu.:3.499   1st Qu.: 9.976   1st Qu.:1.791   1st Qu.:102.26  
- Median :3.662   Median :11.795   Median :1.801   Median :118.96  
- Mean   :3.618   Mean   :12.260   Mean   :1.803   Mean   :117.68  
- 3rd Qu.:3.764   3rd Qu.:13.852   3rd Qu.:1.812   3rd Qu.:133.15  
- Max.   :4.275   Max.   :22.465   Max.   :1.849   Max.   :157.53  
-      SDT             MFM              VFM             DMF       
- Min.   : 9.09   Min.   : 466.1   Min.   :1.027   Min.   :388.4  
- 1st Qu.:13.04   1st Qu.: 733.3   1st Qu.:1.278   1st Qu.:606.7  
- Median :15.16   Median : 833.4   Median :1.428   Median :684.4  
- Mean   :15.33   Mean   : 828.2   Mean   :1.448   Mean   :681.4  
- 3rd Qu.:17.90   3rd Qu.: 924.7   3rd Qu.:1.560   3rd Qu.:762.2  
- Max.   :23.26   Max.   :1068.5   Max.   :2.075   Max.   :886.1  
-      RMM             SDF              AFM          homi_09      
- Min.   :1.320   Min.   :-505.2   Min.   :2962   Min.   :  0.00  
- 1st Qu.:1.387   1st Qu.:-395.7   1st Qu.:4625   1st Qu.: 48.97  
- Median :1.412   Median :-341.9   Median :5270   Median : 84.75  
- Mean   :1.414   Mean   :-341.1   Mean   :5274   Mean   : 96.28  
- 3rd Qu.:1.442   3rd Qu.:-287.1   3rd Qu.:5945   3rd Qu.:118.67  
- Max.   :1.507   Max.   :-183.2   Max.   :6921   Max.   :491.62  
-   e15_19_09         e20_24_09         e25_29_09         h15_19_09      
- Min.   :0.05096   Min.   :0.05935   Min.   :0.03178   Min.   :0.04762  
- 1st Qu.:0.07872   1st Qu.:0.08212   1st Qu.:0.05597   1st Qu.:0.08322  
- Median :0.09369   Median :0.09188   Median :0.06314   Median :0.09986  
- Mean   :0.09236   Mean   :0.09218   Mean   :0.06351   Mean   :0.09884  
- 3rd Qu.:0.10441   3rd Qu.:0.10171   3rd Qu.:0.07107   3rd Qu.:0.11231  
- Max.   :0.16179   Max.   :0.15835   Max.   :0.09615   Max.   :0.15175  
-   h20_24_09         h25_29_09          divor_09         sincony_09    
- Min.   :0.05696   Min.   :0.02778   Min.   :0.04737   Min.   :0.3761  
- 1st Qu.:0.08362   1st Qu.:0.05581   1st Qu.:0.09074   1st Qu.:0.5114  
- Median :0.09686   Median :0.06561   Median :0.11019   Median :0.5537  
- Mean   :0.09772   Mean   :0.06595   Mean   :0.11200   Mean   :0.5490  
- 3rd Qu.:0.11030   3rd Qu.:0.07637   3rd Qu.:0.12962   3rd Qu.:0.5911  
- Max.   :0.18288   Max.   :0.10628   Max.   :0.20792   Max.   :0.6757  
-    eres_09          inmi_05          LNhomi09       LNdenspob     
- Min.   :0.5145   Min.   :0.2600   Min.   :0.000   Min.   : 7.908  
- 1st Qu.:0.7138   1st Qu.:0.3720   1st Qu.:3.911   1st Qu.: 9.884  
- Median :0.7756   Median :0.4105   Median :4.451   Median :10.265  
- Mean   :0.7661   Mean   :0.4170   Mean   :4.232   Mean   :10.155  
- 3rd Qu.:0.8217   3rd Qu.:0.4502   3rd Qu.:4.785   3rd Qu.:10.575  
- Max.   :0.9389   Max.   :0.6320   Max.   :6.200   Max.   :11.262  
-      NDII            dPob05Ha         tHog09        n_homi_09    
- Min.   :0.07574   Min.   : 27.2   Min.   :2.635   Min.   : 0.00  
- 1st Qu.:0.84492   1st Qu.:196.2   1st Qu.:3.577   1st Qu.: 6.00  
- Median :0.96812   Median :287.2   Median :3.850   Median :12.00  
- Mean   :0.87335   Mean   :301.5   Mean   :3.764   Mean   :13.96  
- 3rd Qu.:0.98907   3rd Qu.:391.5   3rd Qu.:4.028   3rd Qu.:20.00  
- Max.   :1.00000   Max.   :778.4   Max.   :4.575   Max.   :56.00  
-   n_homi_10       n_homi_11        thomi_1011       av_inc_09      
- Min.   : 0.00   Min.   : 0.000   Min.   :  0.00   Min.   :  76287  
- 1st Qu.: 5.00   1st Qu.: 3.000   1st Qu.: 36.85   1st Qu.: 152110  
- Median :10.00   Median : 6.500   Median : 62.64   Median : 197111  
- Mean   :12.55   Mean   : 9.471   Mean   : 78.58   Mean   : 344496  
- 3rd Qu.:18.00   3rd Qu.:13.000   3rd Qu.: 90.25   3rd Qu.: 307637  
- Max.   :72.00   Max.   :46.000   Max.   :517.95   Max.   :4113928  
-   Gini_i_09        no_inc_09         inc_1USD         inc_2USD     
- Min.   :0.3050   Min.   :0.1496   Min.   :0.1496   Min.   :0.2992  
- 1st Qu.:0.3550   1st Qu.:0.2702   1st Qu.:0.3342   1st Qu.:0.4600  
- Median :0.4023   Median :0.3469   Median :0.3889   Median :0.5160  
- Mean   :0.4318   Mean   :0.3557   Mean   :0.3997   Mean   :0.5256  
- 3rd Qu.:0.4597   3rd Qu.:0.4296   3rd Qu.:0.4514   3rd Qu.:0.5853  
- Max.   :0.9325   Max.   :0.7131   Max.   :0.7213   Max.   :0.8033  
-    fem_head        H15_29_09         Downtown           r_ta_si       
- Min.   :0.2444   Min.   :0.1842   Min.   :0.000000   Min.   :0.01623  
- 1st Qu.:0.3813   1st Qu.:0.2364   1st Qu.:0.000000   1st Qu.:0.09885  
- Median :0.4202   Median :0.2627   Median :0.000000   Median :0.22369  
- Mean   :0.4164   Mean   :0.2625   Mean   :0.007353   Mean   :0.24796  
- 3rd Qu.:0.4478   3rd Qu.:0.2873   3rd Qu.:0.000000   3rd Qu.:0.38555  
- Max.   :0.6154   Max.   :0.3774   Max.   :1.000000   Max.   :0.56320  
-   p_otras_si      p_otras_c           f_veg           f_suelo       
- Min.   :12.93   Min.   :0.08762   Min.   :0.1138   Min.   :0.02647  
- 1st Qu.:31.38   1st Qu.:0.41509   1st Qu.:0.2500   1st Qu.:0.06408  
- Median :37.96   Median :0.68473   Median :0.3359   Median :0.08106  
- Mean   :41.43   Mean   :1.13337   Mean   :0.3601   Mean   :0.08126  
- 3rd Qu.:52.38   3rd Qu.:1.44061   3rd Qu.:0.4488   3rd Qu.:0.09573  
- Max.   :76.04   Max.   :5.20289   Max.   :0.7240   Max.   :0.17905  
-    f_t_arc          f_otras_si       f_otras_c            LC_Sh_Di     
- Min.   :0.01098   Min.   :0.1293   Min.   :0.0008762   Min.   :0.4650  
- 1st Qu.:0.05803   1st Qu.:0.3138   1st Qu.:0.0041509   1st Qu.:0.6689  
- Median :0.11622   Median :0.3796   Median :0.0068473   Median :0.7368  
- Mean   :0.13304   Mean   :0.4143   Mean   :0.0113337   Mean   :0.7241  
- 3rd Qu.:0.17898   3rd Qu.:0.5238   3rd Qu.:0.0144061   3rd Qu.:0.8019  
- Max.   :0.35741   Max.   :0.7604   Max.   :0.0520289   Max.   :0.8572  
-    LP_14_2          LP_14_3           LP_14_1          LP_15_1      
- Min.   : 0.000   Min.   :  0.000   Min.   : 0.000   Min.   : 0.000  
- 1st Qu.: 1.000   1st Qu.:  3.000   1st Qu.: 1.000   1st Qu.: 2.000  
- Median : 3.000   Median :  5.000   Median : 3.000   Median : 4.000  
- Mean   : 4.235   Mean   :  7.382   Mean   : 4.456   Mean   : 5.596  
- 3rd Qu.: 5.000   3rd Qu.:  8.000   3rd Qu.: 5.250   3rd Qu.: 6.000  
- Max.   :65.000   Max.   :122.000   Max.   :49.000   Max.   :88.000  
-    LP_15_2          LP_15_3            LP_15            LP_14       
- Min.   : 0.000   Min.   :  0.000   Min.   :  2.00   Min.   :  1.00  
- 1st Qu.: 2.000   1st Qu.:  4.000   1st Qu.: 10.75   1st Qu.:  7.00  
- Median : 4.000   Median :  7.000   Median : 16.00   Median : 12.00  
- Mean   : 5.507   Mean   :  8.816   Mean   : 19.92   Mean   : 16.07  
- 3rd Qu.: 6.250   3rd Qu.: 10.000   3rd Qu.: 21.25   3rd Qu.: 19.00  
- Max.   :69.000   Max.   :110.000   Max.   :267.00   Max.   :236.00  
-    LP_19_3          LP_19_2           LP_19_1            LP_19       
- Min.   :  1.00   Min.   :  0.000   Min.   :  0.000   Min.   :  7.00  
- 1st Qu.:  8.00   1st Qu.:  4.000   1st Qu.:  5.000   1st Qu.: 18.00  
- Median : 13.00   Median :  7.000   Median :  7.000   Median : 28.00  
- Mean   : 15.70   Mean   :  8.441   Mean   :  9.228   Mean   : 33.37  
- 3rd Qu.: 19.25   3rd Qu.: 11.000   3rd Qu.: 11.000   3rd Qu.: 41.00  
- Max.   :153.00   Max.   :110.000   Max.   :108.000   Max.   :371.00  
-       CL                 geometry  
- Min.   : 1.00   POLYGON      :136  
- 1st Qu.: 6.75   epsg:4326    :  0  
- Median :14.50   +proj=long...:  0  
- Mean   :16.03                      
- 3rd Qu.:25.00                      
- Max.   :36.00                      </code></pre>
-</div>
-</div>
-<section id="augmented-data-analyst" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst">Augmented Data Analyst</h3>
-</section>
-<section id="prompts" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts">Prompts</h3>
-</section>
 </section>
 <section id="skewness" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="skewness"><span class="header-section-number">1.2</span> Skewness</h2>
@@ -684,34 +394,34 @@ Geodetic CRS:  WGS 84</code></pre>
 </ul>
 <p>A skewness of <span class="math inline">\(( 0 )\)</span> indicates a perfectly symmetric distribution. Positive skewness <span class="math inline">\(( g_1 &gt; 0 )\)</span> signifies a longer tail on the right side of the distribution, while negative skewness <span class="math inline">\(( g_1 &lt; 0 )\)</span> indicates a longer tail on the left. The code below calculates skewness for all numeric columns in <code>delitos_data</code> and presents the results in a formatted table:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># skewness</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">skewness</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Skewness =</span> V1) <span class="sc">%&gt;%</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># skewness</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">skewness</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Skewness =</span> V1) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="tbmmtkmzib" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tbmmtkmzib table {
+<div id="qgltairrmo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qgltairrmo table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#tbmmtkmzib thead, #tbmmtkmzib tbody, #tbmmtkmzib tfoot, #tbmmtkmzib tr, #tbmmtkmzib td, #tbmmtkmzib th {
+#qgltairrmo thead, #qgltairrmo tbody, #qgltairrmo tfoot, #qgltairrmo tr, #qgltairrmo td, #qgltairrmo th {
   border-style: none;
 }
 
-#tbmmtkmzib p {
+#qgltairrmo p {
   margin: 0;
   padding: 0;
 }
 
-#tbmmtkmzib .gt_table {
+#qgltairrmo .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -737,12 +447,12 @@ Geodetic CRS:  WGS 84</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_caption {
+#qgltairrmo .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#tbmmtkmzib .gt_title {
+#qgltairrmo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -754,7 +464,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-width: 0;
 }
 
-#tbmmtkmzib .gt_subtitle {
+#qgltairrmo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -766,7 +476,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-width: 0;
 }
 
-#tbmmtkmzib .gt_heading {
+#qgltairrmo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -778,13 +488,13 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_bottom_border {
+#qgltairrmo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_col_headings {
+#qgltairrmo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -799,7 +509,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_col_heading {
+#qgltairrmo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -819,7 +529,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#tbmmtkmzib .gt_column_spanner_outer {
+#qgltairrmo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -831,15 +541,15 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 4px;
 }
 
-#tbmmtkmzib .gt_column_spanner_outer:first-child {
+#qgltairrmo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tbmmtkmzib .gt_column_spanner_outer:last-child {
+#qgltairrmo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tbmmtkmzib .gt_column_spanner {
+#qgltairrmo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -851,11 +561,11 @@ Geodetic CRS:  WGS 84</code></pre>
   width: 100%;
 }
 
-#tbmmtkmzib .gt_spanner_row {
+#qgltairrmo .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#tbmmtkmzib .gt_group_heading {
+#qgltairrmo .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -881,7 +591,7 @@ Geodetic CRS:  WGS 84</code></pre>
   text-align: left;
 }
 
-#tbmmtkmzib .gt_empty_group_heading {
+#qgltairrmo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -896,15 +606,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: middle;
 }
 
-#tbmmtkmzib .gt_from_md > :first-child {
+#qgltairrmo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tbmmtkmzib .gt_from_md > :last-child {
+#qgltairrmo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tbmmtkmzib .gt_row {
+#qgltairrmo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -923,7 +633,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#tbmmtkmzib .gt_stub {
+#qgltairrmo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -936,7 +646,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#tbmmtkmzib .gt_stub_row_group {
+#qgltairrmo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -950,15 +660,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: top;
 }
 
-#tbmmtkmzib .gt_row_group_first td {
+#qgltairrmo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tbmmtkmzib .gt_row_group_first th {
+#qgltairrmo .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#tbmmtkmzib .gt_summary_row {
+#qgltairrmo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -968,16 +678,16 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#tbmmtkmzib .gt_first_summary_row {
+#qgltairrmo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_first_summary_row.thick {
+#qgltairrmo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tbmmtkmzib .gt_last_summary_row {
+#qgltairrmo .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -987,7 +697,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_grand_summary_row {
+#qgltairrmo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -997,7 +707,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#tbmmtkmzib .gt_first_grand_summary_row {
+#qgltairrmo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1007,7 +717,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_last_grand_summary_row_top {
+#qgltairrmo .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1017,11 +727,11 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_striped {
+#qgltairrmo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tbmmtkmzib .gt_table_body {
+#qgltairrmo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1030,7 +740,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_footnotes {
+#qgltairrmo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1044,7 +754,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_footnote {
+#qgltairrmo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1053,7 +763,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#tbmmtkmzib .gt_sourcenotes {
+#qgltairrmo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1067,7 +777,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#tbmmtkmzib .gt_sourcenote {
+#qgltairrmo .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1075,72 +785,72 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#tbmmtkmzib .gt_left {
+#qgltairrmo .gt_left {
   text-align: left;
 }
 
-#tbmmtkmzib .gt_center {
+#qgltairrmo .gt_center {
   text-align: center;
 }
 
-#tbmmtkmzib .gt_right {
+#qgltairrmo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tbmmtkmzib .gt_font_normal {
+#qgltairrmo .gt_font_normal {
   font-weight: normal;
 }
 
-#tbmmtkmzib .gt_font_bold {
+#qgltairrmo .gt_font_bold {
   font-weight: bold;
 }
 
-#tbmmtkmzib .gt_font_italic {
+#qgltairrmo .gt_font_italic {
   font-style: italic;
 }
 
-#tbmmtkmzib .gt_super {
+#qgltairrmo .gt_super {
   font-size: 65%;
 }
 
-#tbmmtkmzib .gt_footnote_marks {
+#qgltairrmo .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#tbmmtkmzib .gt_asterisk {
+#qgltairrmo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tbmmtkmzib .gt_indent_1 {
+#qgltairrmo .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tbmmtkmzib .gt_indent_2 {
+#qgltairrmo .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tbmmtkmzib .gt_indent_3 {
+#qgltairrmo .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tbmmtkmzib .gt_indent_4 {
+#qgltairrmo .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tbmmtkmzib .gt_indent_5 {
+#qgltairrmo .gt_indent_5 {
   text-indent: 25px;
 }
 
-#tbmmtkmzib .katex-display {
+#qgltairrmo .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#tbmmtkmzib div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#qgltairrmo div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1227,12 +937,6 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
-<section id="augmented-data-analyst-1" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-1">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-1" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-1">Prompts</h3>
-</section>
 </section>
 <section id="kurtosis" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="kurtosis"><span class="header-section-number">1.3</span> Kurtosis</h2>
@@ -1247,34 +951,34 @@ Geodetic CRS:  WGS 84</code></pre>
 </ul>
 <p>A kurtosis of <span class="math inline">\(( 0 )\)</span> (excess kurtosis) indicates tail behavior similar to a normal distribution. Positive kurtosis <span class="math inline">\(( g_2 &gt; 0 )\)</span> signifies heavier tails and more outliers (leptokurtic), while negative kurtosis <span class="math inline">\(( g_2 &lt; 0 )\)</span> indicates lighter tails and fewer outliers (platykurtic).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kurtosis</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">kurtosis</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Kurtosis =</span> V1) <span class="sc">%&gt;%</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kurtosis</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">kurtosis</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Kurtosis =</span> V1) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="phivvyijuq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#phivvyijuq table {
+<div id="myoeesqrer" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#myoeesqrer table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#phivvyijuq thead, #phivvyijuq tbody, #phivvyijuq tfoot, #phivvyijuq tr, #phivvyijuq td, #phivvyijuq th {
+#myoeesqrer thead, #myoeesqrer tbody, #myoeesqrer tfoot, #myoeesqrer tr, #myoeesqrer td, #myoeesqrer th {
   border-style: none;
 }
 
-#phivvyijuq p {
+#myoeesqrer p {
   margin: 0;
   padding: 0;
 }
 
-#phivvyijuq .gt_table {
+#myoeesqrer .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1300,12 +1004,12 @@ Geodetic CRS:  WGS 84</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_caption {
+#myoeesqrer .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#phivvyijuq .gt_title {
+#myoeesqrer .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1317,7 +1021,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-width: 0;
 }
 
-#phivvyijuq .gt_subtitle {
+#myoeesqrer .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1329,7 +1033,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-width: 0;
 }
 
-#phivvyijuq .gt_heading {
+#myoeesqrer .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1341,13 +1045,13 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_bottom_border {
+#myoeesqrer .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_col_headings {
+#myoeesqrer .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1362,7 +1066,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_col_heading {
+#myoeesqrer .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1382,7 +1086,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#phivvyijuq .gt_column_spanner_outer {
+#myoeesqrer .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1394,15 +1098,15 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 4px;
 }
 
-#phivvyijuq .gt_column_spanner_outer:first-child {
+#myoeesqrer .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#phivvyijuq .gt_column_spanner_outer:last-child {
+#myoeesqrer .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#phivvyijuq .gt_column_spanner {
+#myoeesqrer .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1414,11 +1118,11 @@ Geodetic CRS:  WGS 84</code></pre>
   width: 100%;
 }
 
-#phivvyijuq .gt_spanner_row {
+#myoeesqrer .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#phivvyijuq .gt_group_heading {
+#myoeesqrer .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1444,7 +1148,7 @@ Geodetic CRS:  WGS 84</code></pre>
   text-align: left;
 }
 
-#phivvyijuq .gt_empty_group_heading {
+#myoeesqrer .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1459,15 +1163,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: middle;
 }
 
-#phivvyijuq .gt_from_md > :first-child {
+#myoeesqrer .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#phivvyijuq .gt_from_md > :last-child {
+#myoeesqrer .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#phivvyijuq .gt_row {
+#myoeesqrer .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1486,7 +1190,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#phivvyijuq .gt_stub {
+#myoeesqrer .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1499,7 +1203,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#phivvyijuq .gt_stub_row_group {
+#myoeesqrer .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1513,15 +1217,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: top;
 }
 
-#phivvyijuq .gt_row_group_first td {
+#myoeesqrer .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#phivvyijuq .gt_row_group_first th {
+#myoeesqrer .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#phivvyijuq .gt_summary_row {
+#myoeesqrer .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1531,16 +1235,16 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#phivvyijuq .gt_first_summary_row {
+#myoeesqrer .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_first_summary_row.thick {
+#myoeesqrer .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#phivvyijuq .gt_last_summary_row {
+#myoeesqrer .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1550,7 +1254,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_grand_summary_row {
+#myoeesqrer .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1560,7 +1264,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#phivvyijuq .gt_first_grand_summary_row {
+#myoeesqrer .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1570,7 +1274,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_last_grand_summary_row_top {
+#myoeesqrer .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1580,11 +1284,11 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_striped {
+#myoeesqrer .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#phivvyijuq .gt_table_body {
+#myoeesqrer .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1593,7 +1297,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_footnotes {
+#myoeesqrer .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1607,7 +1311,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_footnote {
+#myoeesqrer .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1616,7 +1320,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#phivvyijuq .gt_sourcenotes {
+#myoeesqrer .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1630,7 +1334,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#phivvyijuq .gt_sourcenote {
+#myoeesqrer .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1638,72 +1342,72 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#phivvyijuq .gt_left {
+#myoeesqrer .gt_left {
   text-align: left;
 }
 
-#phivvyijuq .gt_center {
+#myoeesqrer .gt_center {
   text-align: center;
 }
 
-#phivvyijuq .gt_right {
+#myoeesqrer .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#phivvyijuq .gt_font_normal {
+#myoeesqrer .gt_font_normal {
   font-weight: normal;
 }
 
-#phivvyijuq .gt_font_bold {
+#myoeesqrer .gt_font_bold {
   font-weight: bold;
 }
 
-#phivvyijuq .gt_font_italic {
+#myoeesqrer .gt_font_italic {
   font-style: italic;
 }
 
-#phivvyijuq .gt_super {
+#myoeesqrer .gt_super {
   font-size: 65%;
 }
 
-#phivvyijuq .gt_footnote_marks {
+#myoeesqrer .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#phivvyijuq .gt_asterisk {
+#myoeesqrer .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#phivvyijuq .gt_indent_1 {
+#myoeesqrer .gt_indent_1 {
   text-indent: 5px;
 }
 
-#phivvyijuq .gt_indent_2 {
+#myoeesqrer .gt_indent_2 {
   text-indent: 10px;
 }
 
-#phivvyijuq .gt_indent_3 {
+#myoeesqrer .gt_indent_3 {
   text-indent: 15px;
 }
 
-#phivvyijuq .gt_indent_4 {
+#myoeesqrer .gt_indent_4 {
   text-indent: 20px;
 }
 
-#phivvyijuq .gt_indent_5 {
+#myoeesqrer .gt_indent_5 {
   text-indent: 25px;
 }
 
-#phivvyijuq .katex-display {
+#myoeesqrer .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#phivvyijuq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#myoeesqrer div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1790,12 +1494,6 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
-<section id="augmented-data-analyst-2" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-2">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-2" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-2">Prompts</h3>
-</section>
 </section>
 <section id="coefficient-of-variation" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="coefficient-of-variation"><span class="header-section-number">1.4</span> Coefficient of Variation</h2>
@@ -1808,34 +1506,34 @@ Geodetic CRS:  WGS 84</code></pre>
 </ul>
 <p>The coefficient of variation is particularly useful for comparing the variability of datasets with different units or widely different means. A lower CV indicates less variability relative to the mean, while a higher CV indicates greater variability.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard Deviation (SD)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sd</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SD =</span> V1) <span class="sc">%&gt;%</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard Deviation (SD)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">sd</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">SD =</span> V1) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="yyrbkhlcil" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yyrbkhlcil table {
+<div id="chyyjmnsfj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#chyyjmnsfj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yyrbkhlcil thead, #yyrbkhlcil tbody, #yyrbkhlcil tfoot, #yyrbkhlcil tr, #yyrbkhlcil td, #yyrbkhlcil th {
+#chyyjmnsfj thead, #chyyjmnsfj tbody, #chyyjmnsfj tfoot, #chyyjmnsfj tr, #chyyjmnsfj td, #chyyjmnsfj th {
   border-style: none;
 }
 
-#yyrbkhlcil p {
+#chyyjmnsfj p {
   margin: 0;
   padding: 0;
 }
 
-#yyrbkhlcil .gt_table {
+#chyyjmnsfj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1861,12 +1559,12 @@ Geodetic CRS:  WGS 84</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_caption {
+#chyyjmnsfj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yyrbkhlcil .gt_title {
+#chyyjmnsfj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1878,7 +1576,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-width: 0;
 }
 
-#yyrbkhlcil .gt_subtitle {
+#chyyjmnsfj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1890,7 +1588,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-width: 0;
 }
 
-#yyrbkhlcil .gt_heading {
+#chyyjmnsfj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1902,13 +1600,13 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_bottom_border {
+#chyyjmnsfj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_col_headings {
+#chyyjmnsfj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1923,7 +1621,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_col_heading {
+#chyyjmnsfj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1943,7 +1641,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#yyrbkhlcil .gt_column_spanner_outer {
+#chyyjmnsfj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1955,15 +1653,15 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 4px;
 }
 
-#yyrbkhlcil .gt_column_spanner_outer:first-child {
+#chyyjmnsfj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yyrbkhlcil .gt_column_spanner_outer:last-child {
+#chyyjmnsfj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yyrbkhlcil .gt_column_spanner {
+#chyyjmnsfj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1975,11 +1673,11 @@ Geodetic CRS:  WGS 84</code></pre>
   width: 100%;
 }
 
-#yyrbkhlcil .gt_spanner_row {
+#chyyjmnsfj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yyrbkhlcil .gt_group_heading {
+#chyyjmnsfj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2005,7 +1703,7 @@ Geodetic CRS:  WGS 84</code></pre>
   text-align: left;
 }
 
-#yyrbkhlcil .gt_empty_group_heading {
+#chyyjmnsfj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2020,15 +1718,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: middle;
 }
 
-#yyrbkhlcil .gt_from_md > :first-child {
+#chyyjmnsfj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yyrbkhlcil .gt_from_md > :last-child {
+#chyyjmnsfj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yyrbkhlcil .gt_row {
+#chyyjmnsfj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2047,7 +1745,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#yyrbkhlcil .gt_stub {
+#chyyjmnsfj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2060,7 +1758,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#yyrbkhlcil .gt_stub_row_group {
+#chyyjmnsfj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2074,15 +1772,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: top;
 }
 
-#yyrbkhlcil .gt_row_group_first td {
+#chyyjmnsfj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yyrbkhlcil .gt_row_group_first th {
+#chyyjmnsfj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yyrbkhlcil .gt_summary_row {
+#chyyjmnsfj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2092,16 +1790,16 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#yyrbkhlcil .gt_first_summary_row {
+#chyyjmnsfj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_first_summary_row.thick {
+#chyyjmnsfj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yyrbkhlcil .gt_last_summary_row {
+#chyyjmnsfj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2111,7 +1809,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_grand_summary_row {
+#chyyjmnsfj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2121,7 +1819,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#yyrbkhlcil .gt_first_grand_summary_row {
+#chyyjmnsfj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2131,7 +1829,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_last_grand_summary_row_top {
+#chyyjmnsfj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2141,11 +1839,11 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_striped {
+#chyyjmnsfj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yyrbkhlcil .gt_table_body {
+#chyyjmnsfj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2154,7 +1852,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_footnotes {
+#chyyjmnsfj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2168,7 +1866,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_footnote {
+#chyyjmnsfj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2177,7 +1875,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#yyrbkhlcil .gt_sourcenotes {
+#chyyjmnsfj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2191,7 +1889,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#yyrbkhlcil .gt_sourcenote {
+#chyyjmnsfj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2199,72 +1897,72 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#yyrbkhlcil .gt_left {
+#chyyjmnsfj .gt_left {
   text-align: left;
 }
 
-#yyrbkhlcil .gt_center {
+#chyyjmnsfj .gt_center {
   text-align: center;
 }
 
-#yyrbkhlcil .gt_right {
+#chyyjmnsfj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yyrbkhlcil .gt_font_normal {
+#chyyjmnsfj .gt_font_normal {
   font-weight: normal;
 }
 
-#yyrbkhlcil .gt_font_bold {
+#chyyjmnsfj .gt_font_bold {
   font-weight: bold;
 }
 
-#yyrbkhlcil .gt_font_italic {
+#chyyjmnsfj .gt_font_italic {
   font-style: italic;
 }
 
-#yyrbkhlcil .gt_super {
+#chyyjmnsfj .gt_super {
   font-size: 65%;
 }
 
-#yyrbkhlcil .gt_footnote_marks {
+#chyyjmnsfj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yyrbkhlcil .gt_asterisk {
+#chyyjmnsfj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yyrbkhlcil .gt_indent_1 {
+#chyyjmnsfj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yyrbkhlcil .gt_indent_2 {
+#chyyjmnsfj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yyrbkhlcil .gt_indent_3 {
+#chyyjmnsfj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yyrbkhlcil .gt_indent_4 {
+#chyyjmnsfj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yyrbkhlcil .gt_indent_5 {
+#chyyjmnsfj .gt_indent_5 {
   text-indent: 25px;
 }
 
-#yyrbkhlcil .katex-display {
+#chyyjmnsfj .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#yyrbkhlcil div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#chyyjmnsfj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2350,42 +2048,42 @@ Geodetic CRS:  WGS 84</code></pre>
 
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># variation</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">ifelse</span>(<span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">!=</span> <span class="dv">0</span>, </span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>               <span class="fu">sd</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>               <span class="cn">NA</span>),  <span class="co"># Compute CV safely</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">"{col}"</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Variation =</span> V1) <span class="sc">%&gt;%</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># variation</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">everything</span>(),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">ifelse</span>(<span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">!=</span> <span class="dv">0</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>               <span class="fu">sd</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>               <span class="cn">NA</span>),  <span class="co"># Compute CV safely</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">"{col}"</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Variation =</span> V1) <span class="sc">%&gt;%</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="edjpsrdfij" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#edjpsrdfij table {
+<div id="qvpmlpggoi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qvpmlpggoi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#edjpsrdfij thead, #edjpsrdfij tbody, #edjpsrdfij tfoot, #edjpsrdfij tr, #edjpsrdfij td, #edjpsrdfij th {
+#qvpmlpggoi thead, #qvpmlpggoi tbody, #qvpmlpggoi tfoot, #qvpmlpggoi tr, #qvpmlpggoi td, #qvpmlpggoi th {
   border-style: none;
 }
 
-#edjpsrdfij p {
+#qvpmlpggoi p {
   margin: 0;
   padding: 0;
 }
 
-#edjpsrdfij .gt_table {
+#qvpmlpggoi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2411,12 +2109,12 @@ Geodetic CRS:  WGS 84</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_caption {
+#qvpmlpggoi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#edjpsrdfij .gt_title {
+#qvpmlpggoi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2428,7 +2126,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-width: 0;
 }
 
-#edjpsrdfij .gt_subtitle {
+#qvpmlpggoi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2440,7 +2138,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-width: 0;
 }
 
-#edjpsrdfij .gt_heading {
+#qvpmlpggoi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2452,13 +2150,13 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_bottom_border {
+#qvpmlpggoi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_col_headings {
+#qvpmlpggoi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2473,7 +2171,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_col_heading {
+#qvpmlpggoi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2493,7 +2191,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#edjpsrdfij .gt_column_spanner_outer {
+#qvpmlpggoi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2505,15 +2203,15 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 4px;
 }
 
-#edjpsrdfij .gt_column_spanner_outer:first-child {
+#qvpmlpggoi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#edjpsrdfij .gt_column_spanner_outer:last-child {
+#qvpmlpggoi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#edjpsrdfij .gt_column_spanner {
+#qvpmlpggoi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2525,11 +2223,11 @@ Geodetic CRS:  WGS 84</code></pre>
   width: 100%;
 }
 
-#edjpsrdfij .gt_spanner_row {
+#qvpmlpggoi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#edjpsrdfij .gt_group_heading {
+#qvpmlpggoi .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2555,7 +2253,7 @@ Geodetic CRS:  WGS 84</code></pre>
   text-align: left;
 }
 
-#edjpsrdfij .gt_empty_group_heading {
+#qvpmlpggoi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2570,15 +2268,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: middle;
 }
 
-#edjpsrdfij .gt_from_md > :first-child {
+#qvpmlpggoi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#edjpsrdfij .gt_from_md > :last-child {
+#qvpmlpggoi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#edjpsrdfij .gt_row {
+#qvpmlpggoi .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2597,7 +2295,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#edjpsrdfij .gt_stub {
+#qvpmlpggoi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2610,7 +2308,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#edjpsrdfij .gt_stub_row_group {
+#qvpmlpggoi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2624,15 +2322,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: top;
 }
 
-#edjpsrdfij .gt_row_group_first td {
+#qvpmlpggoi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#edjpsrdfij .gt_row_group_first th {
+#qvpmlpggoi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#edjpsrdfij .gt_summary_row {
+#qvpmlpggoi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2642,16 +2340,16 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#edjpsrdfij .gt_first_summary_row {
+#qvpmlpggoi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_first_summary_row.thick {
+#qvpmlpggoi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#edjpsrdfij .gt_last_summary_row {
+#qvpmlpggoi .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2661,7 +2359,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_grand_summary_row {
+#qvpmlpggoi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2671,7 +2369,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#edjpsrdfij .gt_first_grand_summary_row {
+#qvpmlpggoi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2681,7 +2379,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_last_grand_summary_row_top {
+#qvpmlpggoi .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2691,11 +2389,11 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_striped {
+#qvpmlpggoi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#edjpsrdfij .gt_table_body {
+#qvpmlpggoi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2704,7 +2402,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_footnotes {
+#qvpmlpggoi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2718,7 +2416,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_footnote {
+#qvpmlpggoi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2727,7 +2425,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#edjpsrdfij .gt_sourcenotes {
+#qvpmlpggoi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2741,7 +2439,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#edjpsrdfij .gt_sourcenote {
+#qvpmlpggoi .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2749,72 +2447,72 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#edjpsrdfij .gt_left {
+#qvpmlpggoi .gt_left {
   text-align: left;
 }
 
-#edjpsrdfij .gt_center {
+#qvpmlpggoi .gt_center {
   text-align: center;
 }
 
-#edjpsrdfij .gt_right {
+#qvpmlpggoi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#edjpsrdfij .gt_font_normal {
+#qvpmlpggoi .gt_font_normal {
   font-weight: normal;
 }
 
-#edjpsrdfij .gt_font_bold {
+#qvpmlpggoi .gt_font_bold {
   font-weight: bold;
 }
 
-#edjpsrdfij .gt_font_italic {
+#qvpmlpggoi .gt_font_italic {
   font-style: italic;
 }
 
-#edjpsrdfij .gt_super {
+#qvpmlpggoi .gt_super {
   font-size: 65%;
 }
 
-#edjpsrdfij .gt_footnote_marks {
+#qvpmlpggoi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#edjpsrdfij .gt_asterisk {
+#qvpmlpggoi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#edjpsrdfij .gt_indent_1 {
+#qvpmlpggoi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#edjpsrdfij .gt_indent_2 {
+#qvpmlpggoi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#edjpsrdfij .gt_indent_3 {
+#qvpmlpggoi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#edjpsrdfij .gt_indent_4 {
+#qvpmlpggoi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#edjpsrdfij .gt_indent_5 {
+#qvpmlpggoi .gt_indent_5 {
   text-indent: 25px;
 }
 
-#edjpsrdfij .katex-display {
+#qvpmlpggoi .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#edjpsrdfij div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#qvpmlpggoi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2901,12 +2599,6 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
 </div>
-<section id="augmented-data-analyst-3" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-3">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-3" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-3">Prompts</h3>
-</section>
 </section>
 <section id="median-absolute-deviation-mad-and-madmedian" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="median-absolute-deviation-mad-and-madmedian"><span class="header-section-number">1.5</span> Median Absolute Deviation MAD and MAD/median</h2>
@@ -2923,34 +2615,34 @@ Geodetic CRS:  WGS 84</code></pre>
 ]\)</span></p>
 <p>This ratio provides a scale-independent measure of variability, making it useful for comparing the dispersion of datasets with different units or scales. A higher MAD/Median ratio indicates greater relative variability.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAD</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">mad</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">MAD =</span> V1) <span class="sc">%&gt;%</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAD</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">mad</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">MAD =</span> V1) <span class="sc">%&gt;%</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="qwvsernhfk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qwvsernhfk table {
+<div id="rhdrgvqckp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rhdrgvqckp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qwvsernhfk thead, #qwvsernhfk tbody, #qwvsernhfk tfoot, #qwvsernhfk tr, #qwvsernhfk td, #qwvsernhfk th {
+#rhdrgvqckp thead, #rhdrgvqckp tbody, #rhdrgvqckp tfoot, #rhdrgvqckp tr, #rhdrgvqckp td, #rhdrgvqckp th {
   border-style: none;
 }
 
-#qwvsernhfk p {
+#rhdrgvqckp p {
   margin: 0;
   padding: 0;
 }
 
-#qwvsernhfk .gt_table {
+#rhdrgvqckp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2976,12 +2668,12 @@ Geodetic CRS:  WGS 84</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_caption {
+#rhdrgvqckp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qwvsernhfk .gt_title {
+#rhdrgvqckp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2993,7 +2685,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-width: 0;
 }
 
-#qwvsernhfk .gt_subtitle {
+#rhdrgvqckp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3005,7 +2697,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-width: 0;
 }
 
-#qwvsernhfk .gt_heading {
+#rhdrgvqckp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3017,13 +2709,13 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_bottom_border {
+#rhdrgvqckp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_col_headings {
+#rhdrgvqckp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3038,7 +2730,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_col_heading {
+#rhdrgvqckp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3058,7 +2750,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#qwvsernhfk .gt_column_spanner_outer {
+#rhdrgvqckp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3070,15 +2762,15 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 4px;
 }
 
-#qwvsernhfk .gt_column_spanner_outer:first-child {
+#rhdrgvqckp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qwvsernhfk .gt_column_spanner_outer:last-child {
+#rhdrgvqckp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qwvsernhfk .gt_column_spanner {
+#rhdrgvqckp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3090,11 +2782,11 @@ Geodetic CRS:  WGS 84</code></pre>
   width: 100%;
 }
 
-#qwvsernhfk .gt_spanner_row {
+#rhdrgvqckp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qwvsernhfk .gt_group_heading {
+#rhdrgvqckp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3120,7 +2812,7 @@ Geodetic CRS:  WGS 84</code></pre>
   text-align: left;
 }
 
-#qwvsernhfk .gt_empty_group_heading {
+#rhdrgvqckp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3135,15 +2827,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: middle;
 }
 
-#qwvsernhfk .gt_from_md > :first-child {
+#rhdrgvqckp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qwvsernhfk .gt_from_md > :last-child {
+#rhdrgvqckp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qwvsernhfk .gt_row {
+#rhdrgvqckp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3162,7 +2854,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#qwvsernhfk .gt_stub {
+#rhdrgvqckp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3175,7 +2867,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qwvsernhfk .gt_stub_row_group {
+#rhdrgvqckp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3189,15 +2881,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: top;
 }
 
-#qwvsernhfk .gt_row_group_first td {
+#rhdrgvqckp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qwvsernhfk .gt_row_group_first th {
+#rhdrgvqckp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qwvsernhfk .gt_summary_row {
+#rhdrgvqckp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3207,16 +2899,16 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qwvsernhfk .gt_first_summary_row {
+#rhdrgvqckp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_first_summary_row.thick {
+#rhdrgvqckp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qwvsernhfk .gt_last_summary_row {
+#rhdrgvqckp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3226,7 +2918,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_grand_summary_row {
+#rhdrgvqckp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3236,7 +2928,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qwvsernhfk .gt_first_grand_summary_row {
+#rhdrgvqckp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3246,7 +2938,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_last_grand_summary_row_top {
+#rhdrgvqckp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3256,11 +2948,11 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_striped {
+#rhdrgvqckp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qwvsernhfk .gt_table_body {
+#rhdrgvqckp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3269,7 +2961,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_footnotes {
+#rhdrgvqckp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3283,7 +2975,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_footnote {
+#rhdrgvqckp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3292,7 +2984,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qwvsernhfk .gt_sourcenotes {
+#rhdrgvqckp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3306,7 +2998,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qwvsernhfk .gt_sourcenote {
+#rhdrgvqckp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3314,72 +3006,72 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qwvsernhfk .gt_left {
+#rhdrgvqckp .gt_left {
   text-align: left;
 }
 
-#qwvsernhfk .gt_center {
+#rhdrgvqckp .gt_center {
   text-align: center;
 }
 
-#qwvsernhfk .gt_right {
+#rhdrgvqckp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qwvsernhfk .gt_font_normal {
+#rhdrgvqckp .gt_font_normal {
   font-weight: normal;
 }
 
-#qwvsernhfk .gt_font_bold {
+#rhdrgvqckp .gt_font_bold {
   font-weight: bold;
 }
 
-#qwvsernhfk .gt_font_italic {
+#rhdrgvqckp .gt_font_italic {
   font-style: italic;
 }
 
-#qwvsernhfk .gt_super {
+#rhdrgvqckp .gt_super {
   font-size: 65%;
 }
 
-#qwvsernhfk .gt_footnote_marks {
+#rhdrgvqckp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qwvsernhfk .gt_asterisk {
+#rhdrgvqckp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qwvsernhfk .gt_indent_1 {
+#rhdrgvqckp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qwvsernhfk .gt_indent_2 {
+#rhdrgvqckp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qwvsernhfk .gt_indent_3 {
+#rhdrgvqckp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qwvsernhfk .gt_indent_4 {
+#rhdrgvqckp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qwvsernhfk .gt_indent_5 {
+#rhdrgvqckp .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qwvsernhfk .katex-display {
+#rhdrgvqckp .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qwvsernhfk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#rhdrgvqckp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -3465,38 +3157,38 @@ Geodetic CRS:  WGS 84</code></pre>
 
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAD/Median</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">ifelse</span>(</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">median</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">!=</span> <span class="dv">0</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mad</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">median</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">NA</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  ))) <span class="sc">%&gt;%</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">MAD/Median</span><span class="st">`</span> <span class="ot">=</span> V1) <span class="sc">%&gt;%</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MAD/Median</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">ifelse</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">median</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">!=</span> <span class="dv">0</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mad</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">median</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cn">NA</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ))) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"Crime Type"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">V1 =</span> <span class="fu">round</span>(V1, <span class="dv">2</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">MAD/Median</span><span class="st">`</span> <span class="ot">=</span> V1) <span class="sc">%&gt;%</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="qnvgppykse" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qnvgppykse table {
+<div id="uoaddndohc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uoaddndohc table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qnvgppykse thead, #qnvgppykse tbody, #qnvgppykse tfoot, #qnvgppykse tr, #qnvgppykse td, #qnvgppykse th {
+#uoaddndohc thead, #uoaddndohc tbody, #uoaddndohc tfoot, #uoaddndohc tr, #uoaddndohc td, #uoaddndohc th {
   border-style: none;
 }
 
-#qnvgppykse p {
+#uoaddndohc p {
   margin: 0;
   padding: 0;
 }
 
-#qnvgppykse .gt_table {
+#uoaddndohc .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3522,12 +3214,12 @@ Geodetic CRS:  WGS 84</code></pre>
   border-left-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_caption {
+#uoaddndohc .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qnvgppykse .gt_title {
+#uoaddndohc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3539,7 +3231,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-width: 0;
 }
 
-#qnvgppykse .gt_subtitle {
+#uoaddndohc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3551,7 +3243,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-width: 0;
 }
 
-#qnvgppykse .gt_heading {
+#uoaddndohc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3563,13 +3255,13 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_bottom_border {
+#uoaddndohc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_col_headings {
+#uoaddndohc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3584,7 +3276,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_col_heading {
+#uoaddndohc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3604,7 +3296,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#qnvgppykse .gt_column_spanner_outer {
+#uoaddndohc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3616,15 +3308,15 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 4px;
 }
 
-#qnvgppykse .gt_column_spanner_outer:first-child {
+#uoaddndohc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qnvgppykse .gt_column_spanner_outer:last-child {
+#uoaddndohc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qnvgppykse .gt_column_spanner {
+#uoaddndohc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3636,11 +3328,11 @@ Geodetic CRS:  WGS 84</code></pre>
   width: 100%;
 }
 
-#qnvgppykse .gt_spanner_row {
+#uoaddndohc .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qnvgppykse .gt_group_heading {
+#uoaddndohc .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3666,7 +3358,7 @@ Geodetic CRS:  WGS 84</code></pre>
   text-align: left;
 }
 
-#qnvgppykse .gt_empty_group_heading {
+#uoaddndohc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3681,15 +3373,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: middle;
 }
 
-#qnvgppykse .gt_from_md > :first-child {
+#uoaddndohc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qnvgppykse .gt_from_md > :last-child {
+#uoaddndohc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qnvgppykse .gt_row {
+#uoaddndohc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3708,7 +3400,7 @@ Geodetic CRS:  WGS 84</code></pre>
   overflow-x: hidden;
 }
 
-#qnvgppykse .gt_stub {
+#uoaddndohc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3721,7 +3413,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qnvgppykse .gt_stub_row_group {
+#uoaddndohc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3735,15 +3427,15 @@ Geodetic CRS:  WGS 84</code></pre>
   vertical-align: top;
 }
 
-#qnvgppykse .gt_row_group_first td {
+#uoaddndohc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qnvgppykse .gt_row_group_first th {
+#uoaddndohc .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qnvgppykse .gt_summary_row {
+#uoaddndohc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3753,16 +3445,16 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qnvgppykse .gt_first_summary_row {
+#uoaddndohc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_first_summary_row.thick {
+#uoaddndohc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qnvgppykse .gt_last_summary_row {
+#uoaddndohc .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3772,7 +3464,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_grand_summary_row {
+#uoaddndohc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3782,7 +3474,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qnvgppykse .gt_first_grand_summary_row {
+#uoaddndohc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3792,7 +3484,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-top-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_last_grand_summary_row_top {
+#uoaddndohc .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3802,11 +3494,11 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_striped {
+#uoaddndohc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qnvgppykse .gt_table_body {
+#uoaddndohc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3815,7 +3507,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_footnotes {
+#uoaddndohc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3829,7 +3521,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_footnote {
+#uoaddndohc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3838,7 +3530,7 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qnvgppykse .gt_sourcenotes {
+#uoaddndohc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3852,7 +3544,7 @@ Geodetic CRS:  WGS 84</code></pre>
   border-right-color: #D3D3D3;
 }
 
-#qnvgppykse .gt_sourcenote {
+#uoaddndohc .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3860,72 +3552,72 @@ Geodetic CRS:  WGS 84</code></pre>
   padding-right: 5px;
 }
 
-#qnvgppykse .gt_left {
+#uoaddndohc .gt_left {
   text-align: left;
 }
 
-#qnvgppykse .gt_center {
+#uoaddndohc .gt_center {
   text-align: center;
 }
 
-#qnvgppykse .gt_right {
+#uoaddndohc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qnvgppykse .gt_font_normal {
+#uoaddndohc .gt_font_normal {
   font-weight: normal;
 }
 
-#qnvgppykse .gt_font_bold {
+#uoaddndohc .gt_font_bold {
   font-weight: bold;
 }
 
-#qnvgppykse .gt_font_italic {
+#uoaddndohc .gt_font_italic {
   font-style: italic;
 }
 
-#qnvgppykse .gt_super {
+#uoaddndohc .gt_super {
   font-size: 65%;
 }
 
-#qnvgppykse .gt_footnote_marks {
+#uoaddndohc .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qnvgppykse .gt_asterisk {
+#uoaddndohc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qnvgppykse .gt_indent_1 {
+#uoaddndohc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qnvgppykse .gt_indent_2 {
+#uoaddndohc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qnvgppykse .gt_indent_3 {
+#uoaddndohc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qnvgppykse .gt_indent_4 {
+#uoaddndohc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qnvgppykse .gt_indent_5 {
+#uoaddndohc .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qnvgppykse .katex-display {
+#uoaddndohc .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qnvgppykse div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#uoaddndohc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -4011,9 +3703,9 @@ Geodetic CRS:  WGS 84</code></pre>
 
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(SEMOVIENTES, AUTOMOTORES, BANCOS, PIRATERIA) <span class="sc">%&gt;%</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(SEMOVIENTES, AUTOMOTORES, BANCOS, PIRATERIA) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  SEMOVIENTES      AUTOMOTORES          BANCOS          PIRATERIA     
  Min.   : 0.000   Min.   :  0.000   Min.   :0.00000   Min.   :0.0000  
@@ -4024,12 +3716,6 @@ Geodetic CRS:  WGS 84</code></pre>
  Max.   :22.000   Max.   :909.000   Max.   :5.00000   Max.   :7.0000  </code></pre>
 </div>
 </div>
-<section id="augmented-data-analyst-4" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-4">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-4" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-4">Prompts</h3>
-</section>
 </section>
 <section id="covariance-matrix" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="covariance-matrix"><span class="header-section-number">1.6</span> Covariance Matrix</h2>
@@ -4042,11 +3728,11 @@ Geodetic CRS:  WGS 84</code></pre>
 <li><span class="math inline">\(( \Sigma )\)</span> is a <span class="math inline">\(( p \times p )\)</span> symmetric matrix.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Covariance Matrix"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Covariance Matrix"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Covariance Matrix</caption>
@@ -4437,12 +4123,6 @@ Geodetic CRS:  WGS 84</code></pre>
 </table>
 </div>
 </div>
-<section id="augmented-data-analyst-5" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-5">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-5" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-5">Prompts</h3>
-</section>
 </section>
 <section id="covariance-matrix-of-log-transformed-data" class="level2" data-number="1.7">
 <h2 data-number="1.7" class="anchored" data-anchor-id="covariance-matrix-of-log-transformed-data"><span class="header-section-number">1.7</span> Covariance Matrix of Log-Transformed Data</h2>
@@ -4454,12 +4134,12 @@ Geodetic CRS:  WGS 84</code></pre>
 <li><span class="math inline">\(( \bar{Y} )\)</span> is the <span class="math inline">\(( n \times p )\)</span> matrix of column means of <span class="math inline">\(( Y )\)</span>.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">log</span>(.x<span class="sc">+</span><span class="dv">1</span>))) <span class="sc">%&gt;%</span>  <span class="co"># Log-transform (+1 to handle zeros)</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Covariance Matrix (Log-Transformed)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">log</span>(.x<span class="sc">+</span><span class="dv">1</span>))) <span class="sc">%&gt;%</span>  <span class="co"># Log-transform (+1 to handle zeros)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Covariance Matrix (Log-Transformed)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Covariance Matrix (Log-Transformed)</caption>
@@ -4850,12 +4530,6 @@ Geodetic CRS:  WGS 84</code></pre>
 </table>
 </div>
 </div>
-<section id="augmented-data-analyst-6" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-6">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-6" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-6">Prompts</h3>
-</section>
 </section>
 <section id="redundant-variables" class="level2" data-number="1.8">
 <h2 data-number="1.8" class="anchored" data-anchor-id="redundant-variables"><span class="header-section-number">1.8</span> Redundant Variables</h2>
@@ -4877,27 +4551,27 @@ Geodetic CRS:  WGS 84</code></pre>
 </ul>
 <p>A high VIF suggests that <span class="math inline">\(x_j\)</span> contributes little independent information and may be removed to improve model stability.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Covariance matrix </span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>cm_delitos_data <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>()</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute eigenvalues and eigenvectors</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>eigen_results <span class="ot">&lt;-</span> cm_delitos_data <span class="sc">%&gt;%</span> <span class="fu">eigen</span>()</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract eigenvalues and eigenvectors</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>eigenvalues <span class="ot">&lt;-</span> eigen_results<span class="sc">$</span>values</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>eigenvectors <span class="ot">&lt;-</span> eigen_results<span class="sc">$</span>vectors</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display eigenvalues and eigenvectors</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(eigenvalues)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Covariance matrix </span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cm_delitos_data <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute eigenvalues and eigenvectors</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>eigen_results <span class="ot">&lt;-</span> cm_delitos_data <span class="sc">%&gt;%</span> <span class="fu">eigen</span>()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract eigenvalues and eigenvectors</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>eigenvalues <span class="ot">&lt;-</span> eigen_results<span class="sc">$</span>values</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>eigenvectors <span class="ot">&lt;-</span> eigen_results<span class="sc">$</span>vectors</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display eigenvalues and eigenvectors</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(eigenvalues)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 1.250876e+06 4.281621e+04 8.682038e+03 3.260064e+03 1.562742e+03
  [6] 7.490358e+02 6.065362e+02 3.816931e+02 2.568519e+02 2.392566e+02
 [11] 1.462624e+02 3.126313e+01 3.305127e+00 7.773118e-01 4.696514e-01
 [16] 2.357945e-01 6.157649e-02</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(eigenvectors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(eigenvectors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>               [,1]          [,2]          [,3]          [,4]          [,5]
  [1,] -5.829649e-02 -1.194454e-01  0.0269049756  1.235737e-03 -1.675000e-01
@@ -4972,64 +4646,64 @@ Geodetic CRS:  WGS 84</code></pre>
 [16,] -9.788664e-02  1.897415e-02
 [17,]  4.941401e-04  1.922524e-05</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The Smallest Eigenvalues</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(eigenvalues, <span class="at">decreasing =</span> <span class="cn">FALSE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The Smallest Eigenvalues</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(eigenvalues, <span class="at">decreasing =</span> <span class="cn">FALSE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.06157649 0.23579447 0.46965143 0.77731183 3.30512668</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The smallest eigenvalue is approximately zero</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>smallest_eigenvalue <span class="ot">&lt;-</span> <span class="fu">min</span>(eigenvalues)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The smallest eigenvalue is approximately zero</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>smallest_eigenvalue <span class="ot">&lt;-</span> <span class="fu">min</span>(eigenvalues)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.06157649</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Corresponding eigenvector</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>smallest_eigenvector <span class="ot">&lt;-</span> eigenvectors[, <span class="fu">which.min</span>(eigenvalues)]</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Corresponding eigenvector</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>smallest_eigenvector <span class="ot">&lt;-</span> eigenvectors[, <span class="fu">which.min</span>(eigenvalues)]</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]  4.933356e-04  4.789114e-04 -2.918330e-03 -2.483276e-03  3.726900e-03
  [6]  1.127947e-03  9.970398e-01 -1.473491e-03 -1.642480e-04 -2.829025e-05
 [11] -7.169017e-02  3.443305e-04  1.761460e-04  2.489371e-04  1.948032e-02
 [16]  1.897415e-02  1.922524e-05</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the eigenvector by dividing by the largest absolute value</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>normalized_eigenvector <span class="ot">&lt;-</span> smallest_eigenvector <span class="sc">/</span> <span class="fu">max</span>(<span class="fu">abs</span>(smallest_eigenvector))</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(normalized_eigenvector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the eigenvector by dividing by the largest absolute value</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>normalized_eigenvector <span class="ot">&lt;-</span> smallest_eigenvector <span class="sc">/</span> <span class="fu">max</span>(<span class="fu">abs</span>(smallest_eigenvector))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(normalized_eigenvector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]  4.948003e-04  4.803333e-04 -2.926994e-03 -2.490649e-03  3.737965e-03
  [6]  1.131296e-03  1.000000e+00 -1.477866e-03 -1.647357e-04 -2.837425e-05
 [11] -7.190302e-02  3.453528e-04  1.766689e-04  2.496762e-04  1.953816e-02
 [16]  1.903048e-02  1.928233e-05</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorted normalize the eigenvector</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">abs</span>(normalized_eigenvector), <span class="at">decreasing =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sorted normalize the eigenvector</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">abs</span>(normalized_eigenvector), <span class="at">decreasing =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 1.000000e+00 7.190302e-02 1.953816e-02 1.903048e-02 3.737965e-03
  [6] 2.926994e-03 2.490649e-03 1.477866e-03 1.131296e-03 4.948003e-04
 [11] 4.803333e-04 3.453528e-04 2.496762e-04 1.766689e-04 1.647357e-04
 [16] 2.837425e-05 1.928233e-05</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get numeric variable names (order matches eigenvector indices)</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>variable_names <span class="ot">&lt;-</span> <span class="fu">colnames</span>(delitos_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)))</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort normalized eigenvector by absolute contribution (descending order)</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>sorted_contributions <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">abs</span>(normalized_eigenvector), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the indices of the top contributions</span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>top_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(<span class="fu">abs</span>(normalized_eigenvector), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the names of the top variables</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>top_variable_names <span class="ot">&lt;-</span> variable_names[top_indices]</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the top variable names</span></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(top_variable_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get numeric variable names (order matches eigenvector indices)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>variable_names <span class="ot">&lt;-</span> <span class="fu">colnames</span>(delitos_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort normalized eigenvector by absolute contribution (descending order)</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>sorted_contributions <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">abs</span>(normalized_eigenvector), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the indices of the top contributions</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>top_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(<span class="fu">abs</span>(normalized_eigenvector), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the names of the top variables</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>top_variable_names <span class="ot">&lt;-</span> variable_names[top_indices]</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the top variable names</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(top_variable_names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "BANCOS"     "PIRATERIA"  "SECUESTRO"  "TERRORISMO"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a regression model to confirm the relationship</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(BANCOS <span class="sc">~</span> PIRATERIA <span class="sc">+</span> SECUESTRO <span class="sc">+</span> TERRORISMO, </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">data.frame</span>(cm_delitos_data))</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a regression model to confirm the relationship</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(BANCOS <span class="sc">~</span> PIRATERIA <span class="sc">+</span> SECUESTRO <span class="sc">+</span> TERRORISMO, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">data.frame</span>(cm_delitos_data))</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -5052,19 +4726,13 @@ Residual standard error: 2.721 on 13 degrees of freedom
 Multiple R-squared:  0.9814,    Adjusted R-squared:  0.9771 
 F-statistic: 228.6 on 3 and 13 DF,  p-value: 1.704e-11</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variance Inflation Factors</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Variance Inflation Factors</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> PIRATERIA  SECUESTRO TERRORISMO 
   76.58205  162.20340   29.44443 </code></pre>
 </div>
 </div>
-<section id="augmented-data-analyst-7" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-7">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-7" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-7">Prompts</h3>
-</section>
 </section>
 <section id="global-variability-metric" class="level2" data-number="1.9">
 <h2 data-number="1.9" class="anchored" data-anchor-id="global-variability-metric"><span class="header-section-number">1.9</span> Global Variability Metric</h2>
@@ -5089,38 +4757,32 @@ F-statistic: 228.6 on 3 and 13 DF,  p-value: 1.704e-11</code></pre>
 <li>Log-Transformed Effective Standard Deviation <span class="math inline">\(= \det(\log(\Sigma + 1))^{\frac{1}{2p}}\)</span></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>cov_matrix <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>BANCOS) <span class="sc">%&gt;%</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select numeric columns</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>() </span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Effective Variance</span></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(cov_matrix)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(cov_matrix))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>cov_matrix <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>BANCOS) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select numeric columns</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cov</span>() </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Effective Variance</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(cov_matrix)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(cov_matrix))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 221.1333</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-Transformed Effective Variance</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(<span class="fu">log</span>(cov_matrix <span class="sc">+</span> <span class="dv">1</span>))<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(cov_matrix))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-Transformed Effective Variance</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(<span class="fu">log</span>(cov_matrix <span class="sc">+</span> <span class="dv">1</span>))<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fu">ncol</span>(cov_matrix))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7122481</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Effective Standard Deviation</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(cov_matrix)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>(<span class="fu">ncol</span>(cov_matrix) <span class="sc">*</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Effective Standard Deviation</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(cov_matrix)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>(<span class="fu">ncol</span>(cov_matrix) <span class="sc">*</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 14.87055</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-Transformed Effective Standard Deviation</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(<span class="fu">log</span>(cov_matrix <span class="sc">+</span> <span class="dv">1</span>))<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>(<span class="fu">ncol</span>(cov_matrix) <span class="sc">*</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-Transformed Effective Standard Deviation</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(<span class="fu">log</span>(cov_matrix <span class="sc">+</span> <span class="dv">1</span>))<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>(<span class="fu">ncol</span>(cov_matrix) <span class="sc">*</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.843948</code></pre>
 </div>
 </div>
-<section id="augmented-data-analyst-8" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-8">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-8" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-8">Prompts</h3>
-</section>
 </section>
 <section id="linear-dependency-and-precision-matrix" class="level2" data-number="1.10">
 <h2 data-number="1.10" class="anchored" data-anchor-id="linear-dependency-and-precision-matrix"><span class="header-section-number">1.10</span> Linear Dependency and Precision Matrix</h2>
@@ -5128,15 +4790,15 @@ F-statistic: 228.6 on 3 and 13 DF,  p-value: 1.704e-11</code></pre>
 <p>The precision matrix <span class="math inline">\(( \Sigma^{-1} )\)</span>, the inverse of the covariance matrix, quantifies conditional dependencies. It highlights direct variable relationships, with zero entries indicating independence given other variables. These concepts are crucial for multicollinearity detection and improving model interpretability.</p>
 <p>Multicollinearity occurs when predictor variables are highly correlated, making it difficult to isolate their individual effects in a model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute precision matrix</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>S_inv <span class="ot">&lt;-</span> <span class="fu">solve</span>(cov_matrix)</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Display precision matrix (should match example values)</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Precision Matrix (S⁻¹):</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute precision matrix</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>S_inv <span class="ot">&lt;-</span> <span class="fu">solve</span>(cov_matrix)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Display precision matrix (should match example values)</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Precision Matrix (S⁻¹):</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Precision Matrix (S⁻¹):</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(S_inv, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(S_inv, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              SEXUALES EXTORSION HOMICIDIO HOMICIDIO_AT SEMOVIENTES AUTOMOTORES
 SEXUALES       3.2e-03  -8.7e-04  -1.1e-04     -9.2e-04    -0.00123     2.0e-04
@@ -5190,13 +4852,13 @@ SECUESTRO      2.6e-03   1.98866   -0.34864       1.6e-03
 TERRORISMO    -9.2e-04  -0.34864    1.46659       6.0e-04
 INTRAFAMILIAR -9.2e-05   0.00160    0.00060       1.2e-04</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract first row components</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>first_row <span class="ot">&lt;-</span> S_inv[<span class="dv">1</span>,]</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>diag_element <span class="ot">&lt;-</span> S_inv[<span class="dv">1</span>,<span class="dv">1</span>]</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate regression coefficients</span></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>beta_coefficients <span class="ot">&lt;-</span> <span class="sc">-</span>first_row[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>diag_element</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(beta_coefficients, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract first row components</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>first_row <span class="ot">&lt;-</span> S_inv[<span class="dv">1</span>,]</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>diag_element <span class="ot">&lt;-</span> S_inv[<span class="dv">1</span>,<span class="dv">1</span>]</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate regression coefficients</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>beta_coefficients <span class="ot">&lt;-</span> <span class="sc">-</span>first_row[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>diag_element</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(beta_coefficients, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    EXTORSION     HOMICIDIO  HOMICIDIO_AT   SEMOVIENTES   AUTOMOTORES 
         0.271         0.035         0.285         0.381        -0.063 
@@ -5205,28 +4867,28 @@ INTRAFAMILIAR -9.2e-05   0.00160    0.00060       1.2e-04</code></pre>
   LESIONES_AT      LESIONES     SECUESTRO    TERRORISMO INTRAFAMILIAR 
        -0.082         0.169         2.634        -0.585         0.102 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate residual variance and standar error</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>residual_variance <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>diag_element</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(residual_variance, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate residual variance and standar error</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>residual_variance <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>diag_element</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(residual_variance, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 311.01</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">round</span>(residual_variance, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">round</span>(residual_variance, <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 17.63548</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R^2</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>(cov_matrix[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">*</span> S_inv[<span class="dv">1</span>,<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R^2</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>(cov_matrix[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">*</span> S_inv[<span class="dv">1</span>,<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.940712</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression coefficients</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>delitos <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>BANCOS) <span class="sc">%&gt;%</span></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(SEXUALES <span class="sc">~</span> ., <span class="at">data =</span> <span class="fu">data.frame</span>(delitos))</span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression coefficients</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>delitos <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>BANCOS) <span class="sc">%&gt;%</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(SEXUALES <span class="sc">~</span> ., <span class="at">data =</span> <span class="fu">data.frame</span>(delitos))</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -5262,12 +4924,6 @@ Multiple R-squared:  0.9407,    Adjusted R-squared:   0.94
 F-statistic:  1268 on 15 and 1199 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<section id="augmented-data-analyst-9" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-9">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-9" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-9">Prompts</h3>
-</section>
 </section>
 </section>
 <section id="graphical-analysis" class="level1 unnumbered">
@@ -5275,28 +4931,28 @@ F-statistic:  1268 on 15 and 1199 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="distribution-of-crime-data" class="level2" data-number="1.11">
 <h2 data-number="1.11" class="anchored" data-anchor-id="distribution-of-crime-data"><span class="header-section-number">1.11</span> Distribution of Crime Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary library</span></span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the data to a long format for ggplot</span></span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>delitos_long <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
-<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Crime Type"</span>, <span class="at">values_to =</span> <span class="st">"Value"</span>)</span>
-<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create faceted histograms</span></span>
-<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delitos_long, <span class="fu">aes</span>(<span class="at">x =</span> Value)) <span class="sc">+</span></span>
-<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Crime Type</span><span class="st">`</span>, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span>  <span class="co"># Facet by crime type</span></span>
-<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distributions of Crime Data"</span>,</span>
-<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Value"</span>,</span>
-<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequency"</span></span>
-<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb63-20"><a href="#cb63-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb63-21"><a href="#cb63-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">5</span>)  <span class="co"># Reduce the font size of X-axis text</span></span>
-<span id="cb63-22"><a href="#cb63-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary library</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the data to a long format for ggplot</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>delitos_long <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Select only numeric columns</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Crime Type"</span>, <span class="at">values_to =</span> <span class="st">"Value"</span>)</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create faceted histograms</span></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delitos_long, <span class="fu">aes</span>(<span class="at">x =</span> Value)) <span class="sc">+</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Crime Type</span><span class="st">`</span>, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span>  <span class="co"># Facet by crime type</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distributions of Crime Data"</span>,</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Value"</span>,</span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequency"</span></span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">5</span>)  <span class="co"># Reduce the font size of X-axis text</span></span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -5309,25 +4965,25 @@ F-statistic:  1268 on 15 and 1199 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="log-transformed-crime-data-distributions" class="level2" data-number="1.12">
 <h2 data-number="1.12" class="anchored" data-anchor-id="log-transformed-crime-data-distributions"><span class="header-section-number">1.12</span> Log-Transformed Crime Data Distributions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the data to long format and apply log transformation</span></span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>delitos_long_log <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">log</span>(.x), <span class="at">.names =</span> <span class="st">"{col}"</span>)) <span class="sc">%&gt;%</span>  <span class="co"># Log transform (log(x + 1) to avoid log(0))</span></span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Crime Type"</span>, <span class="at">values_to =</span> <span class="st">"Log Value"</span>)</span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create faceted histograms for log-transformed values</span></span>
-<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delitos_long_log, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Log Value</span><span class="st">`</span>)) <span class="sc">+</span></span>
-<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Crime Type</span><span class="st">`</span>, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span>  <span class="co"># Facet by crime type</span></span>
-<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Log-Transformed Distributions of Crime Data"</span>,</span>
-<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Log Value"</span>,</span>
-<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequency"</span></span>
-<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">3</span>)  <span class="co"># Reduce the font size of X-axis text</span></span>
-<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the data to long format and apply log transformation</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>delitos_long_log <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric)) <span class="sc">%&gt;%</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">log</span>(.x), <span class="at">.names =</span> <span class="st">"{col}"</span>)) <span class="sc">%&gt;%</span>  <span class="co"># Log transform (log(x + 1) to avoid log(0))</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Crime Type"</span>, <span class="at">values_to =</span> <span class="st">"Log Value"</span>)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create faceted histograms for log-transformed values</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delitos_long_log, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">`</span><span class="at">Log Value</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Crime Type</span><span class="st">`</span>, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span>  <span class="co"># Facet by crime type</span></span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Log-Transformed Distributions of Crime Data"</span>,</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Log Value"</span>,</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequency"</span></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">3</span>)  <span class="co"># Reduce the font size of X-axis text</span></span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -5336,12 +4992,6 @@ F-statistic:  1268 on 15 and 1199 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </div>
-<section id="augmented-data-analyst-10" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="augmented-data-analyst-10">Augmented Data Analyst</h3>
-</section>
-<section id="prompts-10" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="prompts-10">Prompts</h3>
-</section>
 </section>
 </section>
 <section id="hands-on-data-analysis" class="level1 unnumbered">
