@@ -14,7 +14,7 @@ This section is based on *Análisis de datos multivariantes*. See [@peña2002an�
 #setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 # packages
-list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car')
+list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'sf')
 new.packages = list_packages[!(list_packages %in% installed.packages()[,"Package"])]
 if (length(new.packages)) {
   install.packages(new.packages)
@@ -27,8 +27,13 @@ for (package in list_packages){
 delitos_data <- read_excel("data/delitos_2024_v2.xlsx", 
     sheet = "2024")
 
+sf_delitos_data <- st_read("data/medellin_shp/med_socio_econo_urb_crime.shp")
+  
 dim(delitos_data)
 summary(delitos_data)
+
+dim(sf_delitos_data)
+summary(sf_delitos_data)
 ```
 
 ### Augmented Data Analyst {.unnumbered}
@@ -57,6 +62,16 @@ A skewness of $( 0 )$ indicates a perfectly symmetric distribution. Positive ske
 
 # skewness
 delitos_data %>%
+  select(where(is.numeric)) %>%  # Select only numeric columns
+  summarise(across(everything(), ~ skewness(.x, na.rm = TRUE))) %>%
+  t() %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "Crime Type") %>%
+  mutate(V1 = round(V1, 2)) %>%
+  rename(Skewness = V1) %>%
+  gt()
+
+sf_delitos_data %>%
   select(where(is.numeric)) %>%  # Select only numeric columns
   summarise(across(everything(), ~ skewness(.x, na.rm = TRUE))) %>%
   t() %>%
