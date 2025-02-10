@@ -14,7 +14,7 @@ This section is based on *Análisis de datos multivariantes*. See [@peña2002an�
 #setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 # packages
-list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car')
+list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'reshape2', 'knitr', 'gridExtra', 'ggExtra')
 new.packages = list_packages[!(list_packages %in% installed.packages()[,"Package"])]
 if (length(new.packages)) {
   install.packages(new.packages)
@@ -29,6 +29,12 @@ delitos_data <- read_excel("data/delitos_2024_v2.xlsx",
 
 dim(delitos_data)
 summary(delitos_data)
+
+# quantile
+quantile(delitos_data$AUTOMOTORES, probs = seq(0, 1, 0.1), na.rm = TRUE)
+
+#boxplot
+boxplot(delitos_data$AUTOMOTORES, main = "Boxplot of AUTOMOTORES", horizontal = TRUE)
 ```
 
 ## Skewness
@@ -50,6 +56,16 @@ A skewness of $( 0 )$ indicates a perfectly symmetric distribution. Positive ske
 #| echo: true
 #| message: false
 #| warning: false
+
+# step by step
+n <- length(delitos_data$AUTOMOTORES) 
+mean_x <- mean(delitos_data$AUTOMOTORES)
+sd_x <- sd(delitos_data$AUTOMOTORES)  # Uses (n-1) denominator
+z_scores <- (delitos_data$AUTOMOTORES - mean_x) / sd_x
+z_cubed <- z_scores^3
+sum_cubed <- sum(z_cubed)
+skewness <- (n / ((n - 1) * (n - 2))) * sum_cubed
+print(skewness)
 
 # skewness
 delitos_data %>%
@@ -83,10 +99,16 @@ A kurtosis of $( 0 )$ (excess kurtosis) indicates tail behavior similar to a nor
 #| message: false
 #| warning: false
 
+# step by step
+z_fourth <- z_scores^4
+sum_fourth <- sum(z_fourth)
+kurtosis <- ((n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3))) * sum_fourth - (3 * (n - 1)^2) / ((n - 2) * (n - 3))
+print(kurtosis)
+
 # kurtosis
 delitos_data %>%
   select(where(is.numeric)) %>%  # Select only numeric columns
-  summarise(across(everything(), ~ kurtosis(.x, na.rm = TRUE))) %>%
+  summarise(across(everything(), ~ kurtosis(.x, na.rm = TRUE) - 3)) %>%
   t() %>%
   as.data.frame() %>%
   tibble::rownames_to_column(var = "Crime Type") %>%
@@ -123,6 +145,45 @@ delitos_data %>%
   mutate(V1 = round(V1, 2)) %>%
   rename(SD = V1) %>%
   gt()
+
+# Compute statistics
+mean_val <- mean(delitos_data$AUTOMOTORES, na.rm = TRUE)
+print(mean_val)
+median_val <- median(delitos_data$AUTOMOTORES, na.rm = TRUE)
+print(median_val)
+std_dev <- sd(delitos_data$AUTOMOTORES, na.rm = TRUE)
+print(std_dev)
+
+# Compute the range for first standard deviation
+lower_bound <- mean_val - std_dev
+upper_bound <- mean_val + std_dev
+paste0('lower_bound: ', round(lower_bound, 2), ' - upper_bound: ', round(upper_bound, 2))
+
+# Count the number of points within 1 standard deviation
+within_1sd <- sum(delitos_data$AUTOMOTORES >= lower_bound & delitos_data$AUTOMOTORES <= upper_bound, na.rm = TRUE)
+percentage_1sd <- (within_1sd / nrow(delitos_data)) * 100
+paste0('within_1sd: ', round(within_1sd, 2), ' - percentage_1sd: ', round(percentage_1sd, 2))
+
+# Create histogram
+ggplot(delitos_data, aes(x = AUTOMOTORES)) +
+  geom_histogram(binwidth = 5, fill = "blue", alpha = 0.5, color = "black") +
+  
+  # Add vertical lines for mean, median, and 1st SD
+  geom_vline(aes(xintercept = mean_val), color = "red", linetype = "dashed", size = 1.2) +
+  #geom_vline(aes(xintercept = median_val), color = "green", linetype = "dashed", size = 1.2) +
+  geom_vline(aes(xintercept = lower_bound), color = "purple", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = upper_bound), color = "purple", linetype = "dashed", size = 1) +
+  
+  # Labels and title
+  labs(title = "Histogram of AUTOMOTORES with Mean, and 1SD Range",
+       x = "AUTOMOTORES Values", y = "Frequency") +
+  
+  # Add annotation for 1SD range
+  annotate("text", x = mean_val, y = 10, 
+           label = paste(round(percentage_1sd, 2), "% 1SD", sep = ""), 
+           color = "black", size = 5, hjust = 0.5, vjust = -1) +
+  
+  theme_minimal()
 
 # variation
 delitos_data %>%
@@ -179,6 +240,41 @@ delitos_data %>%
   rename(MAD = V1) %>%
   gt()
 
+# Compute statistics
+mad_val <- mad(delitos_data$AUTOMOTORES, na.rm = TRUE)  # Compute MAD
+print(mad_val)
+
+# Compute the range for first standard deviation
+lower_bound <- median_val - mad_val
+upper_bound <- median_val + mad_val
+paste0('lower_bound: ', round(lower_bound, 2), ' - upper_bound: ', round(upper_bound, 2))
+
+# Count the number of points within 1 MAD
+within_1mad <- sum(delitos_data$AUTOMOTORES >= lower_bound & delitos_data$AUTOMOTORES <= upper_bound, na.rm = TRUE)
+percentage_1mad <- (within_1mad / nrow(delitos_data)) * 100
+paste0('within_1mad: ', round(within_1mad, 2), ' - percentage_1mad: ', round(percentage_1mad, 2))
+
+# Create histogram
+ggplot(delitos_data, aes(x = AUTOMOTORES)) +
+  geom_histogram(binwidth = 5, fill = "blue", alpha = 0.5, color = "black") +
+  
+  # Add vertical lines for mean, median, and 1st SD
+  #geom_vline(aes(xintercept = mean_val), color = "red", linetype = "dashed", size = 1.2) +
+  geom_vline(aes(xintercept = median_val), color = "green", linetype = "dashed", size = 1.2) +
+  geom_vline(aes(xintercept = lower_bound), color = "purple", linetype = "dashed", size = 1) +
+  geom_vline(aes(xintercept = upper_bound), color = "purple", linetype = "dashed", size = 1) +
+  
+  # Labels and title
+  labs(title = "Histogram of AUTOMOTORES with Median, and 1MAD Range",
+       x = "AUTOMOTORES Values", y = "Frequency") +
+  
+  # Add annotation for 1SD range
+  annotate("text", x = median_val, y = 10, 
+           label = paste(within_1mad, "points (", round(percentage_1mad, 2), "%) 1MAD", sep = ""), 
+           color = "black", size = 5, hjust = 0.5, vjust = -1) +
+  
+  theme_minimal()
+
 # MAD/Median
 delitos_data %>%
   select(where(is.numeric)) %>%
@@ -233,17 +329,158 @@ where:
 -   $( Y )$ is the $( n \times p )$ log-transformed data matrix.
 -   $( \bar{Y} )$ is the $( n \times p )$ matrix of column means of $( Y )$.
 
+We are going to begin by understanding log transformation, a key tool for handling multiplicative relationships in data. 
+
+- Compresses large values to reduce skewness.
+- Converts multiplicative relationships into additive ones.
+- Eases interpretation when values span multiple orders of magnitude.
+
 ```{r}
 #| echo: true
 #| message: false
 #| warning: false
 
+# Define the dataset
+x <- delitos_data$AUTOMOTORES
+
+# 1. Compute Raw Arithmetic Mean
+arithmetic_mean <- mean(x)
+print(arithmetic_mean)
+
+# 2. Compute Log-Mean (Multiplicative Center)
+log_x <- log(x + 1)  # Take logarithm of values
+head(log_x)
+log_mean <- mean(log_x)  # Compute mean in log-space
+print(log_mean)
+log_mean_exp <- exp(log_mean)  # Convert back to original scale
+print(log_mean_exp)
+
+# Create the comparison table
+comparison_table <- data.frame(
+  Index = seq_along(x),  # Just an index for x-axis
+  Original_Value = x,
+  Log_Value = log_x
+)
+
+p1 <- ggplot(comparison_table, aes(x = Original_Value, y = Log_Value)) +
+  geom_line(color = "gray70", size = 0.7, alpha = 0.5) +  # Thin line connecting points
+  geom_point(alpha = 0.7, color = "blue") +  # Scatter points with transparency
+  labs(
+    title = "Scatter Plot: Original vs. Log-Transformed Values",
+    x = "Original Values",
+    y = "Log-Transformed Values"
+  ) +
+  theme_minimal()
+
+# Add marginal histogram
+ggMarginal(
+  p1,
+  type = "histogram",         # Add marginal histograms
+  bins = 40,                  # Number of bins for the histogram
+  margins = "both",           # Add histogram to both x and y margins
+  size = 5,                   # Size of the histograms relative to the scatter plot
+  fill = "gray",              # Fill color for the histogram
+  color = "black",            # Outline color for the histogram
+  alpha = 0.5                 # Transparency
+)
+```
+
+```{r}
+#| include: false
+# Store values for inline Quarto text
+log_values <- paste(round(head(comparison_table$Log_Value), 2), collapse = ", ")
+original_values <- paste(head(comparison_table$Original_Value), collapse = ", ")
+```
+
+
+Euler steps describe how many multiplicative steps of $( e )$ are needed to reach a given value.
+
+For example, in our dataset:
+
+- Original Values: `r original_values`  
+- Log Values: `r log_values`  
+
+Each log-transformed value represents the number of times we need to multiply 1 by $( e )$ to reach the original value:
+
+$e^ \text{Log Values} = \text{Original Value}$
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+#log transformed data
+# Compute statistics for raw and log-transformed data
+mean_raw <- mean(delitos_data$AUTOMOTORES, na.rm = TRUE)
+sd_raw <- sd(delitos_data$AUTOMOTORES, na.rm = TRUE)
+mad_raw <- mad(delitos_data$AUTOMOTORES, na.rm = TRUE)
+
+delitos_data_log <- delitos_data %>%
+  #mutate(LOG_AUTOMOTORES = log(AUTOMOTORES + 1))
+  mutate(LOG_AUTOMOTORES = log1p(AUTOMOTORES))  # log1p(x) = log(1 + x) to handle zeros
+
+mean_log <- mean(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE)
+sd_log <- sd(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE)
+mad_log <- mad(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE)
+
+# Compute statistics for raw and log-transformed data
+data.frame(
+  Measure = c("Mean", "Median", "Standard Deviation", "MAD"),
+  Raw_Data = c(mean(delitos_data$AUTOMOTORES, na.rm = TRUE),
+               median(delitos_data$AUTOMOTORES, na.rm = TRUE),
+               sd(delitos_data$AUTOMOTORES, na.rm = TRUE),
+               mad(delitos_data$AUTOMOTORES, na.rm = TRUE)),
+  Log_Transformed_Data = c(mean(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE),
+                           median(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE),
+                           sd(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE),
+                           mad(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE)))
+
+# Transform the data to a long format for ggplot
+delitos_long <- delitos_data %>%
+  select(where(is.numeric)) %>%  # Select only numeric columns
+  pivot_longer(cols = everything(), names_to = "Crime Type", values_to = "Value")
+
+# Create faceted histograms
+ggplot(delitos_long, aes(x = Value)) +
+  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
+  facet_wrap(~ `Crime Type`, scales = "free") +  # Facet by crime type
+  theme_minimal() +
+  labs(
+    title = "Distributions of Crime Data",
+    x = "Value",
+    y = "Frequency"
+  ) +
+  theme(
+    axis.text.x = element_text(size = 5)  # Reduce the font size of X-axis text
+  )
+
+# Transform the data to long format and apply log transformation
+delitos_long_log <- delitos_data %>%
+  select(where(is.numeric)) %>%
+  mutate(across(everything(), ~ log(.x), .names = "{col}")) %>%  # Log transform (log(x + 1) to avoid log(0))
+  pivot_longer(cols = everything(), names_to = "Crime Type", values_to = "Log Value")
+
+# Create faceted histograms for log-transformed values
+ggplot(delitos_long_log, aes(x = `Log Value`)) +
+  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
+  facet_wrap(~ `Crime Type`, scales = "free") +  # Facet by crime type
+  theme_minimal() +
+  labs(
+    title = "Log-Transformed Distributions of Crime Data",
+    x = "Log Value",
+    y = "Frequency"
+  ) +
+  theme(
+    axis.text.x = element_text(size = 3)  # Reduce the font size of X-axis text
+  )
+
+# Covariance Matrix (Log-Transformed)
 delitos_data %>%
   select(where(is.numeric)) %>%
   mutate(across(everything(), ~ log(.x+1))) %>%  # Log-transform (+1 to handle zeros)
   cov() %>%
   round(2) %>%
-  knitr::kable(digits = 2, caption = "Covariance Matrix (Log-Transformed)")
+  kable(digits = 2, caption = "Covariance Matrix (Log-Transformed)")
 ```
 
 ## Redundant Variables
@@ -272,6 +509,84 @@ where $R_j^2$ is the $R^2$ value from regressing $x_j$ on all other predictors.
 
 A high VIF suggests that $x_j$ contributes little independent information and may be removed to improve model stability.
 
+Eigenvalues and eigenvectors are fundamental tools in linear algebra, representing the directions and scaling factors of a matrix transformation. 
+
+1. Eigenvalues: Solving the Characteristic Equation
+
+The eigenvalues $( \lambda )$ of a matrix $( A )$ satisfy:
+
+$\det(A - \lambda I) = 0$
+
+Where:
+- $( A )$ is the matrix.
+- $( \lambda )$ is the eigenvalue (unknown).
+- $( I )$ is the identity matrix (a diagonal matrix with 1s on the diagonal).
+
+The characteristic polynomial is derived by computing $( \det(A - \lambda I) )$ and solving for $( \lambda )$.
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Define the matrix A
+matrix_a <- matrix(c(4, 2, 2, 3), nrow = 2, byrow = TRUE)
+print(matrix_a)
+
+# Compute the characteristic polynomial
+# A - λI (lambda is the eigenvalue)
+identity_matrix <- diag(nrow(matrix_a))  # Create identity matrix
+print(identity_matrix)
+lambda <- seq(-10, 20, by = 0.01)  # Range of lambda values for solving
+det_values <- numeric(length(lambda))  # Store determinant values
+
+# Calculate det(A - λI) for each lambda
+for (i in seq_along(lambda)) {
+  char_matrix <- matrix_a - lambda[i] * identity_matrix
+  det_values[i] <- det(char_matrix)
+}
+
+# Find approximate eigenvalues where det(A - λI) = 0
+eigenvalue_indices <- which(abs(det_values) < 1e-4)  # Tolerance for numerical precision
+eigenvalues <- lambda[eigenvalue_indices]
+print(eigenvalues)
+```
+
+Eigenvectors: Solving for Principal Directions
+
+For each eigenvalue $( \lambda )$, the eigenvector $( v )$ satisfies:
+
+$(A - \lambda I)v = 0$
+
+This is a homogeneous system of linear equations. Solving this system gives the eigenvector(s) associated with each eigenvalue.
+
+```{r}
+# Step 3: Compute eigenvectors for each eigenvalue
+eigenvectors <- list()
+for (i in seq_along(eigenvalues)) {
+  lambda_i <- eigenvalues[i]
+  char_matrix <- matrix_a - lambda_i * identity_matrix
+  # Solve (A - λI)v = 0 using Gaussian elimination
+  eigenvector <- nullspace(char_matrix)
+  eigenvectors[[i]] <- eigenvector
+}
+
+# Display eigenvectors
+print("Eigenvectors:")
+print(eigenvectors)
+
+# Utility function for null space (solve for eigenvectors)
+nullspace <- function(A, tol = 1e-7) {
+  svd_res <- svd(A)
+  null_mask <- svd_res$d <= tol
+  if (any(null_mask)) {
+    return(svd_res$v[, null_mask, drop = FALSE])
+  } else {
+    return(matrix(0, nrow = ncol(A), ncol = 0))
+  }
+}
+```
+
 ```{r}
 #| echo: true
 #| message: false
@@ -291,7 +606,7 @@ eigenvectors <- eigen_results$vectors
 
 # Display eigenvalues and eigenvectors
 print(eigenvalues)
-print(eigenvectors)
+head(eigenvectors)
 
 # The Smallest Eigenvalues
 sort(eigenvalues, decreasing = FALSE)[1:5]
@@ -426,67 +741,6 @@ delitos <- delitos_data %>%
 
 model <- lm(SEXUALES ~ ., data = data.frame(delitos))
 summary(model)
-```
-
-# Graphical analysis {.unnumbered}
-
-## Distribution of Crime Data
-
-```{r}
-#| echo: true
-#| message: false
-#| warning: false
-
-# Load necessary library
-library(ggplot2)
-library(tidyr)
-
-# Transform the data to a long format for ggplot
-delitos_long <- delitos_data %>%
-  select(where(is.numeric)) %>%  # Select only numeric columns
-  pivot_longer(cols = everything(), names_to = "Crime Type", values_to = "Value")
-
-# Create faceted histograms
-ggplot(delitos_long, aes(x = Value)) +
-  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
-  facet_wrap(~ `Crime Type`, scales = "free") +  # Facet by crime type
-  theme_minimal() +
-  labs(
-    title = "Distributions of Crime Data",
-    x = "Value",
-    y = "Frequency"
-  ) +
-  theme(
-    axis.text.x = element_text(size = 5)  # Reduce the font size of X-axis text
-  )
-```
-
-## Log-Transformed Crime Data Distributions
-
-```{r}
-#| echo: true
-#| message: false
-#| warning: false
-
-# Transform the data to long format and apply log transformation
-delitos_long_log <- delitos_data %>%
-  select(where(is.numeric)) %>%
-  mutate(across(everything(), ~ log(.x), .names = "{col}")) %>%  # Log transform (log(x + 1) to avoid log(0))
-  pivot_longer(cols = everything(), names_to = "Crime Type", values_to = "Log Value")
-
-# Create faceted histograms for log-transformed values
-ggplot(delitos_long_log, aes(x = `Log Value`)) +
-  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
-  facet_wrap(~ `Crime Type`, scales = "free") +  # Facet by crime type
-  theme_minimal() +
-  labs(
-    title = "Log-Transformed Distributions of Crime Data",
-    x = "Log Value",
-    y = "Frequency"
-  ) +
-  theme(
-    axis.text.x = element_text(size = 3)  # Reduce the font size of X-axis text
-  )
 ```
 
 # Hands-on Data Analysis {.unnumbered}
