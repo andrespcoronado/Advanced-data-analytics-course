@@ -551,6 +551,7 @@ print(are_equal)
 cm_delitos_data <- delitos_data %>%
   st_drop_geometry() %>%
   select(contains('24')) %>%
+  #select(-sum_24TR, -sum_24SE, -sum_24SS) %>%
   cov()
 
 # Compute eigenvalues and eigenvectors
@@ -565,7 +566,7 @@ print(eigenvalues)
 head(eigenvectors)
 
 # The Smallest Eigenvalues
-sort(eigenvalues, decreasing = FALSE)[1:5]
+sort(eigenvalues, decreasing = FALSE)
 
 # The smallest eigenvalue is approximately zero
 smallest_eigenvalue <- min(eigenvalues)
@@ -583,13 +584,13 @@ print(normalized_eigenvector)
 sort(abs(normalized_eigenvector), decreasing = T)
 
 # Get numeric variable names (order matches eigenvector indices)
-variable_names <- colnames(delitos_data %>% select(where(is.numeric)))
+variable_names <- colnames(delitos_data %>% select(contains('24')))
 
 # Sort normalized eigenvector by absolute contribution (descending order)
 sorted_contributions <- sort(abs(normalized_eigenvector), decreasing = TRUE)
 
 # Get the indices of the top contributions
-top_indices <- order(abs(normalized_eigenvector), decreasing = TRUE)[1:4]
+top_indices <- order(abs(normalized_eigenvector), decreasing = TRUE)
 
 # Get the names of the top variables
 top_variable_names <- variable_names[top_indices]
@@ -598,8 +599,27 @@ top_variable_names <- variable_names[top_indices]
 print(top_variable_names)
 
 # Fit a regression model to confirm the relationship
-model <- lm(BANCOS ~ PIRATERIA + SECUESTRO + TERRORISMO, 
+model <- lm(sum_24TR ~ sum_24HOM + sum_24LP + sum_24VI + 
+              sum_24DS + sum_24HP + sum_24HR + 
+              sum_24HC + sum_24HA + sum_24HM + 
+              sum_24SS + sum_24SE + sum_24EX, 
             data = data.frame(cm_delitos_data))
+
+# model <- lm(sum_24SE ~ sum_24DS + sum_24EX + sum_24SS + sum_24LP + 
+#               sum_24HOM + sum_24HR + sum_24VI + sum_24HM + 
+#               sum_24HA + sum_24HP + sum_24HC, 
+#             data = data.frame(cm_delitos_data))
+# 
+# model <- lm(sum_24SS ~ sum_24EX + sum_24HC + sum_24HR + 
+#                   sum_24HA + sum_24DS + sum_24HM + 
+#                   sum_24HOM + sum_24HP + sum_24VI + sum_24LP,
+#                 data = data.frame(cm_delitos_data))
+# 
+# model <- lm(sum_24HOM ~ sum_24HA + sum_24EX + sum_24HM + 
+#               sum_24LP + sum_24HR + sum_24VI + 
+#               sum_24HC + sum_24HP + sum_24DS, 
+#             data = data.frame(cm_delitos_data))
+
 summary(model)
 
 # Variance Inflation Factors
@@ -637,7 +657,9 @@ Similarly, the log-transformed effective standard deviation is:
 #| warning: false
 
 cov_matrix <- delitos_data %>%
-  select(-BANCOS) %>%
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
+  select(-sum_24TR, -sum_24SE, -sum_24SS) %>%
   select(where(is.numeric)) %>%  # Select numeric columns
   cov() 
 
@@ -692,10 +714,11 @@ sqrt(round(residual_variance, 2))
 
 # Regression coefficients
 delitos <- delitos_data %>%
-  select(-BANCOS) %>%
-  select(where(is.numeric))
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
+  select(-sum_24TR, -sum_24SE, -sum_24SS)
 
-model <- lm(SEXUALES ~ ., data = data.frame(delitos))
+model <- lm(sum_24HA ~ ., data = data.frame(delitos))
 summary(model)
 ```
 
