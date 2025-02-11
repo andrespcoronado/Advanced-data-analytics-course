@@ -14,7 +14,7 @@ This section is based on *Análisis de datos multivariantes*. See [@peña2002an�
 #setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 # packages
-list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'reshape2', 'knitr', 'gridExtra', 'ggExtra')
+list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'reshape2', 'knitr', 'gridExtra', 'ggExtra', 'sf')
 new.packages = list_packages[!(list_packages %in% installed.packages()[,"Package"])]
 if (length(new.packages)) {
   install.packages(new.packages)
@@ -24,17 +24,18 @@ for (package in list_packages){
 }
 
 # Load the dataset
-delitos_data <- read_excel("data/delitos_2024_v2.xlsx", 
-    sheet = "2024")
+delitos_data <- st_read("data/spatial/crime_spatial_course.gpkg")
+delitos_data <- delitos_data[delitos_data$dpto_ccdgo == '11', ]
 
 dim(delitos_data)
 summary(delitos_data)
+plot(delitos_data$geo)
 
 # quantile
-quantile(delitos_data$AUTOMOTORES, probs = seq(0, 1, 0.1), na.rm = TRUE)
+quantile(delitos_data$sum_24HP, probs = seq(0, 1, 0.1), na.rm = TRUE)
 
 #boxplot
-boxplot(delitos_data$AUTOMOTORES, main = "Boxplot of AUTOMOTORES", horizontal = TRUE)
+boxplot(delitos_data$sum_24HP, main = "Boxplot of PERSONAS", horizontal = TRUE)
 ```
 
 ## Skewness
@@ -58,18 +59,22 @@ A skewness of $( 0 )$ indicates a perfectly symmetric distribution. Positive ske
 #| warning: false
 
 # step by step
-n <- length(delitos_data$AUTOMOTORES) 
-mean_x <- mean(delitos_data$AUTOMOTORES)
-sd_x <- sd(delitos_data$AUTOMOTORES)  # Uses (n-1) denominator
-z_scores <- (delitos_data$AUTOMOTORES - mean_x) / sd_x
+n <- length(delitos_data$sum_24HP) 
+mean_x <- mean(delitos_data$sum_24HP)
+sd_x <- sd(delitos_data$sum_24HP)  # Uses (n-1) denominator
+z_scores <- (delitos_data$sum_24HP - mean_x) / sd_x
 z_cubed <- z_scores^3
 sum_cubed <- sum(z_cubed)
 skewness <- (n / ((n - 1) * (n - 2))) * sum_cubed
-print(skewness)
+paste0('sum_24HP: ', skewness)
+
+# function
+skewness(delitos_data$sum_24HP, na.rm = TRUE)
 
 # skewness
 delitos_data %>%
-  select(where(is.numeric)) %>%  # Select only numeric columns
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
   summarise(across(everything(), ~ skewness(.x, na.rm = TRUE))) %>%
   t() %>%
   as.data.frame() %>%
@@ -105,15 +110,19 @@ sum_fourth <- sum(z_fourth)
 kurtosis <- ((n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3))) * sum_fourth - (3 * (n - 1)^2) / ((n - 2) * (n - 3))
 print(kurtosis)
 
-# kurtosis
+# function
+kurtosis(delitos_data$sum_24HP, na.rm = TRUE)
+
+# skewness
 delitos_data %>%
-  select(where(is.numeric)) %>%  # Select only numeric columns
-  summarise(across(everything(), ~ kurtosis(.x, na.rm = TRUE) - 3)) %>%
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
+  summarise(across(everything(), ~ kurtosis(.x, na.rm = TRUE))) %>%
   t() %>%
   as.data.frame() %>%
   tibble::rownames_to_column(var = "Crime Type") %>%
   mutate(V1 = round(V1, 2)) %>%
-  rename(Kurtosis = V1) %>%
+  rename(Skewness = V1) %>%
   gt()
 ```
 
@@ -135,23 +144,10 @@ The coefficient of variation is particularly useful for comparing the variabilit
 #| message: false
 #| warning: false
 
-# Standard Deviation (SD)
-delitos_data %>%
-  select(where(is.numeric)) %>%
-  summarise(across(everything(), ~ sd(.x, na.rm = TRUE))) %>%
-  t() %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "Crime Type") %>%
-  mutate(V1 = round(V1, 2)) %>%
-  rename(SD = V1) %>%
-  gt()
-
 # Compute statistics
-mean_val <- mean(delitos_data$AUTOMOTORES, na.rm = TRUE)
+mean_val <- mean(delitos_data$sum_24HP, na.rm = TRUE)
 print(mean_val)
-median_val <- median(delitos_data$AUTOMOTORES, na.rm = TRUE)
-print(median_val)
-std_dev <- sd(delitos_data$AUTOMOTORES, na.rm = TRUE)
+std_dev <- sd(delitos_data$sum_24HP, na.rm = TRUE)
 print(std_dev)
 
 # Compute the range for first standard deviation
@@ -160,12 +156,12 @@ upper_bound <- mean_val + std_dev
 paste0('lower_bound: ', round(lower_bound, 2), ' - upper_bound: ', round(upper_bound, 2))
 
 # Count the number of points within 1 standard deviation
-within_1sd <- sum(delitos_data$AUTOMOTORES >= lower_bound & delitos_data$AUTOMOTORES <= upper_bound, na.rm = TRUE)
+within_1sd <- sum(delitos_data$sum_24HP >= lower_bound & delitos_data$sum_24HP <= upper_bound, na.rm = TRUE)
 percentage_1sd <- (within_1sd / nrow(delitos_data)) * 100
 paste0('within_1sd: ', round(within_1sd, 2), ' - percentage_1sd: ', round(percentage_1sd, 2))
 
 # Create histogram
-ggplot(delitos_data, aes(x = AUTOMOTORES)) +
+ggplot(delitos_data, aes(x = sum_24HP)) +
   geom_histogram(binwidth = 5, fill = "blue", alpha = 0.5, color = "black") +
   
   # Add vertical lines for mean, median, and 1st SD
@@ -185,9 +181,13 @@ ggplot(delitos_data, aes(x = AUTOMOTORES)) +
   
   theme_minimal()
 
+# cv
+paste0('cv: ', round(std_dev / mean_val * 100), 2)
+
 # variation
 delitos_data %>%
-  select(where(is.numeric)) %>%  # Select only numeric columns
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
   summarise(
     across(
       everything(),
@@ -229,19 +229,10 @@ This ratio provides a scale-independent measure of variability, making it useful
 #| message: false
 #| warning: false
 
-# MAD
-delitos_data %>%
-  select(where(is.numeric)) %>%
-  summarise(across(everything(), ~ mad(.x, na.rm = TRUE))) %>%
-  t() %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "Crime Type") %>%
-  mutate(V1 = round(V1, 2)) %>%
-  rename(MAD = V1) %>%
-  gt()
-
 # Compute statistics
-mad_val <- mad(delitos_data$AUTOMOTORES, na.rm = TRUE)  # Compute MAD
+median_val <- median(delitos_data$sum_24HP, na.rm = TRUE)
+print(median_val)
+mad_val <- mad(delitos_data$sum_24HP, na.rm = TRUE)  # Compute MAD
 print(mad_val)
 
 # Compute the range for first standard deviation
@@ -250,12 +241,12 @@ upper_bound <- median_val + mad_val
 paste0('lower_bound: ', round(lower_bound, 2), ' - upper_bound: ', round(upper_bound, 2))
 
 # Count the number of points within 1 MAD
-within_1mad <- sum(delitos_data$AUTOMOTORES >= lower_bound & delitos_data$AUTOMOTORES <= upper_bound, na.rm = TRUE)
+within_1mad <- sum(delitos_data$sum_24HP >= lower_bound & delitos_data$sum_24HP <= upper_bound, na.rm = TRUE)
 percentage_1mad <- (within_1mad / nrow(delitos_data)) * 100
 paste0('within_1mad: ', round(within_1mad, 2), ' - percentage_1mad: ', round(percentage_1mad, 2))
 
 # Create histogram
-ggplot(delitos_data, aes(x = AUTOMOTORES)) +
+ggplot(delitos_data, aes(x = sum_24HP)) +
   geom_histogram(binwidth = 5, fill = "blue", alpha = 0.5, color = "black") +
   
   # Add vertical lines for mean, median, and 1st SD
@@ -276,23 +267,7 @@ ggplot(delitos_data, aes(x = AUTOMOTORES)) +
   theme_minimal()
 
 # MAD/Median
-delitos_data %>%
-  select(where(is.numeric)) %>%
-  summarise(across(everything(), ~ ifelse(
-    median(.x, na.rm = TRUE) != 0,
-    mad(.x, na.rm = TRUE) / median(.x, na.rm = TRUE),
-    NA
-  ))) %>%
-  t() %>%
-  as.data.frame() %>%
-  tibble::rownames_to_column(var = "Crime Type") %>%
-  mutate(V1 = round(V1, 2)) %>%
-  rename(`MAD/Median` = V1) %>%
-  gt()
-
-delitos_data %>%
-  select(SEMOVIENTES, AUTOMOTORES, BANCOS, PIRATERIA) %>%
-  summary()
+paste0('MAD/Median: ', round(mad_val / median_val * 100), 2)
 ```
 
 ## Covariance Matrix
@@ -312,7 +287,8 @@ where:
 #| message: false
 #| warning: false
 delitos_data %>%
-  select(where(is.numeric)) %>%
+  st_drop_geometry() %>%
+  select(contains("24")) %>%
   cov() %>%
   round(2) %>%
   knitr::kable(digits = 2, caption = "Covariance Matrix")
@@ -329,11 +305,11 @@ where:
 -   $( Y )$ is the $( n \times p )$ log-transformed data matrix.
 -   $( \bar{Y} )$ is the $( n \times p )$ matrix of column means of $( Y )$.
 
-We are going to begin by understanding log transformation, a key tool for handling multiplicative relationships in data. 
+We are going to begin by understanding log transformation, a key tool for handling multiplicative relationships in data.
 
-- Compresses large values to reduce skewness.
-- Converts multiplicative relationships into additive ones.
-- Eases interpretation when values span multiple orders of magnitude.
+-   Compresses large values to reduce skewness.
+-   Converts multiplicative relationships into additive ones.
+-   Eases interpretation when values span multiple orders of magnitude.
 
 ```{r}
 #| echo: true
@@ -341,7 +317,7 @@ We are going to begin by understanding log transformation, a key tool for handli
 #| warning: false
 
 # Define the dataset
-x <- delitos_data$AUTOMOTORES
+x <- delitos_data$sum_24HP
 
 # 1. Compute Raw Arithmetic Mean
 arithmetic_mean <- mean(x)
@@ -392,13 +368,12 @@ log_values <- paste(round(head(comparison_table$Log_Value), 2), collapse = ", ")
 original_values <- paste(head(comparison_table$Original_Value), collapse = ", ")
 ```
 
-
 Euler steps describe how many multiplicative steps of $( e )$ are needed to reach a given value.
 
 For example, in our dataset:
 
-- Original Values: `r original_values`  
-- Log Values: `r log_values`  
+-   Original Values: `r original_values`\
+-   Log Values: `r log_values`
 
 Each log-transformed value represents the number of times we need to multiply 1 by $( e )$ to reach the original value:
 
@@ -411,13 +386,13 @@ $e^ \text{Log Values} = \text{Original Value}$
 
 #log transformed data
 # Compute statistics for raw and log-transformed data
-mean_raw <- mean(delitos_data$AUTOMOTORES, na.rm = TRUE)
-sd_raw <- sd(delitos_data$AUTOMOTORES, na.rm = TRUE)
-mad_raw <- mad(delitos_data$AUTOMOTORES, na.rm = TRUE)
+mean_raw <- mean(delitos_data$sum_24HP, na.rm = TRUE)
+sd_raw <- sd(delitos_data$sum_24HP, na.rm = TRUE)
+mad_raw <- mad(delitos_data$sum_24HP, na.rm = TRUE)
 
 delitos_data_log <- delitos_data %>%
   #mutate(LOG_AUTOMOTORES = log(AUTOMOTORES + 1))
-  mutate(LOG_AUTOMOTORES = log1p(AUTOMOTORES))  # log1p(x) = log(1 + x) to handle zeros
+  mutate(LOG_AUTOMOTORES = log1p(sum_24HP))  # log1p(x) = log(1 + x) to handle zeros
 
 mean_log <- mean(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE)
 sd_log <- sd(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE)
@@ -426,10 +401,10 @@ mad_log <- mad(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE)
 # Compute statistics for raw and log-transformed data
 data.frame(
   Measure = c("Mean", "Median", "Standard Deviation", "MAD"),
-  Raw_Data = c(mean(delitos_data$AUTOMOTORES, na.rm = TRUE),
-               median(delitos_data$AUTOMOTORES, na.rm = TRUE),
-               sd(delitos_data$AUTOMOTORES, na.rm = TRUE),
-               mad(delitos_data$AUTOMOTORES, na.rm = TRUE)),
+  Raw_Data = c(mean(delitos_data$sum_24HP, na.rm = TRUE),
+               median(delitos_data$sum_24HP, na.rm = TRUE),
+               sd(delitos_data$sum_24HP, na.rm = TRUE),
+               mad(delitos_data$sum_24HP, na.rm = TRUE)),
   Log_Transformed_Data = c(mean(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE),
                            median(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE),
                            sd(delitos_data_log$LOG_AUTOMOTORES, na.rm = TRUE),
@@ -437,7 +412,8 @@ data.frame(
 
 # Transform the data to a long format for ggplot
 delitos_long <- delitos_data %>%
-  select(where(is.numeric)) %>%  # Select only numeric columns
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
   pivot_longer(cols = everything(), names_to = "Crime Type", values_to = "Value")
 
 # Create faceted histograms
@@ -456,7 +432,8 @@ ggplot(delitos_long, aes(x = Value)) +
 
 # Transform the data to long format and apply log transformation
 delitos_long_log <- delitos_data %>%
-  select(where(is.numeric)) %>%
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
   mutate(across(everything(), ~ log(.x), .names = "{col}")) %>%  # Log transform (log(x + 1) to avoid log(0))
   pivot_longer(cols = everything(), names_to = "Crime Type", values_to = "Log Value")
 
@@ -476,7 +453,8 @@ ggplot(delitos_long_log, aes(x = `Log Value`)) +
 
 # Covariance Matrix (Log-Transformed)
 delitos_data %>%
-  select(where(is.numeric)) %>%
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
   mutate(across(everything(), ~ log(.x+1))) %>%  # Log-transform (+1 to handle zeros)
   cov() %>%
   round(2) %>%
@@ -509,48 +487,17 @@ where $R_j^2$ is the $R^2$ value from regressing $x_j$ on all other predictors.
 
 A high VIF suggests that $x_j$ contributes little independent information and may be removed to improve model stability.
 
-Eigenvalues and eigenvectors are fundamental tools in linear algebra, representing the directions and scaling factors of a matrix transformation. 
+Eigenvalues and eigenvectors are fundamental tools in linear algebra, representing the directions and scaling factors of a matrix transformation.
 
-1. Eigenvalues: Solving the Characteristic Equation
+1.  Eigenvalues: Solving the Characteristic Equation
 
 The eigenvalues $( \lambda )$ of a matrix $( A )$ satisfy:
 
 $\det(A - \lambda I) = 0$
 
-Where:
-- $( A )$ is the matrix.
-- $( \lambda )$ is the eigenvalue (unknown).
-- $( I )$ is the identity matrix (a diagonal matrix with 1s on the diagonal).
+Where: - $( A )$ is the matrix. - $( \lambda )$ is the eigenvalue (unknown). - $( I )$ is the identity matrix (a diagonal matrix with 1s on the diagonal).
 
 The characteristic polynomial is derived by computing $( \det(A - \lambda I) )$ and solving for $( \lambda )$.
-
-```{r}
-#| echo: true
-#| message: false
-#| warning: false
-
-# Define the matrix A
-matrix_a <- matrix(c(4, 2, 2, 3), nrow = 2, byrow = TRUE)
-print(matrix_a)
-
-# Compute the characteristic polynomial
-# A - λI (lambda is the eigenvalue)
-identity_matrix <- diag(nrow(matrix_a))  # Create identity matrix
-print(identity_matrix)
-lambda <- seq(-10, 20, by = 0.01)  # Range of lambda values for solving
-det_values <- numeric(length(lambda))  # Store determinant values
-
-# Calculate det(A - λI) for each lambda
-for (i in seq_along(lambda)) {
-  char_matrix <- matrix_a - lambda[i] * identity_matrix
-  det_values[i] <- det(char_matrix)
-}
-
-# Find approximate eigenvalues where det(A - λI) = 0
-eigenvalue_indices <- which(abs(det_values) < 1e-4)  # Tolerance for numerical precision
-eigenvalues <- lambda[eigenvalue_indices]
-print(eigenvalues)
-```
 
 Eigenvectors: Solving for Principal Directions
 
@@ -561,30 +508,38 @@ $(A - \lambda I)v = 0$
 This is a homogeneous system of linear equations. Solving this system gives the eigenvector(s) associated with each eigenvalue.
 
 ```{r}
-# Step 3: Compute eigenvectors for each eigenvalue
-eigenvectors <- list()
-for (i in seq_along(eigenvalues)) {
-  lambda_i <- eigenvalues[i]
-  char_matrix <- matrix_a - lambda_i * identity_matrix
-  # Solve (A - λI)v = 0 using Gaussian elimination
-  eigenvector <- nullspace(char_matrix)
-  eigenvectors[[i]] <- eigenvector
-}
+#| echo: true
+#| message: false
+#| warning: false
 
-# Display eigenvectors
-print("Eigenvectors:")
-print(eigenvectors)
+# Define the matrix A
+matrix_a <- matrix(c(4, 2,
+                     2, 3), nrow = 2, byrow = TRUE)
+print("Matrix A:")
+print(matrix_a)
 
-# Utility function for null space (solve for eigenvectors)
-nullspace <- function(A, tol = 1e-7) {
-  svd_res <- svd(A)
-  null_mask <- svd_res$d <= tol
-  if (any(null_mask)) {
-    return(svd_res$v[, null_mask, drop = FALSE])
-  } else {
-    return(matrix(0, nrow = ncol(A), ncol = 0))
-  }
-}
+# Compute the eigen decomposition using R's built-in eigen() function
+eigen_builtin <- eigen(matrix_a)
+print("Built-in eigen() values:")
+print(eigen_builtin$values)
+print("Built-in eigen() vectors:")
+print(eigen_builtin$vectors)
+
+# Multiply A by the matrix of eigenvectors:
+# Each column of eigen_builtin$vectors is an eigenvector.
+res <- matrix_a %*% eigen_builtin$vectors
+print("A * eigenvectors:")
+print(res)
+
+# Multiply the eigenvector matrix by the diagonal matrix of eigenvalues.
+res2 <- eigen_builtin$vectors %*% diag(eigen_builtin$values)
+print("eigenvectors * eigenvalues:")
+print(res2)
+
+# Check if these two matrices are equal (they should be equal within numerical precision)
+are_equal <- all.equal(res, res2)
+print("Are A * eigenvectors and eigenvectors * eigenvalues equal?")
+print(are_equal)
 ```
 
 ```{r}
@@ -594,7 +549,8 @@ nullspace <- function(A, tol = 1e-7) {
 
 # Covariance matrix 
 cm_delitos_data <- delitos_data %>%
-  select(where(is.numeric)) %>%
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
   cov()
 
 # Compute eigenvalues and eigenvectors
