@@ -14,7 +14,7 @@ This section is based on *Análisis de datos multivariantes*. See [@peña2002an�
 #setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 # packages
-list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'reshape2', 'knitr', 'gridExtra', 'ggExtra', 'sf')
+list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'reshape2', 'knitr', 'gridExtra', 'ggExtra', 'sf', 'leaflet', 'igraph', 'ggraph', 'tidygraph', 'spdep')
 new.packages = list_packages[!(list_packages %in% installed.packages()[,"Package"])]
 if (length(new.packages)) {
   install.packages(new.packages)
@@ -26,10 +26,13 @@ for (package in list_packages){
 # Load the dataset
 delitos_data <- st_read("data/spatial/crime_spatial_course.gpkg")
 delitos_data <- delitos_data[delitos_data$dpto_ccdgo == '11', ]
-
 dim(delitos_data)
 summary(delitos_data)
-plot(delitos_data$geo)
+
+# interactive polygons location
+leaflet(delitos_data) %>%
+  addTiles() %>%  # Base map
+  addPolygons(color = "steelblue", weight = 1, fillOpacity = 0.5)
 
 # quantile
 quantile(delitos_data$sum_24HP, probs = seq(0, 1, 0.1), na.rm = TRUE)
@@ -176,7 +179,7 @@ ggplot(delitos_data, aes(x = sum_24HP)) +
   
   # Add annotation for 1SD range
   annotate("text", x = mean_val, y = 10, 
-           label = paste(round(percentage_1sd, 2), "% 1SD", sep = ""), 
+           label = paste(round(percentage_1sd, 1), "1SD", sep = ""), 
            color = "black", size = 5, hjust = 0.5, vjust = -1) +
   
   theme_minimal()
@@ -261,7 +264,7 @@ ggplot(delitos_data, aes(x = sum_24HP)) +
   
   # Add annotation for 1SD range
   annotate("text", x = median_val, y = 10, 
-           label = paste(within_1mad, "points (", round(percentage_1mad, 2), "%) 1MAD", sep = ""), 
+           label = paste(within_1mad, "points (", round(percentage_1mad, 1), "1MAD", sep = ""), 
            color = "black", size = 5, hjust = 0.5, vjust = -1) +
   
   theme_minimal()
@@ -551,7 +554,7 @@ print(are_equal)
 cm_delitos_data <- delitos_data %>%
   st_drop_geometry() %>%
   select(contains('24')) %>%
-  #select(-sum_24TR, -sum_24SE, -sum_24SS) %>%
+  select(-sum_24TR, -sum_24SE, -sum_24SS) %>%
   cov()
 
 # Compute eigenvalues and eigenvectors
@@ -584,7 +587,7 @@ print(normalized_eigenvector)
 sort(abs(normalized_eigenvector), decreasing = T)
 
 # Get numeric variable names (order matches eigenvector indices)
-variable_names <- colnames(delitos_data %>% select(contains('24')))
+variable_names <- colnames(cm_delitos_data)
 
 # Sort normalized eigenvector by absolute contribution (descending order)
 sorted_contributions <- sort(abs(normalized_eigenvector), decreasing = TRUE)
@@ -603,28 +606,34 @@ model <- lm(sum_24TR ~ sum_24HOM + sum_24LP + sum_24VI +
               sum_24DS + sum_24HP + sum_24HR + 
               sum_24HC + sum_24HA + sum_24HM + 
               sum_24SS + sum_24SE + sum_24EX, 
-            data = data.frame(cm_delitos_data))
+            data = data.frame(delitos_data))
 
 # model <- lm(sum_24SE ~ sum_24DS + sum_24EX + sum_24SS + sum_24LP + 
 #               sum_24HOM + sum_24HR + sum_24VI + sum_24HM + 
 #               sum_24HA + sum_24HP + sum_24HC, 
-#             data = data.frame(cm_delitos_data))
+#             data = data.frame(delitos_data))
 # 
 # model <- lm(sum_24SS ~ sum_24EX + sum_24HC + sum_24HR + 
 #                   sum_24HA + sum_24DS + sum_24HM + 
 #                   sum_24HOM + sum_24HP + sum_24VI + sum_24LP,
-#                 data = data.frame(cm_delitos_data))
+#                 data = data.frame(delitos_data))
 # 
-# model <- lm(sum_24HOM ~ sum_24HA + sum_24EX + sum_24HM + 
-#               sum_24LP + sum_24HR + sum_24VI + 
-#               sum_24HC + sum_24HP + sum_24DS, 
-#             data = data.frame(cm_delitos_data))
+# model <- lm(sum_24HOM ~ sum_24HA + sum_24EX + sum_24HM +
+#               sum_24LP + sum_24HR + sum_24VI +
+#               sum_24HC + sum_24HP + sum_24DS,
+#             data = data.frame(delitos_data))
 
 summary(model)
 
 # Variance Inflation Factors
 vif(model)
 ```
+
+The regression model returns all coefficients, standard errors, and test statistics as zero or NaN (Not a Number). This indicates that the dependent variable $( \text{sum\_24TR} )$ is likely a linear combination of the independent variables or identical to their sum. Mathematically, if:
+
+$\text{sum\_24TR} = \sum_{i=1}^{12} \beta_i \cdot X_i$
+
+where $( X_i )$ represents the independent variables, then the design matrix $( X )$ is rank deficient (i.e., singular), making it impossible to estimate unique regression coefficients. This leads to zero residuals and undefined test statistics. A possible cause is perfect multicollinearity, meaning the predictor variables are linearly dependent. In such cases, the system has no unique solution, and the regression fails to provide meaningful estimates.
 
 ## Global Variability Metric
 
@@ -660,7 +669,6 @@ cov_matrix <- delitos_data %>%
   st_drop_geometry() %>%
   select(contains('24')) %>%
   select(-sum_24TR, -sum_24SE, -sum_24SS) %>%
-  select(where(is.numeric)) %>%  # Select numeric columns
   cov() 
 
 # Effective Variance
@@ -696,29 +704,35 @@ S_inv <- solve(cov_matrix)
 cat("Precision Matrix (S⁻¹):\n")
 print(S_inv, digits = 2)
 
-# Extract first row components
-first_row <- S_inv[1,]
-diag_element <- S_inv[1,1]
+# Extract correct row components of the selected crime
+dependent_variable_index <- 5
 
-# Calculate regression coefficients
-beta_coefficients <- -first_row[-1]/diag_element
+first_row <- S_inv[dependent_variable_index, ]
+diag_element <- S_inv[dependent_variable_index, dependent_variable_index]
+
+# Compute regression coefficients
+beta_coefficients <- -first_row[-dependent_variable_index] / diag_element
 print(beta_coefficients, digits = 2)
 
-# Calculate residual variance and standar error
-residual_variance <- 1/diag_element
-round(residual_variance, 2)
-sqrt(round(residual_variance, 2))
+# Compute residual variance
+residual_variance <- 1 / diag_element
+residual_sd <- sqrt(residual_variance)  # Residual standard error
 
-# R^2
-1 - (1/(cov_matrix[1,1] * S_inv[1,1]))
+# Print residual standard error
+print(residual_sd, digits = 2)
 
-# Regression coefficients
+# Compute R^2
+r_squared <- 1 - (residual_variance / cov_matrix[dependent_variable_index, dependent_variable_index])
+print(r_squared, digits = 2)
+
+# Verify with lm() regression
 delitos <- delitos_data %>%
   st_drop_geometry() %>%
   select(contains('24')) %>%
   select(-sum_24TR, -sum_24SE, -sum_24SS)
 
-model <- lm(sum_24HA ~ ., data = data.frame(delitos))
+# Fit model
+model <- lm(sum_24HP ~ ., data = data.frame(delitos))
 summary(model)
 ```
 
@@ -742,15 +756,212 @@ summary(model)
 
 -   Local (Within Polygon): Phenomenon occurs exclusively inside a single polygon $( p_i )$. Thus, $Y_i = f(\text{Internal factors of } p_i)$.
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Define nodes (5 nodes named p_1 to p_5)
+nodes <- paste0("p_", 1:5)
+
+# Create edges (each node connects to itself, forming a loop)
+edges <- c("p_1", "p_1", 
+           "p_2", "p_2", 
+           "p_3", "p_3", 
+           "p_4", "p_4", 
+           "p_5", "p_5") 
+
+# Create the graph
+g <- graph(edges, directed = TRUE)
+
+# Plot the network with loops
+plot(g, vertex.size = 30, vertex.label.color = "black",
+     edge.curved = 0.5, edge.color = "red",
+     main = "Network with 5 Nodes and Self-Loops")
+```
+
 -   Subnational (Cluster of Neighbors): Phenomenon clusters among adjacent polygons. Thus, $Y_i = \beta_0 + \beta_1 \sum_{j \in N(i)} Y_j + \epsilon$ where $( N(i) )$ are the neighbors of $( p_i )$.
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Simulate adjacency structure (neighbors) for 10 polygons
+set.seed(1820)
+n <- 10  # Number of spatial units (polygons)
+coords <- cbind(runif(n), runif(n))  # Random spatial coordinates
+
+# Create a neighbor list using nearest neighbors
+nb <- knn2nb(knearneigh(coords, k = 2))  # Each polygon has 2 nearest neighbors
+
+# Convert to a spatial weights matrix
+lw <- nb2listw(nb, style = "W")  # Row-standardized weights
+
+# Simulate dependent variable Y with spatial autoregression
+beta_0 <- 2  # Intercept
+beta_1 <- 0.5  # Spatial dependence coefficient
+epsilon <- rnorm(n, mean = 0, sd = 1)  # Random noise
+Y <- beta_0 + beta_1 * lag.listw(lw, rnorm(n)) + epsilon  # Spatial autoregression
+
+# Print results
+print(data.frame(Y = round(Y, 2)))
+
+# Plot network representation of adjacency relationships
+g <- graph_from_adj_list(nb)
+plot(g, 
+     layout = layout_in_circle(g),
+     vertex.label = 1:n, 
+     vertex.color = "lightblue", 
+     main = "Spatial Adjacency Network")
+```
 
 -   National/International (Neighbors + Non-Neighbors): Phenomenon spans both adjacent and non-adjacent polygons (e.g., trade networks). Thus, $Y_i = f\left(\sum_j w_{ij} Y_j\right)$ where $( w_{ij} )$ depends on distance or network connectivity.
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Define Spatial Neighbors (Adjacency-Based)
+coords <- cbind(runif(n, 0, 100), runif(n, 0, 100))  # Random locations
+nb <- knn2nb(knearneigh(coords, k = 2))  # Each node has 2 nearest neighbors
+
+# Convert to spatial weights list
+lw <- nb2listw(nb, style = "W")
+
+# Define Non-Neighbor Connections (International Trade or Other Links)
+g <- erdos.renyi.game(n, p = 0.3, directed = FALSE)  # Random network with non-local connections
+adj_matrix <- as.matrix(as_adj(g))  # Convert to adjacency matrix
+
+# Combine Spatial & Network-Based Weights
+W <- matrix(0, n, n)  # Initialize empty weight matrix
+for (i in 1:n) {
+  for (j in 1:n) {
+    if (i != j) {
+      if (j %in% nb[[i]]) {
+        W[i, j] <- 1  # Spatial adjacency
+      } else if (adj_matrix[i, j] == 1) {
+        W[i, j] <- runif(1, 0.2, 0.8)  # Non-adjacent connections with random weights
+      }
+    }
+  }
+}
+
+# Normalize row sums to 1
+W <- W / rowSums(W, na.rm = TRUE)
+
+# Simulate Spatial-Relational Autoregressive Model
+set.seed(42)
+beta_0 <- 2
+beta_1 <- 0.6
+epsilon <- rnorm(n, mean = 0, sd = 1)  # Random noise
+Y <- beta_0 + beta_1 * W %*% rnorm(n) + epsilon  # Weighted sum of influences
+
+# Print Results
+print(data.frame(Node = 1:n, Y = round(Y, 2)))
+
+# Plot Network (Spatial & Non-Spatial Links)
+g_combined <- graph_from_adjacency_matrix(W, mode = "undirected", weighted = TRUE)
+
+plot(g_combined, 
+     layout = layout_with_fr,  # Force-directed layout
+     vertex.label = 1:n, 
+     vertex.color = "lightblue",
+     edge.width = E(g_combined)$weight * 5,  # Scale edge width by weight
+     main = "Network with Spatial & Non-Spatial Links")
+```
+
 -   Local-Subnational (Clear Boundaries): Clear separation between local (city) and subnational (state) boundaries among neighbors. Thus, $Y_i = \alpha + \gamma \cdot \text{State}_i + \epsilon$.
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Define Nodes (Cities) and Their States
+n_cities <- 12  # Number of cities
+n_states <- 3    # Number of states
+
+# Assign each city to a state (group cities into states)
+state_id <- rep(1:n_states, length.out = n_cities)
+cities <- data.frame(
+  city_id = 1:n_cities,
+  state_id = state_id
+)
+
+# Create a Local Network (City-to-City Connections within a State)
+g <- make_lattice(length = n_cities, dim = 1, circular = FALSE)  # Cities linked in a chain
+V(g)$state <- state_id  # Assign state information to nodes
+
+# Define the Model: State-Level Influence on Y
+alpha <- 2
+gamma <- c(1, 3, 5)  # Different state effects
+epsilon <- rnorm(n_cities, mean = 0, sd = 1)  # Random noise
+Y <- alpha + gamma[state_id] + epsilon  # Simulated Y values
+
+# Visualize the Network with State Boundaries
+plot(
+  g, layout = layout_in_circle(g),
+  vertex.label = paste0("City ", 1:n_cities),
+  vertex.color = c("red", "blue", "green")[state_id],  # Different colors for states
+  main = "Local-Subnational Network (Cities & State Boundaries)"
+)
+
+# 5️⃣ Fit a Linear Model: Y_i = α + γ · State_i + ε
+lm_model <- lm(Y ~ as.factor(state_id), data = data.frame(Y, state_id))
+summary(lm_model)
+```
 
 -   Local-National/International (Non-Neighbors): Phenomenon connects non-neighboring polygons with clear boundaries (e.g., migration between distant cities). Thus, $Y_i = f(Y_j)$ where $( A_{ij} = 0 )$ (i.e., not adjacent) but $( D_{ij} )$ is significant.
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+n_cities <- 10  # Number of cities
+coords <- cbind(runif(n_cities, 0, 100), runif(n_cities, 0, 100))  # Random city locations
+
+# Compute Pairwise Euclidean Distances Between Cities
+distance_matrix <- as.matrix(dist(coords))
+
+# Define a Distance Threshold for "Significant" Connections (e.g., migration routes)
+threshold <- 50  # Distance threshold for non-local connections
+D_matrix <- ifelse(distance_matrix > threshold, 1, 0)  # Non-adjacent connections only
+
+# Convert to Graph (Non-Neighbor Connections Only)
+g <- graph_from_adjacency_matrix(D_matrix, mode = "undirected", weighted = TRUE)
+
+# Simulate Network Influence: Y_i = f(Y_j) Based on Distant Links
+set.seed(42)
+beta_0 <- 2
+beta_1 <- 0.6
+epsilon <- rnorm(n_cities, mean = 0, sd = 1)  # Random noise
+Y <- beta_0 + beta_1 * (D_matrix %*% rnorm(n_cities)) + epsilon  # Influence from distant cities
+
+# Plot Network (Non-Neighboring Cities Connected)
+plot(g, 
+     layout = layout_with_fr(g),  # Force-directed layout for clarity
+     vertex.label = 1:n_cities, 
+     vertex.color = "orange",
+     edge.width = E(g)$weight * 3, 
+     main = "Non-Neighbor Network: Distant City Connections")
+
+# Regression Model: Effect of Distant Cities on Y
+lm_model <- lm(Y ~ D_matrix %*% Y, data = data.frame(Y))
+summary(lm_model)
+```
+
 -   Local-Subnational (Fuzzy Boundaries): Ambiguous administrative boundaries (e.g., overlapping jurisdictions). Thus, $\mu_{ik} \in [0,1]$ indicating the degree to which $( p_i )$ belongs to region $( k )$.
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+
+```
 
 ## Final Project Activities
 
