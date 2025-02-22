@@ -26,6 +26,8 @@ for (package in list_packages){
 # Load the dataset
 delitos_data <- st_read("data/spatial/crime_spatial_course.gpkg")
 delitos_data <- delitos_data[delitos_data$dpto_ccdgo == '11', ]
+#delitos_data <- delitos_data[delitos_data$manz_ccnct == '1100110000000011020307', ]
+
 dim(delitos_data)
 summary(delitos_data)
 
@@ -116,7 +118,7 @@ print(kurtosis)
 # function
 kurtosis(delitos_data$sum_24HP, na.rm = TRUE)
 
-# skewness
+# Kurtosis
 delitos_data %>%
   st_drop_geometry() %>%
   select(contains('24')) %>%
@@ -125,7 +127,7 @@ delitos_data %>%
   as.data.frame() %>%
   tibble::rownames_to_column(var = "Crime Type") %>%
   mutate(V1 = round(V1, 2)) %>%
-  rename(Skewness = V1) %>%
+  rename(Kurtosis = V1) %>%
   gt()
 ```
 
