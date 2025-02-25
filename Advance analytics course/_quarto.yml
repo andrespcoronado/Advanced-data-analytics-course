@@ -25,6 +25,7 @@ format:
     number-sections: true
     toc: true
     toc-depth: 2
+    
   pdf:
     number-sections: true
     toc: true

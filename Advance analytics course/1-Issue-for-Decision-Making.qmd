@@ -14,7 +14,8 @@ This section is based on *Análisis de datos multivariantes*. See [@peña2002an�
 #setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 # packages
-list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'reshape2', 'knitr', 'gridExtra', 'ggExtra', 'sf', 'leaflet', 'igraph', 'ggraph', 'tidygraph', 'spdep')
+list_packages = c('readxl', 'dplyr', 'moments', 'tidyr', 'tibble', 'gt', 'ggplot2', 'fmsb', 'car', 'reshape2', 'knitr', 'gridExtra', 'ggExtra', 'sf', 'leaflet', 'igraph', 'ggraph', 'tidygraph', 'spdep',
+                  'classInt')
 new.packages = list_packages[!(list_packages %in% installed.packages()[,"Package"])]
 if (length(new.packages)) {
   install.packages(new.packages)
@@ -31,16 +32,46 @@ delitos_data <- delitos_data[delitos_data$dpto_ccdgo == '11', ]
 dim(delitos_data)
 summary(delitos_data)
 
-# interactive polygons location
-leaflet(delitos_data) %>%
-  addTiles() %>%  # Base map
-  addPolygons(color = "steelblue", weight = 1, fillOpacity = 0.5)
-
 # quantile
 quantile(delitos_data$sum_24HP, probs = seq(0, 1, 0.1), na.rm = TRUE)
 
-#boxplot
+# boxplot
 boxplot(delitos_data$sum_24HP, main = "Boxplot of PERSONAS", horizontal = TRUE)
+
+# cuantile and decil dynamic map
+delitos_data$sum_24HP_jittered <- delitos_data$sum_24HP + runif(nrow(delitos_data), -0.0001, 0.0001)
+
+delitos_data$decil <- cut(delitos_data$sum_24HP_jittered, 
+                     breaks = quantile(delitos_data$sum_24HP_jittered, probs = seq(0, 1, 0.1), na.rm = TRUE),
+                     labels = paste0("D", 1:10),
+                     include.lowest = TRUE)
+
+# Define Color Palette for Deciles
+custom_palette <- c(
+  "#F0F9E8",  # D1 - Lightest green
+  "#BAE4BC",  # D2
+  "#7BCCC4",  # D3
+  "#43A2CA",  # D4
+  "#0868AC",  # D5 - Light Blue
+  "#FEE08B",  # D6 - Yellow
+  "#FDAE61",  # D7 - Orange
+  "#F46D43",  # D8 - Reddish Orange
+  "#D73027",  # D9 - Strong Red
+  "#A50026"   # D10 - Darkest Red (Highest Decile)
+)
+palette_decil <- colorFactor(palette = custom_palette, domain = delitos_data$decil)
+
+# Create the Decile Map using Leaflet
+leaflet(delitos_data[order(delitos_data$sum_24HP, decreasing = TRUE)[1:10], ]) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = ~palette_decil(decil), 
+    color = "black", weight = 1, opacity = 0.5,
+    fillOpacity = 0.7,
+    popup = ~paste("Crime Rate:", round(sum_24HP, 2), "<br>Decile:", decil)
+  ) %>%
+  addLegend(pal = palette_decil, values = delitos_data$decil, 
+            title = "Decile Classification", position = "bottomright")
 ```
 
 ## Skewness
