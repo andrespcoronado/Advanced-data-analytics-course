@@ -1,7 +1,177 @@
 # Key Players and Topics
 
-In summary, this book has no content whatsoever.
+# Non-Parametric Correlation {.unnumbered}
+
+Correlation measures the strength and direction of association between two variables. 
+While Pearson's correlation requires a linear relationship and normally distributed data, 
+\emph{Spearman's rank correlation} and \emph{Kendall's tau} are \emph{non-parametric} measures, 
+making them ideal for analyzing data that may not be linear or normally distributed.
+
+## Spearman's Rank Correlation
+
+Spearman's correlation coefficient $\rho$ is based on \emph{ranked} data. 
+For two variables $X$ and $Y$, we replace each observation by its rank. 
+Spearman's $\rho$ is then computed similarly to Pearson's correlation but on these ranks:
+
+$\rho = \frac{\sum_{i=1}^{n}(r_{X_i} - \bar{r}_{X})(r_{Y_i} - \bar{r}_{Y})}{\sqrt{\sum_{i=1}^{n}(r_{X_i} - \bar{r}_{X})^2}\sqrt{\sum_{i=1}^{n}(r_{Y_i} - \bar{r}_{Y})^2}}$
+
+where $r_{X_i}$ is the rank of the $i$-th observation of $X$, and $r_{Y_i}$ is the rank of the $i$-th observation of $Y$.
 
 ```{r}
-1 + 1
+#| include: false
+source('setup.R')
 ```
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+delitos_data <- delitos_data %>% 
+  select(-sum_24TR, -sum_24SE, -sum_24SS)
+
+delitos_data %>%
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
+  cor(., method = "spearman", use = "complete.obs") %>%
+  round(., 3) %>% 
+  print(.) %>%
+  corrplot(., method = "color", title = "Spearman Correlation", mar=c(0,0,1,0))
+```
+
+## Kendall's Tau
+
+Kendall's tau $\tau$ measures how often the order of pairs is preserved between two variables. 
+For $n$ observations, if we have a pair of observations $(X_i, Y_i)$ and $(X_j, Y_j)$, 
+Kendall's $\tau$ counts \emph{concordant} and \emph{discordant} pairs. 
+A pair is \emph{concordant} if $(X_i - X_j)$ and $(Y_i - Y_j)$ have the same sign; 
+otherwise, it is \emph{discordant}. The formula is:
+
+$\tau = \frac{\text{(number of concordant pairs)} - \text{(number of discordant pairs)}}{\frac{n(n-1)}{2}}$
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+delitos_data %>%
+  st_drop_geometry() %>%
+  select(contains('24')) %>%
+  cor(., method = "kendall", use = "complete.obs") %>%
+  round(., 3) %>% 
+  print(.) %>%
+  corrplot(., method = "color", title = "Kendall Correlation", mar=c(0,0,1,0))
+```
+
+Both Spearman's $\rho$ and Kendall's $\tau$ capture the \emph{monotonic} relationship between two variables. 
+They are more robust to outliers and non-linear relationships than Pearson's correlation. 
+In the context of areal data (e.g., crime rates, population density across polygons), 
+these measures can reveal how variables co-vary without assuming linearity or normality.
+
+# Spatial Neighborhood  Matrices {.unnumbered}
+
+This section is based on *Spatial statistics for data science theory and practice with R*. See [@Moraga2023].
+
+## Neighbors Based on Contiguity
+
+  - Queen Contiguity: Two polygons are considered neighbors if they share any common point (i.e., an edge or a vertex). Mathematically, if polygons \( p_i \) and \( p_j \) touch at any point, then \( A_{ij} = 1 \).
+  - Rook Contiguity: Two polygons are neighbors only if they share a common edge. That is, if polygons \( p_i \) and \( p_j \) share a boundary segment, then \( A_{ij} = 1 \); merely touching at a corner does not count.
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+nb <- spdep::poly2nb(delitos_data, queen = TRUE)
+head(nb)
+
+# Polygons with neighbors
+table(sapply(nb, length))
+```
+
+## Neighbors Based on k Nearest Neighbors
+
+  - K-Nearest Neighbors: For each polygon, the \( k \) nearest neighbors are identified based on a distance threshold. 
+  - Distance Threshold: The distance threshold can be defined as a fixed value or as a function of the average distance between polygons.
+  
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Neighbors based on 3 nearest neighbors
+coo <- st_centroid(delitos_data)
+nb <- knn2nb(knearneigh(coo, k = 3)) # k number nearest neighbors
+
+# Polygons with neighbors
+table(sapply(nb, length))
+
+# Subset data to the first 10 polygons
+delitos_data_10 <- delitos_data[1:100, ]
+
+# Recompute neighbor list for these 10 polygons to avoid index mismatches
+nb_10 <- knn2nb(knearneigh(st_centroid(delitos_data_10), k = 3))
+
+# Compute centroids for the 10 polygons
+coords_10 <- st_coordinates(st_centroid(delitos_data_10))
+
+# 4. Plot the first 10 polygons and overlay neighbor connections in red
+plot(st_geometry(delitos_data_10), border = "lightgray", main = "First Polygons with 3 Nearest Neighbors")
+plot.nb(nb_10, coords_10, add = TRUE, col = "red", lwd = 2)
+```
+
+## Neighbors Based on Distance
+
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+nb <- dnearneigh(x = st_centroid(delitos_data), d1 = 0, d2 = 0.4)
+
+# Polygons with neighbors
+hist(sapply(nb, length))
+
+# Subset data to the first 10 polygons
+delitos_data_10 <- delitos_data[1:100, ]
+
+# Recompute neighbor list for these 10 polygons to avoid index mismatches
+nb_10 <- dnearneigh(x = st_centroid(delitos_data_10), d1 = 0, d2 = 0.4)
+
+# Compute centroids for the 10 polygons
+coords_10 <- st_coordinates(st_centroid(delitos_data_10))
+
+# 4. Plot the first 10 polygons and overlay neighbor connections in red
+plot(st_geometry(delitos_data_10), border = "lightgray", main = "First Polygons with 3 Nearest Neighbors")
+plot.nb(nb_10, coords_10, add = TRUE, col = "red", lwd = 2)
+```
+
+Determining an Appropriate Upper Distance Bound: To ensure that each area in a spatial dataset has at least \(k\) neighbors, we can determine an appropriate upper distance bound by first computing the \(k\) nearest neighbors for each area. For example, using the Queen contiguity method, one may use the \texttt{spdep::knearneigh()} function with \(k=1\) to obtain the nearest neighbor for each polygon. This yields a matrix of neighbor IDs, which is then converted into a neighbor list (of class \texttt{nb}) via \texttt{knn2nb()}. Next, the \texttt{spdep::nbdists()} function computes the distances along the links between each area and its neighbor. By summarizing these distances (e.g., using \texttt{summary(unlist(dist1))}), we can observe the range of distances. 
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# k is the number nearest neighbors
+nb1 <- knn2nb(knearneigh(coo, k = 1))
+
+dist1 <- nbdists(nb1, coo)
+
+summary(unlist(dist1))
+
+nb <- dnearneigh(x = st_centroid(delitos_data), d1 = 0, d2 = 1.2)
+
+# Polygons with neighbors
+hist(sapply(nb, length))
+```
+
+## Neighbors of Order k Based on Contiguity
+
+
+# Correspondance Analysis {.unnumbered}
+

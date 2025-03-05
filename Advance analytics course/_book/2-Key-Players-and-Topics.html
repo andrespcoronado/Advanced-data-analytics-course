@@ -54,7 +54,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -103,6 +123,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -211,8 +260,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#non-parametric-correlation" id="toc-non-parametric-correlation" class="nav-link active" data-scroll-target="#non-parametric-correlation">Non-Parametric Correlation</a>
+  <ul class="collapse">
+  <li><a href="#spearmans-rank-correlation" id="toc-spearmans-rank-correlation" class="nav-link" data-scroll-target="#spearmans-rank-correlation"><span class="header-section-number">2.1</span> Spearman’s Rank Correlation</a></li>
+  <li><a href="#kendalls-tau" id="toc-kendalls-tau" class="nav-link" data-scroll-target="#kendalls-tau"><span class="header-section-number">2.2</span> Kendall’s Tau</a></li>
+  </ul></li>
+  <li><a href="#spatial-neighborhood-matrices" id="toc-spatial-neighborhood-matrices" class="nav-link" data-scroll-target="#spatial-neighborhood-matrices">Spatial Neighborhood Matrices</a>
+  <ul class="collapse">
+  <li><a href="#neighbors-based-on-contiguity" id="toc-neighbors-based-on-contiguity" class="nav-link" data-scroll-target="#neighbors-based-on-contiguity"><span class="header-section-number">2.3</span> Neighbors based on contiguity</a></li>
+  <li><a href="#neighbors-based-on-nearest-neighbors" id="toc-neighbors-based-on-nearest-neighbors" class="nav-link" data-scroll-target="#neighbors-based-on-nearest-neighbors"><span class="header-section-number">2.4</span> Neighbors based on nearest neighbors</a></li>
+  <li><a href="#neighbors-based-on-distance" id="toc-neighbors-based-on-distance" class="nav-link" data-scroll-target="#neighbors-based-on-distance"><span class="header-section-number">2.5</span> Neighbors based on distance</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -236,15 +301,267 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>In summary, this book has no content whatsoever.</p>
+<section id="non-parametric-correlation" class="level1 unnumbered">
+<h1 class="unnumbered">Non-Parametric Correlation</h1>
+<p>Correlation measures the strength and direction of association between two variables. While Pearson’s correlation requires a linear relationship and normally distributed data, and are measures, making them ideal for analyzing data that may not be linear or normally distributed.</p>
+<section id="spearmans-rank-correlation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="spearmans-rank-correlation"><span class="header-section-number">2.1</span> Spearman’s Rank Correlation</h2>
+<p>Spearman’s correlation coefficient <span class="math inline">\(\rho\)</span> is based on data. For two variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, we replace each observation by its rank. Spearman’s <span class="math inline">\(\rho\)</span> is then computed similarly to Pearson’s correlation but on these ranks:</p>
+<p><span class="math inline">\(\rho = \frac{\sum_{i=1}^{n}(r_{X_i} - \bar{r}_{X})(r_{Y_i} - \bar{r}_{Y})}{\sqrt{\sum_{i=1}^{n}(r_{X_i} - \bar{r}_{X})^2}\sqrt{\sum_{i=1}^{n}(r_{Y_i} - \bar{r}_{Y})^2}}\)</span></p>
+<p>where <span class="math inline">\(r_{X_i}\)</span> is the rank of the <span class="math inline">\(i\)</span>-th observation of <span class="math inline">\(X\)</span>, and <span class="math inline">\(r_{Y_i}\)</span> is the rank of the <span class="math inline">\(i\)</span>-th observation of <span class="math inline">\(Y\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="ot">&lt;-</span> delitos_data <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>sum_24TR, <span class="sc">-</span>sum_24SE, <span class="sc">-</span>sum_24SS)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">'24'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(., <span class="at">method =</span> <span class="st">"spearman"</span>, <span class="at">use =</span> <span class="st">"complete.obs"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(., <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(.) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corrplot</span>(., <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">title =</span> <span class="st">"Spearman Correlation"</span>, <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code>          sum_24HOM sum_24LP sum_24VI sum_24DS sum_24HP sum_24HR sum_24HC
+sum_24HOM     1.000    0.070    0.049    0.045    0.054    0.013    0.039
+sum_24LP      0.070    1.000    0.188    0.157    0.228    0.091    0.136
+sum_24VI      0.049    0.188    1.000    0.162    0.205    0.102    0.088
+sum_24DS      0.045    0.157    0.162    1.000    0.166    0.075    0.101
+sum_24HP      0.054    0.228    0.205    0.166    1.000    0.166    0.262
+sum_24HR      0.013    0.091    0.102    0.075    0.166    1.000    0.088
+sum_24HC      0.039    0.136    0.088    0.101    0.262    0.088    1.000
+sum_24HA      0.039    0.096    0.081    0.064    0.142    0.061    0.069
+sum_24HM      0.045    0.112    0.118    0.095    0.142    0.073    0.079
+sum_24EX      0.027    0.087    0.086    0.084    0.137    0.067    0.095
+          sum_24HA sum_24HM sum_24EX
+sum_24HOM    0.039    0.045    0.027
+sum_24LP     0.096    0.112    0.087
+sum_24VI     0.081    0.118    0.086
+sum_24DS     0.064    0.095    0.084
+sum_24HP     0.142    0.142    0.137
+sum_24HR     0.061    0.073    0.067
+sum_24HC     0.069    0.079    0.095
+sum_24HA     1.000    0.104    0.067
+sum_24HM     0.104    1.000    0.062
+sum_24EX     0.067    0.062    1.000</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2-Key-Players-and-Topics_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="kendalls-tau" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="kendalls-tau"><span class="header-section-number">2.2</span> Kendall’s Tau</h2>
+<p>Kendall’s tau <span class="math inline">\(\tau\)</span> measures how often the order of pairs is preserved between two variables. For <span class="math inline">\(n\)</span> observations, if we have a pair of observations <span class="math inline">\((X_i, Y_i)\)</span> and <span class="math inline">\((X_j, Y_j)\)</span>, Kendall’s <span class="math inline">\(\tau\)</span> counts and pairs. A pair is if <span class="math inline">\((X_i - X_j)\)</span> and <span class="math inline">\((Y_i - Y_j)\)</span> have the same sign; otherwise, it is . The formula is:</p>
+<p><span class="math inline">\(\tau = \frac{\text{(number of concordant pairs)} - \text{(number of discordant pairs)}}{\frac{n(n-1)}{2}}\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>delitos_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">'24'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(., <span class="at">method =</span> <span class="st">"kendall"</span>, <span class="at">use =</span> <span class="st">"complete.obs"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(., <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(.) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">corrplot</span>(., <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">title =</span> <span class="st">"Kendall Correlation"</span>, <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          sum_24HOM sum_24LP sum_24VI sum_24DS sum_24HP sum_24HR sum_24HC
+sum_24HOM     1.000    0.069    0.047    0.045    0.050    0.013    0.039
+sum_24LP      0.069    1.000    0.177    0.153    0.208    0.089    0.132
+sum_24VI      0.047    0.177    1.000    0.154    0.182    0.097    0.083
+sum_24DS      0.045    0.153    0.154    1.000    0.153    0.074    0.099
+sum_24HP      0.050    0.208    0.182    0.153    1.000    0.153    0.242
+sum_24HR      0.013    0.089    0.097    0.074    0.153    1.000    0.087
+sum_24HC      0.039    0.132    0.083    0.099    0.242    0.087    1.000
+sum_24HA      0.039    0.094    0.077    0.063    0.131    0.061    0.068
+sum_24HM      0.045    0.109    0.113    0.094    0.132    0.072    0.078
+sum_24EX      0.027    0.085    0.082    0.084    0.127    0.066    0.094
+          sum_24HA sum_24HM sum_24EX
+sum_24HOM    0.039    0.045    0.027
+sum_24LP     0.094    0.109    0.085
+sum_24VI     0.077    0.113    0.082
+sum_24DS     0.063    0.094    0.084
+sum_24HP     0.131    0.132    0.127
+sum_24HR     0.061    0.072    0.066
+sum_24HC     0.068    0.078    0.094
+sum_24HA     1.000    0.103    0.067
+sum_24HM     0.103    1.000    0.062
+sum_24EX     0.067    0.062    1.000</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2-Key-Players-and-Topics_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Both Spearman’s <span class="math inline">\(\rho\)</span> and Kendall’s <span class="math inline">\(\tau\)</span> capture the relationship between two variables. They are more robust to outliers and non-linear relationships than Pearson’s correlation. In the context of areal data (e.g., crime rates, population density across polygons), these measures can reveal how variables co-vary without assuming linearity or normality.</p>
+</section>
+</section>
+<section id="spatial-neighborhood-matrices" class="level1 unnumbered">
+<h1 class="unnumbered">Spatial Neighborhood Matrices</h1>
+<p>This section is based on <em>Spatial statistics for data science theory and practice with R</em>. See <span class="citation" data-cites="Moraga2023">(<a href="references.html#ref-Moraga2023" role="doc-biblioref">Moraga 2023</a>)</span>.</p>
+<section id="neighbors-based-on-contiguity" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="neighbors-based-on-contiguity"><span class="header-section-number">2.3</span> Neighbors based on contiguity</h2>
+<ul>
+<li>Queen Contiguity: Two polygons are considered neighbors if they share any common point (i.e., an edge or a vertex). Mathematically, if polygons ( p_i ) and ( p_j ) touch at any point, then ( A_{ij} = 1 ).</li>
+<li>Rook Contiguity: Two polygons are neighbors only if they share a common edge. That is, if polygons ( p_i ) and ( p_j ) share a boundary segment, then ( A_{ij} = 1 ); merely touching at a corner does not count.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> spdep<span class="sc">::</span><span class="fu">poly2nb</span>(delitos_data, <span class="at">queen =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 14209 37157
+
+[[2]]
+[1]  2541  2852  3535 18019 23777 37158
+
+[[3]]
+[1] 0
+
+[[4]]
+[1] 37528
+
+[[5]]
+[1] 0
+
+[[6]]
+[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polygons with neighbors</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">sapply</span>(nb, length))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    1     2     3     4     5     6     7     8     9    10    11    12    13 
+42435  1057   407   172    95    59    38    19    10     7     7     5     4 
+   14    15    16    17    18    29 
+    1     3     2     1     2     1 </code></pre>
+</div>
+</div>
+</section>
+<section id="neighbors-based-on-nearest-neighbors" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="neighbors-based-on-nearest-neighbors"><span class="header-section-number">2.4</span> Neighbors based on nearest neighbors</h2>
+<ul>
+<li>K-Nearest Neighbors: For each polygon, the ( k ) nearest neighbors are identified based on a distance threshold.</li>
+<li>Distance Threshold: The distance threshold can be defined as a fixed value or as a function of the average distance between polygons.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Neighbors based on 3 nearest neighbors</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>coo <span class="ot">&lt;-</span> <span class="fu">st_centroid</span>(delitos_data)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coo, <span class="at">k =</span> <span class="dv">3</span>)) <span class="co"># k number nearest neighbors</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Polygons with neighbors</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">sapply</span>(nb, length))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    3 
+44325 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset data to the first 10 polygons</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>delitos_data_10 <span class="ot">&lt;-</span> delitos_data[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, ]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Recompute neighbor list for these 10 polygons to avoid index mismatches</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>nb_10 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(<span class="fu">st_centroid</span>(delitos_data_10), <span class="at">k =</span> <span class="dv">3</span>))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute centroids for the 10 polygons</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>coords_10 <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(<span class="fu">st_centroid</span>(delitos_data_10))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Plot the first 10 polygons and overlay neighbor connections in red</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(delitos_data_10), <span class="at">border =</span> <span class="st">"lightgray"</span>, <span class="at">main =</span> <span class="st">"First Polygons with 3 Nearest Neighbors"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.nb</span>(nb_10, coords_10, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2-Key-Players-and-Topics_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="neighbors-based-on-distance" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="neighbors-based-on-distance"><span class="header-section-number">2.5</span> Neighbors based on distance</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nb <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(<span class="at">x =</span> <span class="fu">st_centroid</span>(delitos_data), <span class="at">d1 =</span> <span class="dv">0</span>, <span class="at">d2 =</span> <span class="fl">0.4</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Polygons with neighbors</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">sapply</span>(nb, length))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20 
+ 75  36  44  60  44  37  76  49  64  67  81  82 104 118 116 116 102 125 123 147 
+ 21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40 
+150 136 142 153 139 141 174 184 172 212 210 241 290 275 289 352 329 321 329 320 
+ 41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60 
+328 321 374 369 362 357 363 343 368 374 377 377 355 362 379 412 404 432 415 423 
+ 61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80 
+452 433 431 417 414 443 455 422 409 407 353 371 406 382 406 361 408 336 366 359 
+ 81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100 
+357 368 357 364 362 368 345 351 305 274 314 307 289 273 260 280 290 284 291 310 
+101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 
+294 328 282 290 282 318 297 316 258 284 280 304 330 270 297 289 290 264 280 274 
+121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 
+275 266 263 251 255 232 276 253 276 254 231 263 233 203 222 247 227 233 231 202 
+141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 
+248 214 214 203 202 179 201 175 173 159 189 166 159 139 158 150 144 117 115 128 
+161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 
+139 103  88  73  85  85  83  74  70  51  53  52  53  54  31  48  51  53  33  26 
+181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 
+ 32  23  30  28  23  20  19  25  21  14  16  20  19  14  18  23  12  12  19  17 
+201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 
+ 15  18  12  14  16  16  11   9   5   9  11   4   8   8   6   7   5   5   9   4 
+221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 
+ 10  10   2   5   4   3   1   4   1   3   7   1   5   1   1   2   6   5   5   3 
+241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 
+  5   3   3   3   3   5   3   2   2   3   2   7   6   6   6   5   7   5   3   4 
+261 262 263 264 265 266 
+  2   2   1   1   1   1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset data to the first 10 polygons</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>delitos_data_10 <span class="ot">&lt;-</span> delitos_data[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, ]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Recompute neighbor list for these 10 polygons to avoid index mismatches</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>nb_10 <span class="ot">&lt;-</span> <span class="fu">dnearneigh</span>(<span class="at">x =</span> <span class="fu">st_centroid</span>(delitos_data_10), <span class="at">d1 =</span> <span class="dv">0</span>, <span class="at">d2 =</span> <span class="fl">0.4</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute centroids for the 10 polygons</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>coords_10 <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(<span class="fu">st_centroid</span>(delitos_data_10))</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Plot the first 10 polygons and overlay neighbor connections in red</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(delitos_data_10), <span class="at">border =</span> <span class="st">"lightgray"</span>, <span class="at">main =</span> <span class="st">"First Polygons with 3 Nearest Neighbors"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.nb</span>(nb_10, coords_10, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="2-Key-Players-and-Topics_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Determining an Appropriate Upper Distance Bound: To ensure that each area in a spatial dataset has at least (k) neighbors, we can determine an appropriate upper distance bound by first computing the (k) nearest neighbors for each area. For example, using the Queen contiguity method, one may use the function with (k=1) to obtain the nearest neighbor for each polygon. This yields a matrix of neighbor IDs, which is then converted into a neighbor list (of class ) via .</p>
+<p>Next, the function computes the distances along the links between each area and its neighbor. By summarizing these distances (e.g., using ), we can observe the range of distances. In the provided example, the summary shows a maximum distance of approximately 0.62. This maximum value is then taken as the upper bound; that is, if we set the threshold at 0.62, every area will have at least one neighbor within that distance. This approach provides a data-driven method to choose a threshold that is neither too restrictive nor too lenient.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># k is the number nearest neighbors</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>nb1 <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(coo, <span class="at">k =</span> <span class="dv">1</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>dist1 <span class="ot">&lt;-</span> <span class="fu">nbdists</span>(nb1, coo)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">unlist</span>(dist1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+0.001377 0.031220 0.044383 0.053259 0.063116 1.196872 </code></pre>
 </div>
 </div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Moraga2023" class="csl-entry" role="listitem">
+Moraga, Paula. 2023. <em>Spatial Statistics for Data Science</em>. Chapman; Hall/CRC. <a href="https://doi.org/10.1201/9781032641522">https://doi.org/10.1201/9781032641522</a>.
+</div>
+</div>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
