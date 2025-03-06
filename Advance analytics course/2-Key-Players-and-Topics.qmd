@@ -2,16 +2,11 @@
 
 # Non-Parametric Correlation {.unnumbered}
 
-Correlation measures the strength and direction of association between two variables. 
-While Pearson's correlation requires a linear relationship and normally distributed data, 
-\emph{Spearman's rank correlation} and \emph{Kendall's tau} are \emph{non-parametric} measures, 
-making them ideal for analyzing data that may not be linear or normally distributed.
+Correlation measures the strength and direction of association between two variables. While Pearson's correlation requires a linear relationship and normally distributed data, \emph{Spearman's rank correlation} and \emph{Kendall's tau} are \emph{non-parametric} measures, making them ideal for analyzing data that may not be linear or normally distributed.
 
 ## Spearman's Rank Correlation
 
-Spearman's correlation coefficient $\rho$ is based on \emph{ranked} data. 
-For two variables $X$ and $Y$, we replace each observation by its rank. 
-Spearman's $\rho$ is then computed similarly to Pearson's correlation but on these ranks:
+Spearman's correlation coefficient $\rho$ is based on \emph{ranked} data. For two variables $X$ and $Y$, we replace each observation by its rank. Spearman's $\rho$ is then computed similarly to Pearson's correlation but on these ranks:
 
 $\rho = \frac{\sum_{i=1}^{n}(r_{X_i} - \bar{r}_{X})(r_{Y_i} - \bar{r}_{Y})}{\sqrt{\sum_{i=1}^{n}(r_{X_i} - \bar{r}_{X})^2}\sqrt{\sum_{i=1}^{n}(r_{Y_i} - \bar{r}_{Y})^2}}$
 
@@ -21,7 +16,6 @@ where $r_{X_i}$ is the rank of the $i$-th observation of $X$, and $r_{Y_i}$ is t
 #| include: false
 source('setup.R')
 ```
-
 
 ```{r}
 #| echo: true
@@ -42,14 +36,9 @@ delitos_data %>%
 
 ## Kendall's Tau
 
-Kendall's tau $\tau$ measures how often the order of pairs is preserved between two variables. 
-For $n$ observations, if we have a pair of observations $(X_i, Y_i)$ and $(X_j, Y_j)$, 
-Kendall's $\tau$ counts \emph{concordant} and \emph{discordant} pairs. 
-A pair is \emph{concordant} if $(X_i - X_j)$ and $(Y_i - Y_j)$ have the same sign; 
-otherwise, it is \emph{discordant}. The formula is:
+Kendall's tau $\tau$ measures how often the order of pairs is preserved between two variables. For $n$ observations, if we have a pair of observations $(X_i, Y_i)$ and $(X_j, Y_j)$, Kendall's $\tau$ counts \emph{concordant} and \emph{discordant} pairs. A pair is \emph{concordant} if $(X_i - X_j)$ and $(Y_i - Y_j)$ have the same sign; otherwise, it is \emph{discordant}. The formula is:
 
 $\tau = \frac{\text{(number of concordant pairs)} - \text{(number of discordant pairs)}}{\frac{n(n-1)}{2}}$
-
 
 ```{r}
 #| echo: true
@@ -65,20 +54,16 @@ delitos_data %>%
   corrplot(., method = "color", title = "Kendall Correlation", mar=c(0,0,1,0))
 ```
 
-Both Spearman's $\rho$ and Kendall's $\tau$ capture the \emph{monotonic} relationship between two variables. 
-They are more robust to outliers and non-linear relationships than Pearson's correlation. 
-In the context of areal data (e.g., crime rates, population density across polygons), 
-these measures can reveal how variables co-vary without assuming linearity or normality.
+Both Spearman's $\rho$ and Kendall's $\tau$ capture the \emph{monotonic} relationship between two variables. They are more robust to outliers and non-linear relationships than Pearson's correlation. In the context of areal data (e.g., crime rates, population density across polygons), these measures can reveal how variables co-vary without assuming linearity or normality.
 
-# Spatial Neighborhood  Matrices {.unnumbered}
+# Spatial Neighborhood Matrices {.unnumbered}
 
 This section is based on *Spatial statistics for data science theory and practice with R*. See [@Moraga2023].
 
 ## Neighbors Based on Contiguity
 
-  - Queen Contiguity: Two polygons are considered neighbors if they share any common point (i.e., an edge or a vertex). Mathematically, if polygons \( p_i \) and \( p_j \) touch at any point, then \( A_{ij} = 1 \).
-  - Rook Contiguity: Two polygons are neighbors only if they share a common edge. That is, if polygons \( p_i \) and \( p_j \) share a boundary segment, then \( A_{ij} = 1 \); merely touching at a corner does not count.
-
+-   Queen Contiguity: Two polygons are considered neighbors if they share any common point (i.e., an edge or a vertex). Mathematically, if polygons ( p_i ) and ( p_j ) touch at any point, then ( A\_{ij} = 1 ).
+-   Rook Contiguity: Two polygons are neighbors only if they share a common edge. That is, if polygons ( p_i ) and ( p_j ) share a boundary segment, then ( A\_{ij} = 1 ); merely touching at a corner does not count.
 
 ```{r}
 #| echo: true
@@ -90,13 +75,19 @@ head(nb)
 
 # Polygons with neighbors
 table(sapply(nb, length))
+
+# Neighbors of Order k Based on Contiguity
+# Neighbors of second order
+nblags <- spdep::nblag(neighbours = nb, maxlag = 2)
+nblagsc <- spdep::nblag_cumul(nblags)
+summary(nblagsc)
 ```
 
 ## Neighbors Based on k Nearest Neighbors
 
-  - K-Nearest Neighbors: For each polygon, the \( k \) nearest neighbors are identified based on a distance threshold. 
-  - Distance Threshold: The distance threshold can be defined as a fixed value or as a function of the average distance between polygons.
-  
+-   K-Nearest Neighbors: For each polygon, the ( k ) nearest neighbors are identified based on a distance threshold.
+-   Distance Threshold: The distance threshold can be defined as a fixed value or as a function of the average distance between polygons.
+
 ```{r}
 #| echo: true
 #| message: false
@@ -125,7 +116,6 @@ plot.nb(nb_10, coords_10, add = TRUE, col = "red", lwd = 2)
 
 ## Neighbors Based on Distance
 
-
 ```{r}
 #| echo: true
 #| message: false
@@ -150,7 +140,7 @@ plot(st_geometry(delitos_data_10), border = "lightgray", main = "First Polygons 
 plot.nb(nb_10, coords_10, add = TRUE, col = "red", lwd = 2)
 ```
 
-Determining an Appropriate Upper Distance Bound: To ensure that each area in a spatial dataset has at least \(k\) neighbors, we can determine an appropriate upper distance bound by first computing the \(k\) nearest neighbors for each area. For example, using the Queen contiguity method, one may use the \texttt{spdep::knearneigh()} function with \(k=1\) to obtain the nearest neighbor for each polygon. This yields a matrix of neighbor IDs, which is then converted into a neighbor list (of class \texttt{nb}) via \texttt{knn2nb()}. Next, the \texttt{spdep::nbdists()} function computes the distances along the links between each area and its neighbor. By summarizing these distances (e.g., using \texttt{summary(unlist(dist1))}), we can observe the range of distances. 
+Determining an Appropriate Upper Distance Bound: To ensure that each area in a spatial dataset has at least (k) neighbors, we can determine an appropriate upper distance bound by first computing the (k) nearest neighbors for each area. For example, using the Queen contiguity method, one may use the \texttt{spdep::knearneigh()} function with (k=1) to obtain the nearest neighbor for each polygon. This yields a matrix of neighbor IDs, which is then converted into a neighbor list (of class \texttt{nb}) via \texttt{knn2nb()}. Next, the \texttt{spdep::nbdists()} function computes the distances along the links between each area and its neighbor. By summarizing these distances (e.g., using \texttt{summary(unlist(dist1))}), we can observe the range of distances.
 
 ```{r}
 #| echo: true
@@ -170,8 +160,132 @@ nb <- dnearneigh(x = st_centroid(delitos_data), d1 = 0, d2 = 1.2)
 hist(sapply(nb, length))
 ```
 
-## Neighbors of Order k Based on Contiguity
+## Neighborhood Matrices
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Spatial weights matrix based on a binary neighbor list
+nb <- poly2nb(delitos_data, queen = TRUE)
+nbw <- spdep::nb2listw(nb, style = "W", zero.policy = TRUE)
+nbw$weights[1:10]
+
+# Spatial weights matrix based on inverse distance values
+coo <- st_centroid(delitos_data)
+nb <- poly2nb(delitos_data, queen = TRUE)
+dists <- nbdists(nb, coo)
+ids <- lapply(dists, function(x){1/x})
+nbw <- nb2listw(nb, glist = ids, style = "B", zero.policy = TRUE)
+nbw$weights[1:10]
+```
+
+# Spatial autocorrelation
 
 # Correspondance Analysis {.unnumbered}
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+
+# Paso 1: Crear la matriz de frecuencias de delitos en polígonos
+Freq <- delitos_data %>%
+  st_drop_geometry() %>%
+  select(contains('24'))
+
+rownames(Freq) <- c("Zona Norte", "Zona Sur", "Zona Este", "Zona Oeste")
+colnames(Freq) <- c("Homicidio", "Robo", "Hurto", "Extorsión")
+
+print("Matriz de frecuencias:")
+print(F)
+
+# Paso 2: Calcular la tabla de frecuencias relativas
+total_F <- sum(F)
+F_rel <- F / total_F
+
+print("Matriz de frecuencias relativas:")
+print(F_rel)
+
+# Paso 3: Cálculo de los totales por fila y columna
+fi <- rowSums(F_rel)  # Suma por fila
+fj <- colSums(F_rel)  # Suma por columna
+
+D_f <- diag(fi)  # Matriz diagonal de totales de fila
+D_c <- diag(fj)  # Matriz diagonal de totales de columna
+
+# Paso 4: Construcción de la matriz de correspondencias Z
+D_f_sqrt_inv <- diag(1 / sqrt(fi))  # Raíz cuadrada inversa de los totales de fila
+D_c_sqrt_inv <- diag(1 / sqrt(fj))  # Raíz cuadrada inversa de los totales de columna
+
+Z <- D_f_sqrt_inv %*% (F_rel - fi %o% fj) %*% D_c_sqrt_inv
+
+print("Matriz de correspondencias Z:")
+print(Z)
+
+# Paso 5: Descomposición en Valores Singulares (SVD)
+svd_result <- svd(Z)  # Descomposición de Z
+
+U <- svd_result$u  # Vectores propios de ZZ' (Filas)
+D <- diag(svd_result$d)  # Matriz diagonal de valores singulares
+V <- svd_result$v  # Vectores propios de Z'Z (Columnas)
+
+print("Matriz U (Vectores propios de ZZ'):")
+print(U)
+
+print("Matriz D (Valores singulares):")
+print(D)
+
+print("Matriz V (Vectores propios de Z'Z):")
+print(V)
+
+# Paso 6: Proyección de filas y columnas en el espacio reducido
+dim_reducida <- 2
+C_f <- D_f_sqrt_inv %*% U[, 1:dim_reducida] %*% D[1:dim_reducida, 1:dim_reducida]  # Coordenadas filas
+C_c <- D_c_sqrt_inv %*% V[, 1:dim_reducida] %*% D[1:dim_reducida, 1:dim_reducida]  # Coordenadas columnas
+
+print("Coordenadas filas en el espacio reducido:")
+print(C_f)
+
+print("Coordenadas columnas en el espacio reducido:")
+print(C_c)
+
+# Librerías
+library(MASS)  # Para manipulación matricial
+library(ca)  # Para el análisis de correspondencias
+
+# Matriz de frecuencias (ejemplo: delitos en polígonos)
+F <- matrix(c(
+  12, 5, 8, 2,
+  7, 3, 10, 1,
+  4, 2, 6, 1,
+  15, 8, 14, 5
+), nrow = 4, byrow = TRUE)
+
+rownames(F) <- c("Zona Norte", "Zona Sur", "Zona Este", "Zona Oeste")
+colnames(F) <- c("Homicidio", "Robo", "Hurto", "Extorsión")
+
+# Total de la tabla
+n_total <- sum(F)
+
+# Matriz de frecuencias relativas
+F_rel <- F / n_total
+
+# Totales por fila y columna
+f_i <- rowSums(F_rel)
+f_j <- colSums(F_rel)
+
+# Matriz esperada bajo independencia
+F_exp <- outer(f_i, f_j)
+
+# Cálculo de ji-cuadrado
+chi2 <- sum((F_rel - F_exp)^2 / F_exp) * n_total
+print(paste("Estadístico Ji-cuadrado:", round(chi2, 4)))
+
+# Distancia ji-cuadrado entre filas
+D_c_inv <- diag(1 / f_j)  # Inversa de los totales de columnas
+dist_ji <- as.matrix((F_rel - F_exp) %*% D_c_inv %*% t(F_rel - F_exp))
+print("Matriz de distancias ji-cuadrado entre filas:")
+print(dist_ji)
+```
